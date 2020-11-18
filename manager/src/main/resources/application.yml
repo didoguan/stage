@@ -3,5 +3,5 @@ spring:
     active: @spring.active@
 
 mybatis-plus:
-  typeAliasesPackage: com.deepspc.manager.modular.*.entity
+  typeAliasesPackage: com.deepspc.stage.manager.modular.*.entity
   mapper-locations: classpath*:com/deepspc/manager/**/mapping/*.xml

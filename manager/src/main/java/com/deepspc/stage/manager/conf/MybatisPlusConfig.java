@@ -1,4 +1,4 @@
-package com.deepspc.manager.conf;
+package com.deepspc.stage.manager.conf;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan("com.deepspc.manager.*.mapper")
+@MapperScan("com.deepspc.stage.manager.*.mapper")
 public class MybatisPlusConfig {
 
   /**

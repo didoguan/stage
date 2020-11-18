@@ -1,4 +1,4 @@
-package com.deepspc.manager;
+package com.deepspc.stage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
