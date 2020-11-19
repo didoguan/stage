@@ -10,9 +10,9 @@
   <version>1.0.0</version>
 
   <modules>
-    <module>shiro</module>
     <module>core</module>
     <module>manager</module>
+    <module>shiro</module>
   </modules>
 
   <properties>
@@ -70,12 +70,6 @@
         <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-core</artifactId>
         <version>${shiro.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.shiro</groupId>
@@ -86,12 +80,6 @@
         <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-ehcache</artifactId>
         <version>${shiro.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>
