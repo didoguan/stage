@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+  <!--日志文件所在目录，如果是tomcat，如下写法日志文件会在则为${TOMCAT_HOME}/bin/logs/目录下-->
+  <property name="LOG_HOME_LINUX" value="./logs"/>
+  <!-- 控制台 -->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <!-- info滚动日志 -->
+  <appender name="INFO_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_HOME_LINUX}/info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+      <maxFileSize>100MB</maxFileSize><!-- 单个文件最大100M -->
+      <maxHistory>30</maxHistory><!--保存最近30天的日志-->
+      <totalSizeCap>10GB</totalSizeCap><!--所有的日志文件最大10G，超过就会删除旧的日志-->
+    </rollingPolicy>
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- error滚动日志 -->
+  <appender name="ERROR_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>error</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_HOME_LINUX}/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+      <maxFileSize>100MB</maxFileSize><!-- 单个文件最大100M -->
+      <maxHistory>30</maxHistory><!--保存最近30天的日志-->
+      <totalSizeCap>10GB</totalSizeCap><!--所有的日志文件最大10G，超过就会删除旧的日志-->
+    </rollingPolicy>
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 开发环境只在控制台打印 -->
+  <springProfile name="dev">
+    <root level="debug">
+      <appender-ref ref="STDOUT" />
+    </root>
+  </springProfile>
+
+  <!-- 测试环境 -->
+  <springProfile name="trial">
+    <root level="info">
+      <appender-ref ref="INFO_ROLLING" />
+      <appender-ref ref="ERROR_ROLLING" />
+    </root>
+  </springProfile>
+
+  <!-- 生产环境 -->
+  <springProfile name="official">
+    <root level="error">
+      <appender-ref ref="ERROR_ROLLING" />
+    </root>
+  </springProfile>
+
+</configuration>
