@@ -1,13 +1,19 @@
 package com.deepspc.stage.shiro.conf;
 
+import com.deepspc.stage.shiro.common.CustomJwtFilter;
 import com.deepspc.stage.shiro.common.JwtCredentialsMatcher;
 import com.deepspc.stage.shiro.common.JwtRealm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.Filter;
+import java.util.LinkedHashMap;
 
 /**
  * @author gzw
@@ -29,6 +35,35 @@ public class ShiroConfig {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(jwtRealm());
 		return securityManager;
+	}
+
+	@Bean
+	public DefaultWebSessionManager sessionManager() {
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+		//停用session
+		sessionManager.setSessionValidationSchedulerEnabled(false);
+		return sessionManager;
+	}
+
+	@Bean
+	public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
+		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+		shiroFilterFactoryBean.setSecurityManager(securityManager);
+		//添加自定义拦截器
+		LinkedHashMap<String, Filter> linkedHashMap = new LinkedHashMap<>();
+		linkedHashMap.put("token", new CustomJwtFilter());
+		shiroFilterFactoryBean.setFilters(linkedHashMap);
+
+		//添加不进行拦截的地址
+		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
+		hashMap.put("/login", "anon");
+		//所有请求都要经过jwt拦截器
+		hashMap.put("/**", "token");
+		//所有请求都要经过鉴权拦截器
+		hashMap.put("/**", "authc");
+		shiroFilterFactoryBean.setFilterChainDefinitionMap(hashMap);
+
+		return shiroFilterFactoryBean;
 	}
 
     /**

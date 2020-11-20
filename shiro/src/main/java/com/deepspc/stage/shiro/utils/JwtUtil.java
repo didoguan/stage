@@ -49,18 +49,21 @@ public class JwtUtil {
         if (StrUtil.isBlank(token)) {
             return null;
         }
+		Claims claims = null;
         try {
             //验证通过则返回内容
-            return Jwts.parser()
+			claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(StageUtil.SECRET_KEY))
                     .parseClaimsJws(token).getBody();
+
+			boolean isExpired = expired(token);
+			if (isExpired) {
+				return null;
+			}
         } catch (Exception e) {
-            //验证不通过则抛出异常
-            if (e instanceof ClaimJwtException) {
-                return ((ClaimJwtException) e).getClaims();
-            }
+            e.printStackTrace();
         }
-        return null;
+        return claims;
     }
 
     /**

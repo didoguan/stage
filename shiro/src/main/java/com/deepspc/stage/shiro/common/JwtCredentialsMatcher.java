@@ -19,14 +19,6 @@ public class JwtCredentialsMatcher extends HashedCredentialsMatcher {
         String accessToken = (String) customJwtToken.getCredentials();
         //校验token是否有效
         Claims claims = JwtUtil.verifyToken(accessToken);
-        if (null != claims) {
-            boolean isExpired = JwtUtil.expired(accessToken);
-            //已过期
-            if (isExpired) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
+		return null != claims;
+	}
 }
