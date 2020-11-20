@@ -14,6 +14,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
@@ -46,6 +52,24 @@
           <artifactId>slf4j-api</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-crypto</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-captcha</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-core</artifactId>
     </dependency>
 
   </dependencies>
