@@ -1,8 +1,7 @@
 package com.deepspc.stage.shiro.conf;
 
-import com.deepspc.stage.shiro.common.CustomJwtFilter;
-import com.deepspc.stage.shiro.common.JwtCredentialsMatcher;
-import com.deepspc.stage.shiro.common.JwtRealm;
+import com.deepspc.stage.shiro.common.*;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -22,18 +21,30 @@ import java.util.LinkedHashMap;
 @Configuration
 public class ShiroConfig {
 
+    /**
     @Bean
 	public JwtRealm jwtRealm() {
         JwtCredentialsMatcher jwtCredentialsMatcher = new JwtCredentialsMatcher();
         JwtRealm realm = new JwtRealm();
         realm.setCredentialsMatcher(jwtCredentialsMatcher);
         return realm;
+    }**/
+
+    @Bean
+    public Md5Realm md5Realm() {
+        Md5Realm md5Realm = new Md5Realm();
+        HashedCredentialsMatcher md5CredentialsMatcher = new HashedCredentialsMatcher();
+        md5CredentialsMatcher.setHashAlgorithmName(ShiroConst.HASH_ALGORITHM_NAME);
+        md5CredentialsMatcher.setHashIterations(ShiroConst.HASH_ITERATIONS);
+        md5Realm.setCredentialsMatcher(md5CredentialsMatcher);
+
+        return md5Realm;
     }
 
 	@Bean
 	public DefaultWebSecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(jwtRealm());
+        securityManager.setRealm(md5Realm());
 		return securityManager;
 	}
 
