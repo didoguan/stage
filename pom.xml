@@ -26,6 +26,7 @@
     <druid.version>1.2.3</druid.version>
     <lombok.version>1.18.16</lombok.version>
     <jjwt.version>0.9.1</jjwt.version>
+    <ehcache.version>2.10.6</ehcache.version>
   </properties>
 
   <dependencyManagement>
@@ -116,6 +117,12 @@
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt</artifactId>
         <version>${jjwt.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sf.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>${ehcache.version}</version>
       </dependency>
 
     </dependencies>

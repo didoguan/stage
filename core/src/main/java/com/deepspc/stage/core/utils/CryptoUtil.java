@@ -1,18 +1,58 @@
 package com.deepspc.stage.core.utils;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.deepspc.stage.core.common.CryptoKey;
+import com.deepspc.stage.core.exception.CoreExceptionCode;
+import com.deepspc.stage.core.exception.StageException;
+import sun.misc.BASE64Decoder;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  * @author 加解密工具类
  * @date 2020/9/19 14:45
  */
 public class CryptoUtil {
+
+    private static final String PUBLIC_KEY = "com.deepspc.GD2020.pubkey";
+
+    private static final String PRIVATE_KEY = "com.deepspc.GD2020.prikey";
+
+    /**
+     * 获取自定义密钥对
+     * @return
+     */
+    public static CryptoKey getCustomCryptoKey() {
+        try {
+            KeyFactory pubFactory = KeyFactory.getInstance("RSA");
+            X509EncodedKeySpec pubSpec = new X509EncodedKeySpec((new BASE64Decoder()).decodeBuffer(PUBLIC_KEY));
+            RSAPublicKey publicKey = (RSAPublicKey) pubFactory.generatePublic(pubSpec);
+
+            PKCS8EncodedKeySpec priSpec = new PKCS8EncodedKeySpec((new BASE64Decoder()).decodeBuffer(PRIVATE_KEY));
+            KeyFactory priFactory = KeyFactory.getInstance("RSA");
+            RSAPrivateKey privateKey = (RSAPrivateKey) priFactory.generatePrivate(priSpec);
+
+            String publicStr = Base64.encode(publicKey.getEncoded());
+            String privateStr = Base64.encode(privateKey.getEncoded());
+            return new CryptoKey(publicStr, privateStr);
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            throw new StageException(CoreExceptionCode.INSTANCE_CRYPTO_KEY_EXCEPTION.getCode(),
+                                    CoreExceptionCode.INSTANCE_CRYPTO_KEY_EXCEPTION.getMessage());
+        }
+    }
     /**
      * 获取AES随机密钥
      * @return

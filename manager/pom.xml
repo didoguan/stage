@@ -8,7 +8,6 @@
     <version>1.0.0</version>
   </parent>
 
-  <groupId>com.deepspc</groupId>
   <artifactId>manager</artifactId>
   <version>1.0.0</version>
   <packaging>war</packaging>
@@ -23,6 +22,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shiro</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
@@ -54,6 +59,10 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.yaml</groupId>
@@ -75,6 +84,12 @@
       <groupId>com.alibaba</groupId>
       <artifactId>druid-spring-boot-starter</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>

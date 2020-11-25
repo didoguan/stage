@@ -1,9 +1,9 @@
 package com.deepspc.stage.shiro.common;
 
 import com.deepspc.stage.core.utils.ApplicationContextUtil;
-import com.deepspc.stage.shiro.model.Role;
-import com.deepspc.stage.shiro.model.User;
-import com.deepspc.stage.shiro.service.IUserService;
+import com.deepspc.stage.shiro.model.ShiroRole;
+import com.deepspc.stage.shiro.model.ShiroUser;
+import com.deepspc.stage.shiro.service.IShiroUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -30,13 +30,13 @@ public class Md5Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user = (User) principalCollection.getPrimaryPrincipal();
-        List<Role> roles = user.getRoles();
+        ShiroUser user = (ShiroUser) principalCollection.getPrimaryPrincipal();
+        List<ShiroRole> shiroRoles = user.getShiroRoles();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (null != roles && !roles.isEmpty()) {
+        if (null != shiroRoles && !shiroRoles.isEmpty()) {
             Set<String> roleIds = new HashSet<>();
-            for (Role role : roles) {
-                roleIds.add(role.getRoleId().toString());
+            for (ShiroRole shiroRole : shiroRoles) {
+                roleIds.add(shiroRole.getRoleId().toString());
             }
             info.addRoles(roleIds);
         }
@@ -51,8 +51,8 @@ public class Md5Realm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        IUserService userService = ApplicationContextUtil.getBean(IUserService.class);
-        User user = userService.getUser(token.getUsername());
+        IShiroUserService userService = ApplicationContextUtil.getBean(IShiroUserService.class);
+        ShiroUser user = userService.getUser(token.getUsername());
         //无效账号
         if (null == user) {
             throw new CredentialsException();

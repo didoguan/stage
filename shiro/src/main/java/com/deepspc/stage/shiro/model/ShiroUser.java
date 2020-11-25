@@ -6,7 +6,7 @@ import java.util.List;
  * @author gzw
  * @date 2020/11/24 16:23
  */
-public class User {
+public class ShiroUser {
 
     private Long userId;
 
@@ -20,9 +20,9 @@ public class User {
     //加密盐
     private String salt;
 
-    private List<Role> roles;
+    private List<ShiroRole> shiroRoles;
 
-    public User() {
+    public ShiroUser() {
 
     }
 
@@ -74,11 +74,11 @@ public class User {
         this.salt = salt;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<ShiroRole> getShiroRoles() {
+        return shiroRoles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setShiroRoles(List<ShiroRole> shiroRoles) {
+        this.shiroRoles = shiroRoles;
     }
 }

@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: @spring.active@
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
 
 mybatis-plus:
   typeAliasesPackage: com.deepspc.stage.manager.modular.*.entity

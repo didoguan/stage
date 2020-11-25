@@ -4,7 +4,7 @@ package com.deepspc.stage.shiro.model;
  * @author gzw
  * @date 2020/11/24 16:25
  */
-public class Role {
+public class ShiroRole {
 
     private Long roleId;
 
@@ -14,7 +14,7 @@ public class Role {
 
     private String description;
 
-    public Role() {
+    public ShiroRole() {
 
     }
 
