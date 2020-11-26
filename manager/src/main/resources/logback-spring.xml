@@ -15,9 +15,9 @@
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>info</level>
     </filter>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <fileNamePattern>${LOG_HOME_LINUX}/info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
-      <maxFileSize>100MB</maxFileSize><!-- 单个文件最大100M -->
+      <MaxFileSize>100MB</MaxFileSize><!-- 单个文件最大100M -->
       <maxHistory>30</maxHistory><!--保存最近30天的日志-->
       <totalSizeCap>10GB</totalSizeCap><!--所有的日志文件最大10G，超过就会删除旧的日志-->
     </rollingPolicy>
@@ -32,9 +32,9 @@
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>error</level>
     </filter>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <fileNamePattern>${LOG_HOME_LINUX}/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
-      <maxFileSize>100MB</maxFileSize><!-- 单个文件最大100M -->
+      <MaxFileSize>100MB</MaxFileSize><!-- 单个文件最大100M -->
       <maxHistory>30</maxHistory><!--保存最近30天的日志-->
       <totalSizeCap>10GB</totalSizeCap><!--所有的日志文件最大10G，超过就会删除旧的日志-->
     </rollingPolicy>

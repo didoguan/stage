@@ -21,14 +21,14 @@
     memoryStoreEvictionPolicy="LRU"
   />
 
-  <!-- 临时存放密钥，有效期2分钟 -->
-  <cache name="CryptoKey"
+  <!-- 周期存放密钥，有效期30天 -->
+  <cache name="ClockCryptoKey"
      eternal="false"
-     maxElementsInMemory="1000"
+     maxElementsInMemory="1"
      overflowToDisk="false"
      diskPersistent="false"
-     timeToIdleSeconds="120"
-     timeToLiveSeconds="120"
+     timeToIdleSeconds="2592000"
+     timeToLiveSeconds="2592000"
      memoryStoreEvictionPolicy="LRU"
   />
 

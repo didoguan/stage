@@ -1,8 +1,21 @@
 package com.deepspc.stage.manager.system.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.deepspc.stage.core.common.CryptoKey;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.core.utils.CryptoUtil;
+import com.deepspc.stage.core.utils.JsonUtil;
+import com.deepspc.stage.manager.conf.PropertiesConfig;
+import com.deepspc.stage.manager.exception.ManagerExceptionCode;
+import com.deepspc.stage.manager.system.model.LoginParam;
+import com.deepspc.stage.manager.system.service.ISystemService;
+import com.deepspc.stage.shiro.common.ShiroKit;
+import com.deepspc.stage.shiro.model.ShiroUser;
+import com.deepspc.stage.shiro.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,10 +27,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping
 public class LoginController {
 
-    @GetMapping("/getAccessToken")
-    @ResponseBody
-    public ResponseData getAccessToken(String req) {
+    private final ISystemService systemService;
 
-        return ResponseData.success();
+    private final PropertiesConfig propertiesConfig;
+
+    @Autowired
+    public LoginController(ISystemService systemService, PropertiesConfig propertiesConfig) {
+        this.systemService = systemService;
+        this.propertiesConfig = propertiesConfig;
+    }
+
+    @PostMapping("/checkValid")
+    @ResponseBody
+    public ResponseData checkValid(String req) {
+        if (StrUtil.isNotBlank(req)) {
+            CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
+            //解密字符串
+            String decryptStr = CryptoUtil.privateKeyDecrypt(cryptoKey.getPrivateKey(), cryptoKey.getPublicKey(), req);
+            LoginParam loginParam = JsonUtil.parseSimpleObj(decryptStr, LoginParam.class);
+            ShiroUser shiroUser = ShiroKit.getShiroUser();
+            try {
+                ShiroKit.checkLogin(loginParam.getAccount(), loginParam.getPassword());
+                //生成token
+                String token = JwtUtil.instanceToken("com.deepspc", shiroUser.getUserId().toString(), null, propertiesConfig.getServerTimeout() * 1000);
+                return ResponseData.success(token);
+            } catch (StageException e) {
+                return ResponseData.error(e.getCode(), e.getMessage());
+            }
+        }
+        return ResponseData.error(ManagerExceptionCode.PARAM_REQUIRE.getCode(), ManagerExceptionCode.PARAM_REQUIRE.getMessage());
     }
 }

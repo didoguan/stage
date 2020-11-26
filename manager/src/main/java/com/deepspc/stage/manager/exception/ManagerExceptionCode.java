@@ -1,16 +1,19 @@
-package com.deepspc.stage.core.exception;
+package com.deepspc.stage.manager.exception;
 
-public enum CoreExceptionCode {
+/**
+ * 自定义相关异常代码
+ * @author gzw
+ * @date 2020/11/26 15:27
+ */
+public enum ManagerExceptionCode {
 
-    INSTANCE_CRYPTO_KEY_EXCEPTION("610", "密钥对生成失败"),
-    JSON_PARSE_EXCEPTION("611", "JSON转换失败")
-    ;
+    PARAM_REQUIRE("710", "请求参数不能为空");
 
     private String code;
 
     private String message;
 
-    CoreExceptionCode(String code, String message) {
+    ManagerExceptionCode(String code, String message) {
         this.code = code;
         this.message = message;
     }

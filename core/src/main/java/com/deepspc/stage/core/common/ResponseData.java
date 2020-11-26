@@ -45,6 +45,13 @@ public class ResponseData {
         return resp;
     }
 
+    public static ResponseData error(String code, String message) {
+        ResponseData resp = new ResponseData();
+        resp.setCode(code);
+        resp.setMessage(message);
+        return resp;
+    }
+
     public String getCode() {
         return code;
     }

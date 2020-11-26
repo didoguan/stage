@@ -6,7 +6,8 @@ package com.deepspc.stage.shiro.exception;
 public enum ShiroExceptionCode {
 
 	TOKEN_IS_NULL("510", "Token为空"),
-	INVALID_OR_EXPIRED("511", "Token无效或已过期");
+	INVALID_OR_EXPIRED("511", "Token无效或已过期"),
+	USERNAME_PASSWORD_INVALID("512", "用户名或密码无效");
 
 	private String code;
 

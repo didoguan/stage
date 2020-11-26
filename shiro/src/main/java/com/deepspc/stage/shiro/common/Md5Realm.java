@@ -25,8 +25,6 @@ public class Md5Realm extends AuthorizingRealm {
 
     /**
      * 权限认证
-     * @param principalCollection
-     * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -45,7 +43,7 @@ public class Md5Realm extends AuthorizingRealm {
 
     /**
      * 登录认证
-     * @param authenticationToken
+     * @param authenticationToken token
      * @throws AuthenticationException
      */
     @Override
