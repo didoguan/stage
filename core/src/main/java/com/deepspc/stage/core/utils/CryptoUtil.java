@@ -1,24 +1,12 @@
 package com.deepspc.stage.core.utils;
 
-import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.deepspc.stage.core.common.CryptoKey;
-import com.deepspc.stage.core.exception.CoreExceptionCode;
-import com.deepspc.stage.core.exception.StageException;
-import sun.misc.BASE64Decoder;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
 /**
  * @author 加解密工具类
@@ -26,36 +14,45 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class CryptoUtil {
 
-    private static final String PUBLIC_KEY = "com.deepspc.GD2020.pubkey";
+    private static String PUBLIC_KEY;
 
-    private static final String PRIVATE_KEY = "com.deepspc.GD2020.prikey";
+    private static String PRIVATE_KEY;
 
-    /**
-     * 获取自定义密钥对
-     * @return
-     */
-    public static CryptoKey getCustomCryptoKey() {
-        try {
-            KeyFactory pubFactory = KeyFactory.getInstance("RSA");
-            X509EncodedKeySpec pubSpec = new X509EncodedKeySpec((new BASE64Decoder()).decodeBuffer(PUBLIC_KEY));
-            RSAPublicKey publicKey = (RSAPublicKey) pubFactory.generatePublic(pubSpec);
+    static {
+        StringBuilder sb = new StringBuilder();
+        sb.append("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzKs3dNindQKgnfeVa+bOVwmI3yGS6mKrqT/")
+        .append("N2zfZqbwuelavyE46oo0PwAllqA6Bz3SpNX06FP51F504ekuUU9GbmCWVVyIBZ6b3lCIhhrtFKe")
+        .append("SQYiAeoyCS3GRDqWZB4v9GHsxazz7XAMG91m27DDwKcpehe1x0M7JSpQIQVrwIDAQAB");
+        PUBLIC_KEY = sb.toString();
 
-            PKCS8EncodedKeySpec priSpec = new PKCS8EncodedKeySpec((new BASE64Decoder()).decodeBuffer(PRIVATE_KEY));
-            KeyFactory priFactory = KeyFactory.getInstance("RSA");
-            RSAPrivateKey privateKey = (RSAPrivateKey) priFactory.generatePrivate(priSpec);
+        sb = new StringBuilder();
+        sb.append("MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALMqzd02Kd1AqCd95V")
+        .append("r5s5XCYjfIZLqYqupP83bN9mpvC56Vq/ITjqijQ/ACWWoDoHPdKk1fToU/nUXnTh6S5RT")
+        .append("0ZuYJZVXIgFnpveUIiGGu0Up5JBiIB6jIJLcZEOpZkHi/0YezFrPPtcAwb3WbbsMPApyl6")
+        .append("F7XHQzslKlAhBWvAgMBAAECgYEAhFKurBvem2uvRUtz4tbcTVS82VoFGtK6GEdoFmxS+5R")
+        .append("7zmnYDfdnuyCpgk8Z3nRDQo8rOO2UvlCXRRNp3Ka8zJf8DBBTqGMHSqBtp2W4CD7cER3wj")
+        .append("bfhs4b2en9z2QLQseUkJxuQdmNeVeloiS9DJSaMkln94oAqLNnPhACwazECQQD0gcxhc6U")
+        .append("ozJmrCAfIUiTI+zDZqXfj1Ba/BWnmnzyr7apsXru/zZA9qNrviUJbBuBiotQdVWFdEkpNn")
+        .append("r62qan7AkEAu5bCPKGJPO+1lXBFo3rDSZtpvcQKiUXSHTXC+/nIuQ/Ulsx8oy4iJLNzfNf")
+        .append("CC8yeRvFE+JLW5fIF+LwbpA2I3QJBAIUGuXOrv4fbCSAMVm+egXT3dTR3B0tk8JstDtjye")
+        .append("cfwnnAnem54IKnrXHJGc1ui+iGwBUeQVFCWyuZAH/KxjFECQAPApUwPMy6b4PcHUu1NRGD")
+        .append("RkhDwvgE2+1gIPklKGuDQ10DZAFlHT/mJ+XJy4nfX9QaYRvfuAAyDhekO4kKq3qUCQDBBxi")
+        .append("gXZW2o1L9UWTWMV5NH8ibBANo1FQFi06SOVb2YrHcrNHuvLAy3kd7lbbp1sExOR/H4FI9jpemudpQbOGw=");
+        PRIVATE_KEY = sb.toString();
 
-            String publicStr = Base64.encode(publicKey.getEncoded());
-            String privateStr = Base64.encode(privateKey.getEncoded());
-            return new CryptoKey(publicStr, privateStr);
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-            throw new StageException(CoreExceptionCode.INSTANCE_CRYPTO_KEY_EXCEPTION.getCode(),
-                                    CoreExceptionCode.INSTANCE_CRYPTO_KEY_EXCEPTION.getMessage());
-        }
+        sb = null;
     }
+
+    public static String getPublicKey() {
+        return PUBLIC_KEY;
+    }
+
+    public static String getPrivateKey() {
+        return PRIVATE_KEY;
+    }
+
     /**
      * 获取AES随机密钥
-     * @return
      */
     public static String getAesRandomKey() {
         byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
@@ -64,9 +61,8 @@ public class CryptoUtil {
 
     /**
      * 根据密钥加密内容
-     * @param key
-     * @param content
-     * @return
+     * @param key 密钥
+     * @param content 加密内容
      */
     public static String aesEncrypt(String key, String content) {
         byte[] encrypt = SecureUtil.aes(key.getBytes()).encrypt(content);
@@ -80,9 +76,8 @@ public class CryptoUtil {
 
     /**
      * 根据密钥解密
-     * @param key
-     * @param encrypt
-     * @return
+     * @param key 密钥
+     * @param encrypt 解密内容
      */
     public static String aesDecrypt(String key, String encrypt) {
         byte[] decrypt = SecureUtil.aes(key.getBytes()).decrypt(encrypt);
@@ -91,7 +86,6 @@ public class CryptoUtil {
 
     /**
      * 获取公私钥
-     * @return
      */
     public static CryptoKey getRSACryptoKey() {
         RSA rsa = new RSA();
@@ -100,10 +94,9 @@ public class CryptoUtil {
 
     /**
      * 公钥加密
-     * @param privateKey
-     * @param publicKey
-     * @param content
-     * @return
+     * @param privateKey 私钥
+     * @param publicKey 公钥
+     * @param content 加密内容
      */
     public static String publicKeyEncrypt(String privateKey, String publicKey, String content) {
         RSA rsa = new RSA(privateKey, publicKey);
@@ -111,11 +104,19 @@ public class CryptoUtil {
     }
 
     /**
+     * 公钥加密(固定密钥)
+     * @param content 加密内容
+     */
+    public static String publicKeyEncrypt(String content) {
+        RSA rsa = new RSA(PRIVATE_KEY, PUBLIC_KEY);
+        return rsa.encryptBase64(content, KeyType.PublicKey);
+    }
+
+    /**
      * 公钥解密
-     * @param publicKey
-     * @param privateKey
-     * @param content
-     * @return
+     * @param publicKey 公钥
+     * @param privateKey 私钥
+     * @param content 解密内容
      */
     public static String publicKeyDecrypt(String privateKey, String publicKey, String content) {
         RSA rsa = new RSA(privateKey, publicKey);
@@ -123,11 +124,19 @@ public class CryptoUtil {
     }
 
     /**
+     * 公钥解密(固定密钥)
+     * @param content 解密内容
+     */
+    public static String publicKeyDecrypt(String content) {
+        RSA rsa = new RSA(PRIVATE_KEY, PUBLIC_KEY);
+        return rsa.decryptStr(content, KeyType.PublicKey);
+    }
+
+    /**
      * 私钥加密
-     * @param privateKey
-     * @param publicKey
-     * @param content
-     * @return
+     * @param privateKey 私钥
+     * @param publicKey 公钥
+     * @param content 加密内容
      */
     public static String privateKeyEncrypt(String privateKey, String publicKey, String content) {
         RSA rsa = new RSA(privateKey, publicKey);
@@ -135,14 +144,32 @@ public class CryptoUtil {
     }
 
     /**
+     * 私钥加密(固定密钥)
+     * @param content 加密内容
+     */
+    public static String privateKeyEncrypt(String content) {
+        RSA rsa = new RSA(PRIVATE_KEY, PUBLIC_KEY);
+        return rsa.encryptBase64(content, KeyType.PrivateKey);
+    }
+
+    /**
      * 私钥解密
-     * @param publicKey
-     * @param privateKey
-     * @param content
-     * @return
+     * @param publicKey 公钥
+     * @param privateKey 私钥
+     * @param content 解密内容
      */
     public static String privateKeyDecrypt(String privateKey, String publicKey, String content) {
         RSA rsa = new RSA(privateKey, publicKey);
         return rsa.decryptStr(content, KeyType.PrivateKey);
     }
+
+    /**
+     * 私钥解密(固定密钥)
+     * @param content 解密内容
+     */
+    public static String privateKeyDecrypt(String content) {
+        RSA rsa = new RSA(PRIVATE_KEY, PUBLIC_KEY);
+        return rsa.decryptStr(content, KeyType.PrivateKey);
+    }
+
 }
