@@ -10,5 +10,5 @@ spring:
       config: classpath:ehcache.xml
 
 mybatis-plus:
-  typeAliasesPackage: com.deepspc.stage.manager.modular.*.entity
-  mapper-locations: classpath*:com/deepspc/manager/**/mapping/*.xml
+  typeAliasesPackage: com.deepspc.stage.**.entity
+  mapper-locations: classpath*:com/deepspc/stage/**/mapping/*.xml

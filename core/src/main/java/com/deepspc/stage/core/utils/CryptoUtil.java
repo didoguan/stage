@@ -172,4 +172,12 @@ public class CryptoUtil {
         return rsa.decryptStr(content, KeyType.PrivateKey);
     }
 
+    public static void main(String[] args) {
+        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1QAnLUZ0V5sPqiaXZ52rd3/nXMZwo8DSK0rMD3BNizWcGp1WqOJuVkWBac8i9U76siwXe9kofN2hc0EWx9zLg0/mf61RyJEHSJOe2BN/vK4PY0mwSMg2Iah7u5GWNIt6nwVNZzydWwVgSqhmZPv/J0QeJ/9qqdqlFCtnRzi1uuQIDAQAB";
+        String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALVACctRnRXmw+qJpdnnat3f+dcxnCjwNIrSswPcE2LNZwanVao4m5WRYFpzyL1TvqyLBd72Sh83aFzQRbH3MuDT+Z/rVHIkQdIk57YE3+8rg9jSbBIyDYhqHu7kZY0i3qfBU1nPJ1bBWBKqGZk+/8nRB4n/2qp2qUUK2dHOLW65AgMBAAECgYAw8iQy9c039uN9WMKi/62KUUvE4y7Kl2N5AcE6D5pkmhdyYontt++8ClA83PuetRjOu5RQS65kk6/pMI1BrAHe4wy8+TJEQbEu9j4Z74hRbkPMPb2vrDh3uwgqOJVXrD0viV39QvZ5Ij0KD/kr4LlySnoFEffj5wiQrmpArhvdAQJBAP/sq6DRcIq3DMwyhzJN0ejL8wB7fjd3zHSZ0ONVEFwQ8WUqU2fGrBCBsqg17J9R67By6Ltt2GVdjXCJguQGZZECQQC1TbpRD5WMJ9mxRoYUhu7254mvbXKYXboOkyFKlNZvp46hoKtvR38VTuRu90MPceGoZs/JX2YlXcYGS5Os9UKpAkEA5VTIayCiz7q+XhD9M2emrQxtYcZH0R6p+OaI1922/jk0h2oJOVo/f78pQDCqLA41vHUL9kC1hAf0IZ8nynus8QJAcqV+Jfg21vP0Ire33Y8d2R+83yPUjSjnmIPNT34iw2QvO2GARtPtNqo2pTzSORgIXBb3Wh1rWEGeESkFbx+AUQJBAPJBoGMkGW9NSJcx4alfBKGWpnGCDruJGdvrx5CcVa4jGd3IRHpFX4bOhHHid2P15Xl99SqEP3acPJfUSh3sCJg=";
+        String content = "{\"account\":\"admin\",\"password\":\"000000\"}";
+        String str = publicKeyEncrypt(privateKey, publicKey, content);
+        System.out.println(str);
+    }
+
 }

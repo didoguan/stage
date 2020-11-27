@@ -1,5 +1,6 @@
 package com.deepspc.stage.manager.system.controller;
 
+import com.deepspc.stage.core.common.CryptoKey;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.manager.system.service.ISystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class SystemController {
     @GetMapping("/refreshCryptoKey")
     @ResponseBody
     public ResponseData refreshCryptoKey() {
-        return ResponseData.success(systemService.refreshClockCryptoKey());
+        CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
+        System.out.println("公钥:"+cryptoKey.getPublicKey());
+        System.out.println("私钥:"+cryptoKey.getPrivateKey());
+        return ResponseData.success(cryptoKey.getPublicKey());
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan("com.deepspc.stage.manager.*.mapper")
+@MapperScan("com.deepspc.stage.**.mapper")
 public class MybatisPlusConfig {
 
   /**

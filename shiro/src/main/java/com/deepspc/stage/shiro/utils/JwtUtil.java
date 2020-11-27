@@ -30,9 +30,13 @@ public class JwtUtil {
                                 .setSubject(subject)
                                 .setIssuer(issuer)
                                 .setIssuedAt(calendar.getTime())
-                                .setClaims(claims)
                                 .setId(IdUtil.randomUUID())
                                 .signWith(SignatureAlgorithm.HS256, DatatypeConverter.parseBase64Binary(StageUtil.SECRET_KEY));
+		if (null != claims && !claims.isEmpty()) {
+            for (Map.Entry<String, Object> map : claims.entrySet()) {
+                builder.claim(map.getKey(), map.getValue());
+            }
+        }
 		if (overTime > 0) {
             long time = calendar.getTimeInMillis() + overTime;
             calendar.setTimeInMillis(time);

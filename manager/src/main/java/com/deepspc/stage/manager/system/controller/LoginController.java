@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2020/11/25 17:29
  */
 @Controller
-@RequestMapping
+@RequestMapping("/login")
 public class LoginController {
 
     private final ISystemService systemService;
@@ -39,15 +39,15 @@ public class LoginController {
 
     @PostMapping("/checkValid")
     @ResponseBody
-    public ResponseData checkValid(String req) {
-        if (StrUtil.isNotBlank(req)) {
+    public ResponseData checkValid(String r) {
+        if (StrUtil.isNotBlank(r)) {
             CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
             //解密字符串
-            String decryptStr = CryptoUtil.privateKeyDecrypt(cryptoKey.getPrivateKey(), cryptoKey.getPublicKey(), req);
+            String decryptStr = CryptoUtil.privateKeyDecrypt(cryptoKey.getPrivateKey(), cryptoKey.getPublicKey(), r);
             LoginParam loginParam = JsonUtil.parseSimpleObj(decryptStr, LoginParam.class);
-            ShiroUser shiroUser = ShiroKit.getShiroUser();
             try {
                 ShiroKit.checkLogin(loginParam.getAccount(), loginParam.getPassword());
+                ShiroUser shiroUser = ShiroKit.getShiroUser();
                 //生成token
                 String token = JwtUtil.instanceToken("com.deepspc", shiroUser.getUserId().toString(), null, propertiesConfig.getServerTimeout() * 1000);
                 return ResponseData.success(token);
