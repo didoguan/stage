@@ -2,8 +2,10 @@ package com.deepspc.stage.shiro.common;
 
 import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.core.utils.ApplicationContextUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.shiro.exception.ShiroExceptionCode;
+import com.deepspc.stage.shiro.service.IShiroUserService;
 import com.deepspc.stage.shiro.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -22,9 +24,7 @@ import java.io.PrintWriter;
  **/
 public class CustomJwtFilter extends AccessControlFilter {
 
-	private final String ACCESS_TOKEN = "accessToken";
-
-	/**
+    /**
 	 * 先执行：isAccessAllowed 再执行onAccessDenied
 	 * isAccessAllowed：表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，
 	 * 如果允许访问返回true，否则false；
@@ -41,7 +41,7 @@ public class CustomJwtFilter extends AccessControlFilter {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		//从请求头中获取token
-		String accessToken = request.getHeader(ACCESS_TOKEN);
+        String accessToken = request.getHeader("accessToken");
 		if (StrUtil.isBlank(accessToken)) {
             print(response, ShiroExceptionCode.TOKEN_IS_NULL.getCode(), ShiroExceptionCode.TOKEN_IS_NULL.getMessage());
             return false;
@@ -49,7 +49,16 @@ public class CustomJwtFilter extends AccessControlFilter {
 		//校验token是否有效
 		Claims claims = JwtUtil.verifyToken(accessToken);
 		if (null != claims) {
-			return true;
+		    //检查是否存在缓存中，存在则说明未登出
+            String userId = JwtUtil.getUserId(accessToken);
+            IShiroUserService shiroUserService = ApplicationContextUtil.getBean(IShiroUserService.class);
+            boolean exists = shiroUserService.existsUserCacheToken(userId);
+            if (exists) {
+                return true;
+            } else {
+                print(response, ShiroExceptionCode.INVALID_OR_EXPIRED.getCode(), ShiroExceptionCode.INVALID_OR_EXPIRED.getMessage());
+                return false;
+            }
 		} else {
             print(response, ShiroExceptionCode.INVALID_OR_EXPIRED.getCode(), ShiroExceptionCode.INVALID_OR_EXPIRED.getMessage());
             return false;

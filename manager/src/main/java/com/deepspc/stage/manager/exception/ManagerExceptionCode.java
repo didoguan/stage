@@ -7,7 +7,8 @@ package com.deepspc.stage.manager.exception;
  */
 public enum ManagerExceptionCode {
 
-    PARAM_REQUIRE("710", "请求参数不能为空");
+    PARAM_REQUIRE("710", "请求参数不能为空"),
+    USER_EXISTS("711", "该用户已经登录");
 
     private String code;
 

@@ -68,7 +68,7 @@ public class ShiroConfig {
 		//添加不进行拦截的地址
 		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
         hashMap.put("/sys/refreshCryptoKey", "anon");
-        hashMap.put("/login/checkValid", "anon");
+        hashMap.put("/checkValid", "anon");
 		//所有请求都要经过jwt拦截器
 		hashMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(hashMap);

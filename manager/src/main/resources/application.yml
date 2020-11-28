@@ -1,5 +1,6 @@
 server:
-  timeout: 1800
+  tokentimeout: 1800      #token超时时间(单位秒)
+  tokenlive: 3600000     #token有效期(单位毫秒)
 
 spring:
   profiles:

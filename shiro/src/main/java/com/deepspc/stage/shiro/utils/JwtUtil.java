@@ -59,8 +59,8 @@ public class JwtUtil {
 			claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(StageUtil.SECRET_KEY))
                     .parseClaimsJws(token).getBody();
-
-			boolean isExpired = expired(token);
+            Date expiration = claims.getExpiration();
+			boolean isExpired = expiration.before(new Date());
 			if (isExpired) {
 				return null;
 			}
@@ -68,19 +68,6 @@ public class JwtUtil {
             e.printStackTrace();
         }
         return claims;
-    }
-
-    /**
-     * token是否过期(true-已过期，false-未过期)
-     * @param token token
-     */
-    public static Boolean expired(String token) {
-        Claims claims = verifyToken(token);
-        if (null == claims) {
-            return true;
-        }
-        Date expiration = claims.getExpiration();
-        return expiration.before(new Date());
     }
 
     /**

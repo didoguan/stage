@@ -10,14 +10,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertiesConfig {
 
-    @Value("${server.timeout}")
-    public int serverTimeout;
+    @Value("${server.tokentimeout}")
+    public int tokenTimeout;
 
-    public int getServerTimeout() {
-        return serverTimeout;
+    @Value("${server.tokenlive}")
+    public int tokenLive;
+
+    public int getTokenTimeout() {
+        return tokenTimeout;
     }
 
-    public void setServerTimeout(int serverTimeout) {
-        this.serverTimeout = serverTimeout;
+    public void setTokenTimeout(int tokenTimeout) {
+        this.tokenTimeout = tokenTimeout;
+    }
+
+    public int getTokenLive() {
+        return tokenLive;
+    }
+
+    public void setTokenLive(int tokenLive) {
+        this.tokenLive = tokenLive;
     }
 }
