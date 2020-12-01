@@ -1,6 +1,8 @@
 package com.deepspc.stage.shiro.conf;
 
+import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.shiro.common.*;
+import com.deepspc.stage.shiro.properties.ShiroProperties;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -21,14 +23,10 @@ import java.util.LinkedHashMap;
 @Configuration
 public class ShiroConfig {
 
-    /**
     @Bean
-	public JwtRealm jwtRealm() {
-        JwtCredentialsMatcher jwtCredentialsMatcher = new JwtCredentialsMatcher();
-        JwtRealm realm = new JwtRealm();
-        realm.setCredentialsMatcher(jwtCredentialsMatcher);
-        return realm;
-    }**/
+    public ShiroProperties shiroProperties() {
+        return new ShiroProperties();
+    }
 
     @Bean
     public Md5Realm md5Realm() {
@@ -67,8 +65,13 @@ public class ShiroConfig {
 
 		//添加不进行拦截的地址
 		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
-        hashMap.put("/sys/refreshCryptoKey", "anon");
-        hashMap.put("/checkValid", "anon");
+		String anonRequest = shiroProperties().getAnonRequest();
+		if (StrUtil.isNotBlank(anonRequest)) {
+		    String[] req = anonRequest.split(",");
+            for (String uri : req) {
+                hashMap.put(uri, "anon");
+            }
+        }
 		//所有请求都要经过jwt拦截器
 		hashMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(hashMap);

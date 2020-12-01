@@ -16,6 +16,9 @@ public class PropertiesConfig {
     @Value("${server.tokenlive}")
     public int tokenLive;
 
+    @Value("${server.attachment-path}")
+    public String attachmentPath;
+
     public int getTokenTimeout() {
         return tokenTimeout;
     }
@@ -31,4 +34,13 @@ public class PropertiesConfig {
     public void setTokenLive(int tokenLive) {
         this.tokenLive = tokenLive;
     }
+
+    public String getAttachmentPath() {
+        return attachmentPath;
+    }
+
+    public void setAttachmentPath(String attachmentPath) {
+        this.attachmentPath = attachmentPath;
+    }
+
 }

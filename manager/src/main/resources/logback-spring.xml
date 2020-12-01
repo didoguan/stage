@@ -46,7 +46,7 @@
 
   <!-- 开发环境只在控制台打印 -->
   <springProfile name="dev">
-    <root level="debug">
+    <root level="info">
       <appender-ref ref="STDOUT" />
     </root>
   </springProfile>
