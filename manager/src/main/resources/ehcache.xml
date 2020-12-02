@@ -41,4 +41,14 @@
          memoryStoreEvictionPolicy="LRU"
   />
 
+  <!-- 存放用于登录的临时对象，有效期3分钟 -->
+  <cache name="TempLoginCache"
+         eternal="false"
+         maxElementsInMemory="100"
+         overflowToDisk="false"
+         diskPersistent="false"
+         timeToIdleSeconds="180"
+         memoryStoreEvictionPolicy="LRU"
+  />
+
 </ehcache>

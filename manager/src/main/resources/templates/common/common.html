@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="public_res(title,links,style)">
+  <meta charset="UTF-8">
+  <title th:replace="${title}">Deepspc电商后台管理系统</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/plugins/layui-v2.5.5/css/layui.css}" media="all"/>
+
+  <th:block th:replace="${links}" />
+  <th:block th:replace="${style}" />
+</head>
+<body th:fragment="public_js(scripts)">
+<script type="text/javascript" th:src="@{/plugins/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui-v2.5.5/layui.js}"></script>
+<th:block th:replace="${scripts}" />
+</body>
+</html>

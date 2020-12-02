@@ -8,7 +8,9 @@ package com.deepspc.stage.manager.exception;
 public enum ManagerExceptionCode {
 
     PARAM_REQUIRE("710", "请求参数不能为空"),
-    USER_EXISTS("711", "该用户已经登录");
+    USER_EXISTS("711", "该用户已经登录"),
+    CAPTCHACODE_NULL("712", "验证码不能为空"),
+    CAPTCHACODE_NOT_MATCH("713", "验证码不正确");
 
     private String code;
 

@@ -1,7 +1,9 @@
 package com.deepspc.stage.manager.system.controller;
 
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.StrUtil;
-import com.deepspc.stage.core.common.BaseController;
+import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.core.common.CryptoKey;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.core.exception.StageException;
@@ -18,9 +20,12 @@ import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.shiro.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author gzw
@@ -40,6 +45,13 @@ public class LoginController extends BaseController {
         this.propertiesConfig = propertiesConfig;
     }
 
+    @GetMapping("/login")
+    public String toLogin(Model model) {
+        CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
+        model.addAttribute("pub", cryptoKey.getPublicKey());
+        return "system/login";
+    }
+
     @PostMapping("/checkValid")
     @ResponseBody
     public ResponseData checkValid(String r) {
@@ -48,6 +60,16 @@ public class LoginController extends BaseController {
             //解密字符串
             String decryptStr = CryptoUtil.privateKeyDecrypt(cryptoKey.getPrivateKey(), cryptoKey.getPublicKey(), r);
             LoginParam loginParam = JsonUtil.parseSimpleObj(decryptStr, LoginParam.class);
+            String verifyCode = loginParam.getVerifyCode().toLowerCase();
+            if (StrUtil.isBlank(verifyCode)) {
+                return ResponseData.error(ManagerExceptionCode.CAPTCHACODE_NULL.getCode(),
+                                            ManagerExceptionCode.CAPTCHACODE_NULL.getMessage());
+            }
+            String captchaCode = EhCacheUtil.get(Const.tempLoginCache, verifyCode);
+            if (!verifyCode.equals(captchaCode)) {
+                return ResponseData.error(ManagerExceptionCode.CAPTCHACODE_NOT_MATCH.getCode(),
+                                            ManagerExceptionCode.CAPTCHACODE_NOT_MATCH.getMessage());
+            }
             try {
                 ShiroKit.checkLogin(loginParam.getAccount(), loginParam.getPassword());
                 ShiroUser shiroUser = ShiroKit.getShiroUser();
@@ -67,6 +89,35 @@ public class LoginController extends BaseController {
             }
         }
         return ResponseData.error(ManagerExceptionCode.PARAM_REQUIRE.getCode(), ManagerExceptionCode.PARAM_REQUIRE.getMessage());
+    }
+
+    @GetMapping("/loadCaptcha")
+    public void loadCaptcha(HttpServletResponse response) {
+        LineCaptcha captcha = CaptchaUtil.createLineCaptcha(95, 38, 4, 40);
+        response.setContentType("image/jpeg");
+        ServletOutputStream ops = null;
+        try {
+            ops = response.getOutputStream();
+            captcha.write(ops);
+            String captchaCode = captcha.getCode().toLowerCase();
+            EhCacheUtil.put(Const.tempLoginCache, captchaCode, captchaCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StageException(e);
+        } finally {
+            try {
+                ops.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new StageException(e);
+            }
+        }
+    }
+
+    @PostMapping("/")
+    public String mainPage(@RequestParam("accessToken") String accessToken, Model model) {
+        model.addAttribute("accessToken", accessToken);
+        return "index";
     }
 
     @PostMapping("/logout")

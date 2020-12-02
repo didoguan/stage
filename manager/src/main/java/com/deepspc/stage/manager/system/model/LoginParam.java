@@ -13,6 +13,10 @@ public class LoginParam implements Serializable {
 
     private String password;
 
+    private String verifyCode;
+
+    private String remember;
+
     public LoginParam() {
 
     }
@@ -31,5 +35,21 @@ public class LoginParam implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+
+    public String getRemember() {
+        return remember;
+    }
+
+    public void setRemember(String remember) {
+        this.remember = remember;
     }
 }

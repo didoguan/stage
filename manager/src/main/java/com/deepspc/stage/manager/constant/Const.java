@@ -7,4 +7,6 @@ public interface Const {
     String tempUserToken = "TempUserToken";
 
     String clockCryptoKey = "ClockCryptoKey";
+
+    String tempLoginCache = "TempLoginCache";
 }

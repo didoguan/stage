@@ -10,10 +10,15 @@ spring:
     type: ehcache
     ehcache:
       config: classpath:ehcache.xml
+  thymeleaf:
+    cache: false
+  template:
+    cache: false
 
 stage:
   shiro:
-    anon-request: /css/**,/images/**,/js/**,/sys/refreshCryptoKey,/checkValid
+    anon-request: /css/**,/images/**,/js/**,/plugins/**,/sys/refreshCryptoKey,/checkValid,/loadCaptcha
+    access-type: integrated
 
 mybatis-plus:
   typeAliasesPackage: com.deepspc.stage.**.entity
