@@ -16,8 +16,9 @@ spring:
     cache: false
 
 stage:
+  appname: Deepspc电商后台管理系统
   shiro:
-    anon-request: /css/**,/images/**,/js/**,/plugins/**,/sys/refreshCryptoKey,/checkValid,/loadCaptcha
+    anon-request: /css/**,/images/**,/js/**,/plugins/**,/modular/**,/sys/refreshCryptoKey,/checkValid,/loadCaptcha
     access-type: integrated
 
 mybatis-plus:

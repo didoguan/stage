@@ -25,6 +25,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public ShiroUser getUser(String account) {
         User user = userMapper.getUserForSecurity(account);
+        if (StrUtil.isBlank(user.getAvatar())) {
+            user.setAvatar(Const.defaultAvatar);
+        }
         return user.getShiroUser();
     }
 

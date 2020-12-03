@@ -35,6 +35,14 @@ public class User implements Serializable {
     @JsonIgnore
     private String salt;
 
+    private String avatar;
+
+    private Long deptId;
+
+    private String deptName;
+
+    private String email;
+
     private Long creatorId;
 
     @TableField(exist = false)
@@ -61,6 +69,9 @@ public class User implements Serializable {
         shiroUser.setPassword(this.password);
         shiroUser.setSalt(this.salt);
         shiroUser.setUserCode(this.userCode);
+        shiroUser.setAvatar(this.avatar);
+        shiroUser.setDeptId(this.deptId);
+        shiroUser.setDeptName(this.deptName);
         return shiroUser;
     }
 
@@ -158,5 +169,37 @@ public class User implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

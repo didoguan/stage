@@ -2,7 +2,7 @@ layui.use(['layer', 'form'], function () {
   let $ = layui.jquery;
   let layer = layui.layer;
   let form = layui.form;
-  let pubKey = "${pub}";
+  let pubKey = $("#pub").val();
 
   form.on('submit(login-submit)', function (obj) {
     let fields = obj.field;
@@ -20,7 +20,7 @@ layui.use(['layer', 'form'], function () {
           form.append("<input type='hidden' name='accessToken' value='"+result.data+"' />");
           form.submit();
         } else {
-          layer.msg(result.message, {icon: 6});
+          layer.msg(result.message, {icon: 5, anim: 6});
         }
       },
       error : function(e){

@@ -19,6 +19,9 @@ public class PropertiesConfig {
     @Value("${server.attachment-path}")
     public String attachmentPath;
 
+    @Value("${stage.appname}")
+    public String appName;
+
     public int getTokenTimeout() {
         return tokenTimeout;
     }
@@ -43,4 +46,11 @@ public class PropertiesConfig {
         this.attachmentPath = attachmentPath;
     }
 
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 }

@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.deepspc.stage.manager.system.entity.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserMapper extends BaseMapper<User> {
 
     /**
@@ -11,4 +14,11 @@ public interface UserMapper extends BaseMapper<User> {
      * @param account 登录账号
      */
     User getUserForSecurity(@Param("account") String account);
+
+    /**
+     * 根据用户标识获取用户权限信息
+     * @param userId 用户标识
+     * @return List<Map<String, Object>>
+     */
+    List<Map<String, Object>> getUserPermission(@Param("userId") Long userId);
 }

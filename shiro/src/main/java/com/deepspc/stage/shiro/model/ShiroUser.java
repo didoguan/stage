@@ -12,6 +12,8 @@ public class ShiroUser {
 
     private String userName;
 
+    private String avatar;
+
     private String account;
 
     private String password;
@@ -19,6 +21,10 @@ public class ShiroUser {
     private String userCode;
     //加密盐
     private String salt;
+
+    private Long deptId;
+
+    private String deptName;
 
     private List<ShiroRole> shiroRoles;
 
@@ -80,5 +86,29 @@ public class ShiroUser {
 
     public void setShiroRoles(List<ShiroRole> shiroRoles) {
         this.shiroRoles = shiroRoles;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

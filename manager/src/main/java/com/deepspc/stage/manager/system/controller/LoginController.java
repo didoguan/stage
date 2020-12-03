@@ -49,6 +49,8 @@ public class LoginController extends BaseController {
     public String toLogin(Model model) {
         CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
         model.addAttribute("pub", cryptoKey.getPublicKey());
+        model.addAttribute("appName", propertiesConfig.getAppName());
+        model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
         return "system/login";
     }
 
@@ -117,6 +119,8 @@ public class LoginController extends BaseController {
     @PostMapping("/")
     public String mainPage(@RequestParam("accessToken") String accessToken, Model model) {
         model.addAttribute("accessToken", accessToken);
+        model.addAttribute("appName", propertiesConfig.getAppName());
+        model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
         return "index";
     }
 

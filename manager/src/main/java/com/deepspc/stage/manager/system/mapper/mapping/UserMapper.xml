@@ -2,8 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deepspc.stage.manager.system.mapper.UserMapper">
 
+  <resultMap id="BaseUserMap" type="com.deepspc.stage.manager.system.entity.User">
+    <id column="employee_id" property="userId"/>
+    <result column="employee_name" property="userName"/>
+    <result column="id_num" property="userCode"/>
+  </resultMap>
+  
   <select id="getUserForSecurity" resultType="com.deepspc.stage.manager.system.entity.User">
     select employee_id "userId", employee_name "userName", account, password, id_num "userCode", salt from oa_employee where account = #{account}
   </select>
 
+  <select id="getUserPermission" resultType="map">
+    SELECT
+        b.employee_id "userId",
+        b.employee_name "userName",
+        b.avatar,
+        a.role_id "roleId",
+        a.permission_id "permissionId",
+        a.permission_type "permissionType",
+        a.content,
+        a.relate_id "relateId",
+        a.data_url "dataUrl"
+    FROM
+        (
+        SELECT
+            ua.user_id,
+            rp.role_id,
+            rp.permission_id,
+            p.permission_type,
+            p.content,
+            p.relate_id,
+            p.data_url
+        FROM
+            sys_user_access ua,
+            sys_role_permission rp
+            LEFT JOIN sys_permission p ON rp.permission_id = p.permission_id
+        WHERE
+            ua.access_id = rp.role_id
+            AND ua.user_id = #{userId}
+        UNION ALL
+        SELECT
+            ua.user_id,
+            NULL role_id,
+            p.permission_id,
+            p.permission_type,
+            p.content,
+            p.relate_id,
+            p.data_url
+        FROM
+            sys_user_access ua,
+            sys_permission p
+        WHERE
+            ua.access_id = p.permission_id
+            AND ua.user_id = #{userId}
+        ) a,
+        oa_employee b
+    WHERE
+        b.employee_id = a.user_id
+        AND b.employee_id = #{userId}
+  </select>
+  
 </mapper>
