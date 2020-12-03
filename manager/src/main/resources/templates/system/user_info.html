@@ -2,7 +2,10 @@
 <link rel="stylesheet" th:href="@{/modular/system/css/user_info.css}" media="all">
 <script th:inline="javascript" type="text/javascript">
   let ctxPath = [[${#httpServletRequest.getContextPath()}]];
+  let accessToken = [[${message}]];
+  let userId = [[${user.userId}]];
 </script>
+<script type="text/javascript" th:src="@{/modular/system/js/user_info.js}"></script>
 <!-- 正文开始 -->
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">

@@ -14,8 +14,8 @@ layui.use(['form', 'upload', 'laydate', 'layer'], function () {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: ctxPath + "/sys/userDetail",
-    data: {"userId" : dataStr},
+    url: ctxPath + "/sys/userDetail?accessToken=" + accessToken,
+    data: {"userId" : userId},
     success : function(result) {
       if (200 == result.code) {
         //用这个方法必须用在class有layui-form的元素上
@@ -31,34 +31,53 @@ layui.use(['form', 'upload', 'laydate', 'layer'], function () {
 
   //表单提交事件
   form.on('submit(userInfoSubmit)', function (data) {
-    var ajax = new $ax(Feng.ctxPath + "/mgr/edit", function (data) {
-      Feng.success("修改成功!");
-    }, function (data) {
-      Feng.error("修改失败!" + data.responseJSON.message + "!");
+    data.field.accessToken = accessToken;
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: ctxPath + "/mgr/edit",
+      data: data.field,
+      success: function (result) {
+        if (200 == result.code) {
+          layer.msg("修改成功!", {icon: 5, anim: 6});
+        } else {
+          layer.msg(result.message, {icon: 5, anim: 6});
+        }
+      },
+      error: function (e) {
+        layer.msg("服务器异常", {icon: 2});
+      }
     });
-    ajax.set(data.field);
-    ajax.start();
   });
 
   upload.render({
     elem: '#imgHead'
-    , url: Feng.ctxPath + '/system/upload'
+    , url: ctxPath + '/sys/upload?accessToken=' + accessToken
     , before: function (obj) {
       obj.preview(function (index, file, result) {
         $('#avatarPreview').attr('src', result);
       });
     }
     , done: function (res) {
-      var ajax = new $ax(Feng.ctxPath + "/system/updateAvatar", function (data) {
-        Feng.success(res.message);
-      }, function (data) {
-        Feng.error("修改失败!" + data.responseJSON.message + "!");
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: ctxPath + "/sys/updateAvatar",
+        data: {"fileId" : res.data.fileId, "accessToken" : accessToken},
+        success: function (result) {
+          if (200 == result.code) {
+            layer.msg("修改成功!", {icon: 5, anim: 6});
+          } else {
+            layer.msg(result.message, {icon: 5, anim: 6});
+          }
+        },
+        error: function (e) {
+          layer.msg("上传头像失败", {icon: 2});
+        }
       });
-      ajax.set("fileId", res.data.fileId);
-      ajax.start();
     }
     , error: function () {
-      Feng.error("上传头像失败！");
+      layer.msg("上传头像失败！", {icon: 2});
     }
   });
 });

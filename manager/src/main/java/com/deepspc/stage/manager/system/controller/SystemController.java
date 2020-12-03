@@ -57,4 +57,9 @@ public class SystemController {
         User user = userService.getById(userId);
         return ResponseData.success(user);
     }
+
+	@GetMapping("/theme")
+    public String theme() {
+    	return "system/theme";
+	}
 }
