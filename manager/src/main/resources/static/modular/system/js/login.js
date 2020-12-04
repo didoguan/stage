@@ -16,9 +16,7 @@ layui.use(['layer', 'form'], function () {
       data: {"r" : dataStr},
       success : function(result) {
         if (200 == result.code) {
-          let form = $("<form />", {action : "/", method:"post", style:"display:none;"}).appendTo("body");
-          form.append("<input type='hidden' name='accessToken' value='"+result.data+"' />");
-          form.submit();
+          window.location.href = "/";
         } else {
           layer.msg(result.message, {icon: 5, anim: 6});
         }

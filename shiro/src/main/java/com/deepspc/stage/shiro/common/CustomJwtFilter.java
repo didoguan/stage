@@ -6,6 +6,7 @@ import com.deepspc.stage.core.utils.ApplicationContextUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.shiro.conf.ShiroConfig;
 import com.deepspc.stage.shiro.exception.ShiroExceptionCode;
+import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.shiro.properties.ShiroProperties;
 import com.deepspc.stage.shiro.service.IShiroUserService;
 import com.deepspc.stage.shiro.utils.JwtUtil;
@@ -46,12 +47,17 @@ public class CustomJwtFilter extends AccessControlFilter {
         ShiroProperties shiroProperties = shiroConfig.shiroProperties();
         String accessType = shiroProperties.getAccessType();
 
-		//从请求头中获取token
-        String accessToken = request.getHeader("accessToken");
-        if (StrUtil.isBlank(accessToken)) {
-            //从提交参数中获取token
-            accessToken = request.getParameter("accessToken");
+        String accessToken = "";
+        ShiroUser shiroUser = ShiroKit.getShiroUser();
+        if (null != shiroUser) {
+            //先从缓存中查询当前用户是否存在token
+            accessToken = shiroUser.getAccessToken();
         }
+        if (StrUtil.isBlank(accessToken)) {
+            //再从请求头中获取token
+            accessToken = request.getHeader("accessToken");
+        }
+
 		if (StrUtil.isBlank(accessToken)) {
 		    if ("integrated".equals(accessType)) {
                 //跳转到登录

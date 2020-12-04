@@ -15,11 +15,12 @@ public class BaseController {
     protected final String REDIRECT = "redirect:";
     protected final String FORWARD = "forward:";
 
-    public HttpServletRequest getRequest() {
+    protected HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    public HttpServletResponse getResponse() {
+    protected HttpServletResponse getResponse() {
         return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
     }
+
 }

@@ -53,4 +53,5 @@ public class PropertiesConfig {
     public void setAppName(String appName) {
         this.appName = appName;
     }
+
 }

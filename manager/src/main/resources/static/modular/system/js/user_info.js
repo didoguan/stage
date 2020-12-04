@@ -12,9 +12,9 @@ layui.use(['form', 'upload', 'laydate', 'layer'], function () {
   });
 
   $.ajax({
-    type: "GET",
+    type: "POST",
     dataType: "json",
-    url: ctxPath + "/sys/userDetail?accessToken=" + accessToken,
+    url: ctxPath + "/user/getUserInfo",
     data: {"userId" : userId},
     success : function(result) {
       if (200 == result.code) {
@@ -31,11 +31,11 @@ layui.use(['form', 'upload', 'laydate', 'layer'], function () {
 
   //表单提交事件
   form.on('submit(userInfoSubmit)', function (data) {
-    data.field.accessToken = accessToken;
+    data.field.userId = userId;
     $.ajax({
       type: "POST",
       dataType: "json",
-      url: ctxPath + "/mgr/edit",
+      url: ctxPath + "/user/saveOrUpdate",
       data: data.field,
       success: function (result) {
         if (200 == result.code) {
@@ -51,33 +51,17 @@ layui.use(['form', 'upload', 'laydate', 'layer'], function () {
   });
 
   upload.render({
-    elem: '#imgHead'
-    , url: ctxPath + '/sys/upload?accessToken=' + accessToken
-    , before: function (obj) {
-      obj.preview(function (index, file, result) {
-        $('#avatarPreview').attr('src', result);
-      });
-    }
-    , done: function (res) {
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: ctxPath + "/sys/updateAvatar",
-        data: {"fileId" : res.data.fileId, "accessToken" : accessToken},
-        success: function (result) {
-          if (200 == result.code) {
-            layer.msg("修改成功!", {icon: 5, anim: 6});
-          } else {
-            layer.msg(result.message, {icon: 5, anim: 6});
-          }
-        },
-        error: function (e) {
-          layer.msg("上传头像失败", {icon: 2});
-        }
-      });
-    }
-    , error: function () {
-      layer.msg("上传头像失败！", {icon: 2});
+    elem: '#imgHead',
+    url: ctxPath + '/sys/uploadAvatar', // 上传接口
+    accept: 'images',
+    size: 20,
+    done: function (res) {
+      // 上传完毕回调
+      layer.msg("上传成功!", {icon: 5, anim: 6});
+    },
+    error: function () {
+      // 请求异常回调
+      layer.msg("上传头像失败", {icon: 2});
     }
   });
 });

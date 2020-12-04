@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @date 2020/11/26 14:54
  */
 @Service
-public class SystemService implements ISystemService {
+public class SystemServiceImpl implements ISystemService {
 
     @Cacheable(value = Const.clockCryptoKey, key="'ClockPublicKey'")
     @Override

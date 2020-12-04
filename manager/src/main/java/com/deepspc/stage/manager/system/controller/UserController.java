@@ -1,6 +1,5 @@
 package com.deepspc.stage.manager.system.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
@@ -28,9 +27,14 @@ public class UserController {
     @PostMapping("/getUserInfo")
     @ResponseBody
     public ResponseData getUserInfo(Long userId) {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("employee_id", userId);
-        User user = userService.getOne(wrapper);
+        User user = userService.getById(userId);
         return ResponseData.success(user);
+    }
+
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public ResponseData saveOrUpdateUser(User user) {
+        userService.updateById(user);
+        return ResponseData.success();
     }
 }

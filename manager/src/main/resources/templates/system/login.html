@@ -20,7 +20,7 @@
     </div>
     <div class="layui-form-item layui-input-icon-group login-captcha-group">
       <i class="layui-icon layui-icon-auz"></i>
-      <input class="layui-input" id="verifyCode" placeholder="请输入验证码" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+      <input class="layui-input" id="verifyCode" name="verifyCode" placeholder="请输入验证码" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
       <img class="login-captcha" th:src="@{/loadCaptcha}" onclick="this.src=this.src+'?'">
     </div>
     <div class="layui-form-item">
@@ -28,12 +28,11 @@
     </div>
   </div>
   <div class="login-copyright">copyright © 2020 deepspc.com all rights reserved.</div>
-  <form id="main"/>
 </div>
 
 <div th:replace="common/common :: public_js(~{::script})">
 <script type="text/javascript" th:src="@{/js/jsencrypt.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/login.js}"></script>
+<script type="text/javascript" th:src="@{/modular/system/js/login.js}"></script>
 </div>
 </body>
 </html>

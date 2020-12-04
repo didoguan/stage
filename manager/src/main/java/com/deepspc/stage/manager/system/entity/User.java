@@ -27,6 +27,7 @@ public class User implements Serializable {
 
     private String account;
 
+    @JsonIgnore
     private String password;
 
     @TableField("id_num")

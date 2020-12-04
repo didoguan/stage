@@ -26,6 +26,8 @@ public class ShiroUser {
 
     private String deptName;
 
+    private String accessToken;
+
     private List<ShiroRole> shiroRoles;
 
     public ShiroUser() {
@@ -110,5 +112,13 @@ public class ShiroUser {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

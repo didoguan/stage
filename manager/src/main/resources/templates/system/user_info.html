@@ -2,8 +2,7 @@
 <link rel="stylesheet" th:href="@{/modular/system/css/user_info.css}" media="all">
 <script th:inline="javascript" type="text/javascript">
   let ctxPath = [[${#httpServletRequest.getContextPath()}]];
-  let accessToken = [[${message}]];
-  let userId = [[${user.userId}]];
+  let userId = [[${ShiroUser.userId}]];
 </script>
 <script type="text/javascript" th:src="@{/modular/system/js/user_info.js}"></script>
 <!-- 正文开始 -->
@@ -15,7 +14,7 @@
                 <div class="layui-card-body" style="padding: 25px;">
                     <div class="text-center layui-text">
                         <div class="user-info-head" id="imgHead">
-                            <img id="avatarPreview" th:src="${ShiroUser.avatar}"/>
+                            <img id="avatarPreview" th:src="@{/sys/previewAvatar}"/>
                         </div>
                         <h2 style="padding-top: 20px;" th:text="${ShiroUser.userName}">名称</h2>
                         <p style="padding-top: 8px;" th:text="${ShiroUser.deptName}">部门</p>
@@ -61,8 +60,8 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">性别:</label>
                                         <div class="layui-input-block">
-                                            <input type="radio" name="sex" value="M" title="男">
-                                            <input type="radio" name="sex" value="F" title="女">
+                                            <input type="radio" name="gender" value="M" title="男">
+                                            <input type="radio" name="gender" value="F" title="女">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -74,7 +73,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">姓名:<span style="color: red;">*</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="name" class="layui-input" lay-verify="required" required/>
+                                            <input type="text" name="userName" class="layui-input" lay-verify="required" required/>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -91,7 +90,7 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button class="layui-btn" lay-filter="userInfoSubmit" lay-submit>
+                                            <button type="button" class="layui-btn" lay-filter="userInfoSubmit" lay-submit>
                                                 更新信息
                                             </button>
                                         </div>

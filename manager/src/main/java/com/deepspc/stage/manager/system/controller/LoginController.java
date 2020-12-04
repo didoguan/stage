@@ -83,6 +83,7 @@ public class LoginController extends BaseController {
                 }
                 //生成token
                 String token = JwtUtil.instanceToken(Const.own, userId,null, propertiesConfig.getTokenLive());
+                shiroUser.setAccessToken(token);
                 //缓存登录用户token
                 EhCacheUtil.put(Const.tempUserToken, userId, token, EhCacheUtil.IDLE_SECONDS, propertiesConfig.getTokenTimeout());
                 return ResponseData.success(token);
@@ -108,7 +109,9 @@ public class LoginController extends BaseController {
             throw new StageException(e);
         } finally {
             try {
-                ops.close();
+                if (null != ops) {
+                    ops.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new StageException(e);
@@ -116,9 +119,8 @@ public class LoginController extends BaseController {
         }
     }
 
-    @PostMapping("/")
-    public String mainPage(@RequestParam("accessToken") String accessToken, Model model) {
-        model.addAttribute("accessToken", accessToken);
+    @GetMapping("/")
+    public String mainPage(Model model) {
         model.addAttribute("appName", propertiesConfig.getAppName());
         model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
         return "index";
@@ -127,10 +129,9 @@ public class LoginController extends BaseController {
     @PostMapping("/logout")
     @ResponseBody
     public ResponseData logout() {
-        String accessToken = getRequest().getHeader("accessToken");
-        String userId = JwtUtil.getUserId(accessToken);
+        ShiroUser shiroUser = ShiroKit.getShiroUser();
         //清除缓存
-        EhCacheUtil.remove(Const.tempUserToken, userId);
+        EhCacheUtil.remove(Const.tempUserToken, shiroUser.getUserId().toString());
         return ResponseData.success();
     }
 }
