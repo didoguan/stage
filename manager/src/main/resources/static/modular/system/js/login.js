@@ -5,6 +5,7 @@ layui.use(['layer', 'form'], function () {
   let pubKey = $("#pub").val();
 
   form.on('submit(login-submit)', function (obj) {
+    let loading = layer.load(0, {shade:false});
     let fields = obj.field;
     let encrypt = new JSEncrypt();
     encrypt.setPublicKey(pubKey);
@@ -20,9 +21,11 @@ layui.use(['layer', 'form'], function () {
         } else {
           layer.msg(result.message, {icon: 1});
         }
+        layer.close(loading);
       },
       error : function(e){
         layer.msg("服务器异常", {icon: 2});
+        layer.close(loading);
       }
     });
   });
