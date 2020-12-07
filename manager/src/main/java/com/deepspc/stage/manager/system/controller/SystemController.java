@@ -9,6 +9,7 @@ import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.exception.ManagerExceptionCode;
 import com.deepspc.stage.manager.system.entity.User;
+import com.deepspc.stage.manager.system.model.ModifyPassword;
 import com.deepspc.stage.manager.system.service.ISystemService;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
 import com.deepspc.stage.manager.utils.EhCacheUtil;
@@ -41,6 +42,14 @@ public class SystemController extends BaseController {
     }
 
     /**
+     * 首页内容(默认显示)
+     */
+    @GetMapping("/main")
+    public String mainPage() {
+        return "system/main";
+    }
+
+    /**
      * 更新密钥
      */
     @GetMapping("/refreshCryptoKey")
@@ -64,6 +73,11 @@ public class SystemController extends BaseController {
     public String theme() {
     	return "system/theme";
 	}
+
+    @GetMapping("/modifyPasswordPage")
+	public String modifyPasswordPage() {
+        return "system/password";
+    }
 
     @PostMapping("/uploadAvatar")
     @ResponseBody
@@ -107,5 +121,16 @@ public class SystemController extends BaseController {
             throw new StageException("获取图片的流错误: " + avatar);
         }
         return null;
+    }
+
+    @PostMapping("/modifyPassword")
+    @ResponseBody
+    public ResponseData modifyPassword(ModifyPassword modifyPassword) {
+        int flag = userService.modifyUserPassword(modifyPassword);
+        if (-1 == flag) {
+            return ResponseData.error(ManagerExceptionCode.OLD_PASSWORD_WRONG.getCode(),
+                    ManagerExceptionCode.OLD_PASSWORD_WRONG.getMessage());
+        }
+        return ResponseData.success();
     }
 }

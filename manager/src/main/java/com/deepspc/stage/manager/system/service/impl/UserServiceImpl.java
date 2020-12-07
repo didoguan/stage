@@ -6,13 +6,14 @@ import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.mapper.UserMapper;
 import com.deepspc.stage.manager.system.model.MenuNode;
+import com.deepspc.stage.manager.system.model.ModifyPassword;
 import com.deepspc.stage.manager.system.service.IUserService;
-import com.deepspc.stage.manager.utils.EhCacheUtil;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,13 +34,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public boolean existsUserCacheToken(String userId) {
-        String token = EhCacheUtil.get(Const.tempUserToken, userId);
-        return StringUtil.isNotBlank(token);
+    public List<Map<String, Object>> getUserSystemMenus() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        //先获取当前用户具有哪些系统或应用
+        Map<String, Object> systemMenus = new HashMap<>();
+        List<MenuNode> menuNodes = getUserMenus();
+        menuNodes = MenuNode.buildTitle(menuNodes);
+        //默认有集团菜单
+        systemMenus.put("systemCode", "group");
+        systemMenus.put("menus", menuNodes);
+
+        list.add(systemMenus);
+        return list;
     }
 
-    @Override
-    public List<MenuNode> getUserMenus() {
+    private List<MenuNode> getUserMenus() {
         Long userId = ShiroKit.getShiroUser().getUserId();
         List<Map<String, Object>> menuList = this.baseMapper.getUserPermission(userId, Const.menuPermission);
         if (null != menuList && !menuList.isEmpty()) {
@@ -60,5 +69,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return menuNodes;
         }
         return null;
+    }
+
+    /**
+     * 修改密码
+     * @param modifyPassword 原密码及新密码
+     * @return -1 : 原密码不正确
+     */
+    public int modifyUserPassword(ModifyPassword modifyPassword) {
+        Long userId = ShiroKit.getShiroUser().getUserId();
+        User user = this.baseMapper.selectById(userId);
+        String salt = user.getSalt();
+        String oldMd5 = ShiroKit.md5(modifyPassword.getOldPassword(), salt);
+        if (!user.getPassword().equals(oldMd5)) {
+            return -1;
+        } else {
+            user.setPassword(ShiroKit.md5(modifyPassword.getNewPassword(), salt));
+            this.baseMapper.updateById(user);
+            return 0;
+        }
     }
 }

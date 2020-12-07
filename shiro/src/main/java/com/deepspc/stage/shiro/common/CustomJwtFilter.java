@@ -69,18 +69,7 @@ public class CustomJwtFilter extends AccessControlFilter {
         }
 		//校验token是否有效
 		Claims claims = JwtUtil.verifyToken(accessToken);
-		if (null != claims) {
-		    //检查是否存在缓存中，存在则说明未登出
-            String userId = JwtUtil.getUserId(accessToken);
-            IShiroUserService shiroUserService = ApplicationContextUtil.getBean(IShiroUserService.class);
-            boolean exists = shiroUserService.existsUserCacheToken(userId);
-            if (exists) {
-                return true;
-            } else {
-                print(response, ShiroExceptionCode.INVALID_OR_EXPIRED.getCode(), ShiroExceptionCode.INVALID_OR_EXPIRED.getMessage());
-                return false;
-            }
-		} else {
+		if (null == claims)  {
             if ("integrated".equals(accessType)) {
                 //跳转到登录
                 request.getRequestDispatcher("/login").forward(request, response);
@@ -89,6 +78,7 @@ public class CustomJwtFilter extends AccessControlFilter {
             }
             return false;
 		}
+		return true;
 	}
 
 	private void print(HttpServletResponse response, String code, String message) throws Exception {

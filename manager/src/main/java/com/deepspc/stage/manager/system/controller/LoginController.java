@@ -14,6 +14,7 @@ import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.exception.ManagerExceptionCode;
 import com.deepspc.stage.manager.system.model.LoginParam;
 import com.deepspc.stage.manager.system.service.ISystemService;
+import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
 import com.deepspc.stage.manager.utils.EhCacheUtil;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
@@ -36,13 +37,14 @@ import java.io.IOException;
 public class LoginController extends BaseController {
 
     private final ISystemService systemService;
-
     private final PropertiesConfig propertiesConfig;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public LoginController(ISystemService systemService, PropertiesConfig propertiesConfig) {
+    public LoginController(ISystemService systemService, PropertiesConfig propertiesConfig, UserServiceImpl userService) {
         this.systemService = systemService;
         this.propertiesConfig = propertiesConfig;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -123,6 +125,7 @@ public class LoginController extends BaseController {
     public String mainPage(Model model) {
         model.addAttribute("appName", propertiesConfig.getAppName());
         model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
+        model.addAttribute("menus", userService.getUserSystemMenus());
         return "index";
     }
 
@@ -132,6 +135,7 @@ public class LoginController extends BaseController {
         ShiroUser shiroUser = ShiroKit.getShiroUser();
         //清除缓存
         EhCacheUtil.remove(Const.tempUserToken, shiroUser.getUserId().toString());
+        shiroUser.setAccessToken(null);
         return ResponseData.success();
     }
 }

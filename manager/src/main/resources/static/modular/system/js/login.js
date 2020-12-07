@@ -18,7 +18,7 @@ layui.use(['layer', 'form'], function () {
         if (200 == result.code) {
           window.location.href = "/";
         } else {
-          layer.msg(result.message, {icon: 5, anim: 6});
+          layer.msg(result.message, {icon: 1});
         }
       },
       error : function(e){

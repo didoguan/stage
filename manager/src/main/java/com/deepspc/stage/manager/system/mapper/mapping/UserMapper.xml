@@ -83,10 +83,11 @@
     <if test="permissType = 'menu'">
       ) pm,
       sys_menu sm
-      LEFT JOIN sys_menu sm2 on sm.pcode = sm2.code
+      LEFT JOIN
+        sys_menu sm2 on sm.pcode = sm2.code
     WHERE
-      pm.relateId = sm.menu_id
-    AND menu_flag = 'Y'
+      sm.menu_id = pm.relateId
+    AND sm.menu_flag = 'Y'
     ORDER BY sm.levels,sm.sort asc
     </if>
   </select>

@@ -14,7 +14,8 @@ public enum ManagerExceptionCode {
     FILE_UPLOAD_EMPTY("714", "要上传的文件为空"),
     FILE_UPLOAD_FAILED("715", "文件上传失败"),
 
-    AVATAR_UPDATE_FAILED("716", "头像更新失败");
+    AVATAR_UPDATE_FAILED("716", "头像更新失败"),
+    OLD_PASSWORD_WRONG("717", "原密码不正确");
 
     private String code;
 

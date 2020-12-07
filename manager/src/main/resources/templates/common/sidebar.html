@@ -1,0 +1,48 @@
+<html xmlns:th="http://thymeleaf.org">
+<div class="layui-side" th:fragment="sidebar_content">
+  <div class="layui-side-scroll">
+    <ul th:each="item:${menus}" class="layui-nav layui-nav-tree arrow2" th:attr="nav-id=${item.systemCode}" lay-shrink="all" lay-filter="admin-side-nav" style="margin-top: 15px;">
+      <li th:each="menu:${item.menus}" class="layui-nav-item">
+        <div th:if="${#lists.isEmpty(menu.children)}">
+          <a th:if="${itemStat.index == 0 && menuStat.index == 0}" id="firstPageAction" th:attr="lay-href=${menu.url}"><i th:class="'layui-icon '+${menu.icon}"></i>&emsp;<cite th:text="${menu.name}"></cite></a>
+          <a th:unless="${itemStat.index == 0 && menuStat.index == 0}" th:attr="lay-href=${menu.url}"><i th:class="'layui-icon '+${menu.icon}"></i>&emsp;<cite th:text="${menu.name}"></cite></a>
+        </div>
+        <div th:if="!${#lists.isEmpty(menu.children)}">
+          <a><i th:class="'layui-icon '+${menu.icon}"></i>&emsp;<cite th:text="${menu.name}"></cite></a>
+          <dl class="layui-nav-child" th:each="subMenu:${menu.children}">
+            <div th:if="${#lists.isEmpty(subMenu.children)}">
+              <dd>
+                <a th:if="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0}" id="firstPageAction" th:attr="lay-href=${subMenu.url}" th:text="${subMenu.name}"></a>
+                <a th:unless="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0}" th:attr="lay-href=${subMenu.url}" th:text="${subMenu.name}"></a>
+              </dd>
+            </div>
+            <div th:if="!${#lists.isEmpty(subMenu.children)}">
+              <dd>
+                <a th:text="${subMenu.name}"></a>
+                <dl class="layui-nav-child" th:each="subSubMenu:${subMenu.children}">
+                  <div th:if="${#lists.isEmpty(subSubMenu.children)}">
+                    <dd>
+                      <a th:if="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0 && subSubMenuStat.index == 0}" id="firstPageAction" th:attr="lay-href=${subSubMenu.url}" th:text="${subSubMenu.name}"></a>
+                      <a th:unless="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0 && subSubMenuStat.index == 0}" th:attr="lay-href=${subSubMenu.url}" th:text="${subSubMenu.name}"></a>
+                    </dd>
+                  </div>
+                  <div th:if="!${#lists.isEmpty(subSubMenu.children)}">
+                    <dd>
+                      <a th:text="${subSubMenu.name}"></a>
+                      <dl class="layui-nav-child" th:each="subSubSubMenu:${subSubMenu.children}">
+                        <dd>
+                          <a th:if="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0 && subSubMenuStat.index == 0 && subSubSubMenuStat.index == 0}" id="firstPageAction" th:attr="lay-href=${subSubSubMenu.url}" th:text="${subSubSubMenu.name}"></a>
+                          <a th:unless="${itemStat.index == 0 && menuStat.index == 0 && subMenuStat.index == 0 && subSubMenuStat.index == 0 && subSubSubMenuStat.index == 0}" th:attr="lay-href=${subSubSubMenu.url}" th:text="${subSubSubMenu.name}"></a>
+                        </dd>
+                      </dl>
+                    </dd>
+                  </div>
+                </dl>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
