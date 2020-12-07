@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://139.159.191.121:3306/oa_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-    username: dlsoa_test
-    password: dlsOaTest2020
+    url: jdbc:mysql://192.168.1.99:3306/dls_oa?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: oa
+    password: dlsoa
 

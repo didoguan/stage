@@ -8,14 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
   <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
-  <link rel="stylesheet" th:href="@{/plugins/layui-v2.5.5/css/layui.css}" media="all"/>
+  <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
 
   <th:block th:replace="${links}" />
   <th:block th:replace="${style}" />
 </head>
 <body th:fragment="public_js(scripts)">
-<script type="text/javascript" th:src="@{/plugins/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/layui-v2.5.5/layui.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery/jquery-3.2.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+  let ctxPath = [[${#httpServletRequest.getContextPath()}]];
+</script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
 <th:block th:replace="${scripts}" />
 </body>
 </html>

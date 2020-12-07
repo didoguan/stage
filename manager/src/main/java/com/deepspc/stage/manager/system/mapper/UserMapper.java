@@ -20,5 +20,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userId 用户标识
      * @return List<Map<String, Object>>
      */
-    List<Map<String, Object>> getUserPermission(@Param("userId") Long userId);
+    List<Map<String, Object>> getUserPermission(@Param("userId") Long userId, @Param("permissType") String permissType);
 }

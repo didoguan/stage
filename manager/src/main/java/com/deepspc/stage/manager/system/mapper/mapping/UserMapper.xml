@@ -13,6 +13,26 @@
   </select>
 
   <select id="getUserPermission" resultType="map">
+    <if test="permissType = 'menu'">
+    SELECT
+      sm.menu_id "id",
+      sm.code "code",
+      sm.icon "icon",
+      (
+      CASE
+      WHEN (sm2.menu_id = 0 OR sm2.menu_id IS NULL) THEN
+      0
+      ELSE
+      sm2.menu_id
+      END
+      ) "parentId",
+      sm.name "name",
+      sm.url "url",
+      sm.levels "levels",
+      sm.menu_flag "ismenu",
+      sm.sort "num"
+    FROM (
+    </if>
     SELECT
         b.employee_id "userId",
         b.employee_name "userName",
@@ -60,6 +80,15 @@
     WHERE
         b.employee_id = a.user_id
         AND b.employee_id = #{userId}
+    <if test="permissType = 'menu'">
+      ) pm,
+      sys_menu sm
+      LEFT JOIN sys_menu sm2 on sm.pcode = sm2.code
+    WHERE
+      pm.relateId = sm.menu_id
+    AND menu_flag = 'Y'
+    ORDER BY sm.levels,sm.sort asc
+    </if>
   </select>
   
 </mapper>

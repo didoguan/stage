@@ -1,9 +1,5 @@
 <html xmlns:th="http://thymeleaf.org">
 <link rel="stylesheet" th:href="@{/modular/system/css/user_info.css}" media="all">
-<script th:inline="javascript" type="text/javascript">
-  let ctxPath = [[${#httpServletRequest.getContextPath()}]];
-  let userId = [[${ShiroUser.userId}]];
-</script>
 <script type="text/javascript" th:src="@{/modular/system/js/user_info.js}"></script>
 <!-- 正文开始 -->
 <div class="layui-fluid">
