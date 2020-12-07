@@ -12,7 +12,6 @@ import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.model.ModifyPassword;
 import com.deepspc.stage.manager.system.service.ISystemService;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
-import com.deepspc.stage.manager.utils.EhCacheUtil;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +62,6 @@ public class SystemController extends BaseController {
     public String userInfo(Model model) {
         ShiroUser user = ShiroKit.getShiroUser();
         model.addAttribute("ShiroUser", user);
-        String accessToken = EhCacheUtil.get(Const.tempUserToken, user.getUserId().toString());
-        model.addAttribute("accessToken", accessToken);
 
         return "system/user_info";
     }
