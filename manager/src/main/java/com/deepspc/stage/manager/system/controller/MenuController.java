@@ -1,6 +1,7 @@
 package com.deepspc.stage.manager.system.controller;
 
 import com.deepspc.stage.manager.common.BaseController;
+import com.deepspc.stage.manager.pojo.LayuiPage;
 import com.deepspc.stage.manager.system.entity.Menu;
 import com.deepspc.stage.manager.system.service.IMenuService;
 import com.deepspc.stage.manager.system.wrapper.MenuWrapper;
@@ -34,6 +35,9 @@ public class MenuController extends BaseController {
                            @RequestParam(required = false) String menuCode) {
         List<Menu> menus = menuService.selectMenuTree(menuName, menuCode);
         new MenuWrapper(menus).wrap();
-        return null;
+		LayuiPage layuiPage = new LayuiPage();
+		layuiPage.setData(menus);
+
+        return layuiPage;
     }
 }

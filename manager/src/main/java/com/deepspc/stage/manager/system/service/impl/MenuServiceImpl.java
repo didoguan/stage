@@ -1,6 +1,7 @@
 package com.deepspc.stage.manager.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.deepspc.stage.core.utils.StringUtil;
 import com.deepspc.stage.manager.system.entity.Menu;
 import com.deepspc.stage.manager.system.mapper.MenuMapper;
 import com.deepspc.stage.manager.system.service.IMenuService;
@@ -22,14 +23,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         if (null == menus) {
             menus = new ArrayList<>();
         }
-        //创建根节点
-        Menu menu = new Menu();
-        menu.setMenuId(-1L);
-        menu.setName("根节点");
-        menu.setCode("0");
-        menu.setPcode("-2");
-
-        menus.add(menu);
+        if (!menus.isEmpty() && (StringUtil.isNotBlank(menuName) || StringUtil.isNotBlank(menuCode))) {
+        	for (Menu menu : menus) {
+        		menu.setPcode("0");
+			}
+		}
         return menus;
     }
 }

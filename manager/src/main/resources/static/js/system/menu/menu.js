@@ -1,8 +1,7 @@
-layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetable'], function () {
+layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'table', 'treetable'], function () {
   let layer = layui.layer;
   let form = layui.form;
   let $ZTree = layui.ztree;
-  let $ax = layui.ax;
   let laydate = layui.laydate;
   let admin = layui.admin;
   let table = layui.table;
@@ -16,7 +15,7 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
     condition: {
       menuId: "",
       menuName: "",
-      level: ""
+      menuCode: ""
     }
   };
 
@@ -53,7 +52,7 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
   Menu.search = function () {
     let queryData = {};
     queryData['menuName'] = $("#menuName").val();
-    queryData['level'] = $("#level").val();
+    queryData['menuCode'] = $("#menuCode").val();
     Menu.initTable(Menu.tableId, queryData);
   };
 
@@ -65,7 +64,7 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
     top.layui.admin.open({
       type: 2,
       title: '添加菜单',
-      content: Feng.ctxPath + '/menu/menu_add',
+      content: ctxPath + '/menu/addPage',
       end: function () {
         admin.getTempData('formOk') && Menu.initTable(Menu.tableId);
       }
@@ -81,8 +80,8 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
     admin.putTempData('formOk', false);
     top.layui.admin.open({
       type: 2,
-      title: '编辑菜单',
-      content: Feng.ctxPath + '/menu/menu_edit?menuId=' + data.menuId,
+      title: '修改菜单',
+      content: ctxPath + '/menu/editPage?menuId=' + data.menuId,
       end: function () {
         admin.getTempData('formOk') && Menu.initTable(Menu.tableId);
       }
@@ -95,43 +94,61 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
    * @param data 点击按钮时候的行数据
    */
   Menu.onDeleteMenu = function (data) {
-    var operation = function () {
-      var ajax = new $ax(Feng.ctxPath + "/menu/remove", function () {
-        Feng.success("删除成功!");
-        Menu.condition.menuId = "";
-        Menu.initTable(Menu.tableId);
-      }, function (data) {
-        Feng.error("删除失败!" + data.responseJSON.message + "!");
+    layer.confirm('是否确认删除该菜单？',{
+      icon:7,title:'提示'
+    },function(index){
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: ctxPath + "/menu/deleteMenu",
+        data: {"menuId": data.menuId},
+        success : function(result) {
+          layer.msg("删除成功！", {icon: 1});
+          Menu.condition.menuId = "";
+          Menu.initTable(Menu.tableId);
+        },
+        error : function(e){
+          layer.msg("删除失败！", {icon: 2});
+        }
       });
-      ajax.set("menuId", data.menuId);
-      ajax.start();
-    };
-    Feng.confirm("是否删除菜单" + data.name + "?", operation);
+      layer.close(index);
+    });
   };
 
   /**
    * 初始化表格
    */
-  Menu.initTable = function (menuId, data) {
-    return treetable.render({
+  Menu.initTable = function (menuId, reqData) {
+    return treeTable.render({
       elem: '#' + menuId,
-      url: ctxPath + '/menu/menuTree',
-      where: data,
-      page: false,
-      height: "full-158",
-      cellMinWidth: 100,
+      tree: {
+        iconIndex: 1,           // 折叠图标显示在第几列
+        idName: 'code',         // 自定义id字段的名称
+        pidName: 'pcode',       // 自定义标识是否还有子节点的字段名称
+        haveChildName: 'haveChild',  // 自定义标识是否还有子节点的字段名称
+        isPidData: true         // 是否是pid形式数据
+      },
+      height: "full-98",
       cols: Menu.initColumn(),
-      treeColIndex: 2,
-      treeSpid: "0",
-      treeIdName: 'code',
-      treePidName: 'pcode',
-      treeDefaultClose: false,
-      treeLinkage: true
+      reqData: function (data, callback) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: ctxPath + "/menu/menuTree",
+          data: reqData,
+          success : function(result) {
+            callback(result.data);
+          },
+          error : function(e){
+            layer.msg("数据加载出错", {icon: 2});
+          }
+        });
+      }
     });
   };
 
   // 渲染表格
-  var tableResult = Menu.initTable(Menu.tableId);
+  let tableResult = Menu.initTable(Menu.tableId);
   $('#expandAll').click(function () {
     treetable.expandAll('#' + Menu.tableId);
   });
@@ -147,7 +164,7 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
   });
 
   //初始化左侧部门树
-  var ztree = new $ZTree("menuTree", "/menu/selectMenuTreeList");
+  let ztree = new $ZTree("menuTree", "/menu/selectMenuTreeList");
   ztree.bindOnClick(Menu.onClickMenu);
   ztree.init();
 
@@ -163,8 +180,8 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
 
   // 工具条点击事件
   table.on('tool(' + Menu.tableId + ')', function (obj) {
-    var data = obj.data;
-    var layEvent = obj.event;
+    let data = obj.data;
+    let layEvent = obj.event;
 
     if (layEvent === 'edit') {
       Menu.onEditMenu(data);
@@ -175,15 +192,6 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
     } else if (layEvent === 'reset') {
       Menu.resetPassword(data);
     }
-  });
-
-  // 修改user状态
-  form.on('switch(status)', function (obj) {
-
-    var userId = obj.elem.value;
-    var checked = obj.elem.checked ? true : false;
-
-    Menu.changeUserStatus(userId, checked);
   });
 
 });
