@@ -14,6 +14,9 @@ spring:
     cache: false
   template:
     cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd
 
 stage:
   appname: 电商后台管理系统

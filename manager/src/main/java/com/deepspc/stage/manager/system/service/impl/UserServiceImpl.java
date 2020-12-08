@@ -12,10 +12,7 @@ import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author gzw
@@ -31,6 +28,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             user.setAvatar(Const.defaultAvatar);
         }
         return user.getShiroUser();
+    }
+
+    /**
+     * 获取用户(不带账号密码等安全信息)
+     * @param account 账号
+     * @return User
+     */
+    public User getUserForSecurity(String account) {
+        User user = this.baseMapper.getUserForSecurity(account);
+        if (StringUtil.isBlank(user.getAvatar())) {
+            user.setAvatar(Const.defaultAvatar);
+        }
+        return user;
     }
 
     @Override

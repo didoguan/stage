@@ -9,7 +9,23 @@
   </resultMap>
   
   <select id="getUserForSecurity" resultType="com.deepspc.stage.manager.system.entity.User">
-    select employee_id "userId", employee_name "userName", account, password, id_num "userCode", salt from oa_employee where account = #{account}
+    SELECT
+        employee_id "userId",
+        employee_name "userName",
+        account,
+        password,
+        id_num "userCode",
+        salt,
+        dept_id "deptId",
+        dept_name "deptName",
+        email,
+        contact_num "contactNum",
+        gender,
+        birth_date "birthDate"
+    FROM
+        oa_employee
+    WHERE
+        account = #{account}
   </select>
 
   <select id="getUserPermission" resultType="map">

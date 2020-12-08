@@ -60,8 +60,10 @@ public class SystemController extends BaseController {
 
     @GetMapping("/userInfo")
     public String userInfo(Model model) {
-        ShiroUser user = ShiroKit.getShiroUser();
-        model.addAttribute("ShiroUser", user);
+        ShiroUser shiroUser = ShiroKit.getShiroUser();
+        User user = userService.getUserForSecurity(shiroUser.getAccount());
+        model.addAttribute("User", user);
+        model.addAttribute("account", shiroUser.getAccount());
 
         return "system/user_info";
     }

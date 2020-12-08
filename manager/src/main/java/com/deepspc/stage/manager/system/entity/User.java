@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,8 +17,7 @@ import java.util.Date;
  */
 @TableName("oa_employee")
 public class User implements Serializable {
-
-    private static final long serialVersionUID = -7106024593219952391L;
+    private static final long serialVersionUID = -4690820194246122464L;
 
     @TableId(value = "employee_id", type = IdType.ASSIGN_ID)
     private Long userId;
@@ -43,6 +43,16 @@ public class User implements Serializable {
     private String deptName;
 
     private String email;
+
+    private String contactNum;
+
+    private String gender;
+
+    /**
+     * 后端到前端需要JsonFormat，前端到后端需要DateTimeFormat
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthDate;
 
     private Long creatorId;
 
@@ -202,5 +212,29 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getContactNum() {
+        return contactNum;
+    }
+
+    public void setContactNum(String contactNum) {
+        this.contactNum = contactNum;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }

@@ -12,6 +12,7 @@ import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.manager.conf.PropertiesConfig;
 import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.exception.ManagerExceptionCode;
+import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.model.LoginParam;
 import com.deepspc.stage.manager.system.service.ISystemService;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
@@ -52,7 +53,6 @@ public class LoginController extends BaseController {
         CryptoKey cryptoKey = systemService.refreshClockCryptoKey();
         model.addAttribute("pub", cryptoKey.getPublicKey());
         model.addAttribute("appName", propertiesConfig.getAppName());
-        model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
         return "system/login";
     }
 
@@ -123,8 +123,10 @@ public class LoginController extends BaseController {
 
     @GetMapping("/")
     public String mainPage(Model model) {
+        ShiroUser shiroUser = ShiroKit.getShiroUser();
+        User user = userService.getUserForSecurity(shiroUser.getAccount());
+        model.addAttribute("User", user);
         model.addAttribute("appName", propertiesConfig.getAppName());
-        model.addAttribute("ShiroUser", ShiroKit.getShiroUser());
         model.addAttribute("menus", userService.getUserSystemMenus());
         return "index";
     }
