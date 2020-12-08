@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deepspc.stage.manager.system.mapper.MenuMapper">
-  
+  <resultMap id="BaseMap" type="com.deepspc.stage.manager.system.entity.Menu">
+    <id column="menu_id" property="menuId"/>
+    <result column="code" property="code"/>
+    <result column="pcode" property="pcode"/>
+    <result column="pcodes" property="pcodes"/>
+    <result column="name" property="name"/>
+    <result column="icon" property="icon"/>
+    <result column="url" property="url"/>
+    <result column="sort" property="sort"/>
+    <result column="levels" property="levels"/>
+    <result column="menu_flag" property="menuFlag"/>
+    <result column="description" property="description"/>
+    <result column="status" property="status"/>
+    <result column="new_page_flag" property="newPageFlag"/>
+    <result column="open_flag" property="openFlag"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="create_user" property="createUser"/>
+    <result column="update_user" property="updateUser"/>
+  </resultMap>
+
+  <sql id="base_column">
+    menu_id,code,pcode,pcodes,name,icon,url,sort,levels,menu_flag,description,status,new_page_flag,open_flag,create_time,update_time,create_user,update_user
+  </sql>
+
+  <select id="selectMenuTree" resultMap="BaseMap">
+    select
+    <include refid="base_column"/>
+    from sys_menu
+    where status = 'ENABLE'
+    <if test="menuName != null and menuName != ''">
+      and name like CONCAT('%',#{menuName},'%')
+    </if>
+    <if test="menuCode != null and menuCode != ''">
+      and code like CONCAT('%',#{menuCode},'%'))
+    </if>
+  </select>
 </mapper>

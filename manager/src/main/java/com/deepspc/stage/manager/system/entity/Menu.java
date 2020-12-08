@@ -99,7 +99,7 @@ public class Menu implements Serializable {
     /**
      * 系统分类（字典）
      */
-    @TableField("system_type")
+    @TableField(exist = false)
     private String systemType;
 
     /**

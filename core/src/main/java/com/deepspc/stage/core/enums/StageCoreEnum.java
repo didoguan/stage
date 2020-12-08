@@ -2,7 +2,9 @@ package com.deepspc.stage.core.enums;
 
 public enum StageCoreEnum {
     YES("Y", "是"),
-    NO("N", "否");
+    NO("N", "否"),
+    ENABLE("ENABLE", "启动"),
+    DISABLE("DISABLE", "禁用");
 
     String code;
     String text;
