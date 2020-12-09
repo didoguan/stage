@@ -1,11 +1,10 @@
-layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'table', 'treetable'], function () {
+layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], function () {
   let layer = layui.layer;
-  let form = layui.form;
   let $ZTree = layui.ztree;
   let laydate = layui.laydate;
   let admin = layui.admin;
-  let table = layui.table;
-  let treetable = layui.treetable;
+  let treeTable = layui.treeTable;
+  let func = layui.func;
 
   /**
    * 系统管理--菜单管理
@@ -57,31 +56,14 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
   };
 
   /**
-   * 弹出添加菜单对话框
+   * 添加或修改菜单
    */
-  Menu.openAddMenu = function () {
+  Menu.onAddModifyMenu = function (data) {
     admin.putTempData('formOk', false);
     top.layui.admin.open({
       type: 2,
-      title: '添加菜单',
-      content: ctxPath + '/menu/addPage',
-      end: function () {
-        admin.getTempData('formOk') && Menu.initTable(Menu.tableId);
-      }
-    });
-  };
-
-  /**
-   * 点击编辑菜单按钮时
-   *
-   * @param data 点击按钮时候的行数据
-   */
-  Menu.onEditMenu = function (data) {
-    admin.putTempData('formOk', false);
-    top.layui.admin.open({
-      type: 2,
-      title: '修改菜单',
-      content: ctxPath + '/menu/editPage?menuId=' + data.menuId,
+      title: '添加修改菜单',
+      content: ctxPath + '/menu/addModifyPage?menuId=' + data.menuId,
       end: function () {
         admin.getTempData('formOk') && Menu.initTable(Menu.tableId);
       }
@@ -150,21 +132,21 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
   // 渲染表格
   let tableResult = Menu.initTable(Menu.tableId);
   $('#expandAll').click(function () {
-    treetable.expandAll('#' + Menu.tableId);
+    tableResult.expandAll('#' + Menu.tableId);
   });
   $('#foldAll').click(function () {
-    treetable.foldAll('#' + Menu.tableId);
+    tableResult.foldAll('#' + Menu.tableId);
   });
 
   //渲染时间选择框
   laydate.render({
     elem: '#timeLimit',
     range: true,
-    max: Feng.currentDate()
+    max: Stage.currentDate()
   });
 
   //初始化左侧部门树
-  let ztree = new $ZTree("menuTree", "/menu/selectMenuTreeList");
+  let ztree = new $ZTree("menuTree", "/menu/selectMenuTree");
   ztree.bindOnClick(Menu.onClickMenu);
   ztree.init();
 
@@ -175,22 +157,18 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
 
   // 添加按钮点击事件
   $('#btnAdd').click(function () {
-    Menu.openAddMenu();
+    Menu.onAddModifyMenu({"menuId":""});
   });
 
   // 工具条点击事件
-  table.on('tool(' + Menu.tableId + ')', function (obj) {
+  treeTable.on('tool(menuTable)', function (obj) {
     let data = obj.data;
     let layEvent = obj.event;
 
     if (layEvent === 'edit') {
-      Menu.onEditMenu(data);
+      Menu.onAddModifyMenu(data);
     } else if (layEvent === 'delete') {
       Menu.onDeleteMenu(data);
-    } else if (layEvent === 'roleAssign') {
-      Menu.roleAssign(data);
-    } else if (layEvent === 'reset') {
-      Menu.resetPassword(data);
     }
   });
 

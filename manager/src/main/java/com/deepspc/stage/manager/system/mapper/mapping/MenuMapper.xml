@@ -38,4 +38,32 @@
       and code like CONCAT('%',#{menuCode},'%'))
     </if>
   </select>
+  
+  <select id="menuTree" resultType="com.deepspc.stage.manager.pojo.ZTreeNode">
+    SELECT
+        m1.menu_id "id",
+        ( CASE WHEN ( m2.menu_id = 0 OR m2.menu_id IS NULL ) THEN 0 ELSE m2.menu_id END ) "pId",
+        m1.name "name",
+        ( CASE WHEN ( m2.menu_id = 0 OR m2.menu_id IS NULL ) THEN 'true' ELSE 'false' END ) "open"
+    FROM
+        sys_menu m1
+        LEFT JOIN sys_menu m2 ON m1.pcode = m2.CODE
+    ORDER BY
+        m1.menu_id ASC
+  </select>
+  
+  <select id="getSubMenusByCode" resultMap="BaseMap">
+    SELECT
+    <include refid="base_column"/>
+    FROM sys_menu
+    WHERE pcodes LIKE CONCAT('%$[',#{code},'$]%') escape '$'
+  </select>
+  
+  <delete id="deleteSubMenusByCode">
+    DELETE
+    FROM
+        sys_menu a
+    WHERE
+        EXISTS ( SELECT 1 FROM sys_menu b WHERE b.CODE = a.CODE AND b.pcodes LIKE CONCAT( '%$[',#{code},'$]%' ) ESCAPE '$' )
+  </delete>
 </mapper>

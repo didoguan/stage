@@ -15,7 +15,11 @@ public enum ManagerExceptionCode {
     FILE_UPLOAD_FAILED("715", "文件上传失败"),
 
     AVATAR_UPDATE_FAILED("716", "头像更新失败"),
-    OLD_PASSWORD_WRONG("717", "原密码不正确");
+    OLD_PASSWORD_WRONG("717", "原密码不正确"),
+
+    ENCODING_EXCEPTION("718", "编码出错"),
+    MENU_CODE_EXISTS("719", "菜单编码已存在"),
+    MENU_CODE_PCODE_MATCH("720", "菜单编码与父编码不能一样");
 
     private String code;
 

@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * @author gzw
@@ -131,5 +133,22 @@ public class SystemController extends BaseController {
                     ManagerExceptionCode.OLD_PASSWORD_WRONG.getMessage());
         }
         return ResponseData.success();
+    }
+
+    @PostMapping("/commonTreeSelect")
+    public String commonTreeSelect(@RequestParam("formName") String formName,
+                                   @RequestParam("formId") String formId,
+                                   @RequestParam("treeUrl") String treeUrl,
+                                   Model model) {
+        try {
+            model.addAttribute("formName", URLDecoder.decode(formName, "UTF-8"));
+            model.addAttribute("formId", URLDecoder.decode(formId, "UTF-8"));
+            model.addAttribute("treeUrl", URLDecoder.decode(treeUrl, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new StageException(ManagerExceptionCode.ENCODING_EXCEPTION.getCode(),
+                        ManagerExceptionCode.ENCODING_EXCEPTION.getMessage());
+        }
+        return null;
     }
 }
