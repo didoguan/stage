@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}"/>
   <link rel="stylesheet" th:href="@{/plugins/expand/plugins/ztree/zTreeStyle.css}"/>
   <script th:inline="javascript" type="text/javascript">
+    let ctxPath = [[${#httpServletRequest.getContextPath()}]];
     let formName = [[${formName}]];
     let formId = [[${formId}]];
     let treeUrl = [[${treeUrl}]];
@@ -29,7 +30,7 @@
 </body>
 
 <script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/system/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jquery/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/expand/plugins/ztree/jquery.ztree.all.min.js}"></script>
 <script type="text/javascript">

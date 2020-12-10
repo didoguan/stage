@@ -91,6 +91,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         menu.setSort(menuDto.getSort());
         menu.setMenuFlag(menuDto.getMenuFlag());
         menu.setDescription(menuDto.getDescription());
+        menu.setStatus(menuDto.getStatus());
         Long pid = menuDto.getPid();
         if (null == pid || pid.longValue() == 0) {
             menu.setPcode("0");

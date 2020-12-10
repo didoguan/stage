@@ -58,6 +58,11 @@ public class MenuDto implements Serializable {
      */
     private String description;
 
+    /**
+     * 状态
+     */
+    private String status;
+
     public MenuDto() {
 
     }
@@ -156,5 +161,13 @@ public class MenuDto implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

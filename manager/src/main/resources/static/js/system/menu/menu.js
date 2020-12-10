@@ -1,10 +1,13 @@
-layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], function () {
+layui.use(['layer', 'ztree', 'laydate', 'ax', 'treeTable', 'func'], function () {
   let layer = layui.layer;
   let $ZTree = layui.ztree;
+  let $ax = layui.ax;
   let laydate = layui.laydate;
-  let admin = layui.admin;
   let treeTable = layui.treeTable;
   let func = layui.func;
+
+  //table的初始化实例
+  let insTb;
 
   /**
    * 系统管理--菜单管理
@@ -22,19 +25,18 @@ layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
    * 初始化表格的列
    */
   Menu.initColumn = function () {
-    return [[
+    return [
       {type: 'numbers'},
-      {field: 'menuId', hide: true, sort: true, title: 'id'},
-      {field: 'name', sort: true, title: '菜单名称'},
-      {field: 'code', sort: true, title: '菜单编号'},
-      {field: 'pcode', sort: true, title: '菜单父编号'},
-      {field: 'url', sort: true, title: '请求地址'},
-      {field: 'sort', sort: true, title: '排序'},
-      {field: 'levels', sort: true, title: '层级'},
-      {field: 'menuFlag', sort: true, title: '是否是菜单'},
-      {field: 'status', sort: true, title: '状态'},
+      {field: 'name', align: "left", sort: true, title: '菜单名称', width: 230,},
+      {field: 'code', align: "center", sort: true, title: '菜单编号', minWidth: 120},
+      {field: 'pcode', align: "center", sort: true, title: '菜单父编号'},
+      {field: 'url', align: "center", sort: true, title: '请求地址'},
+      {field: 'sort', align: "center", sort: true, title: '排序'},
+      {field: 'levels', align: "center", sort: true, title: '层级'},
+      {field: 'menuFlag', align: "center", sort: true, title: '是否是菜单'},
+      {field: 'status', align: "center", sort: true, title: '状态'},
       {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
-    ]];
+    ];
   };
 
   /**
@@ -51,21 +53,39 @@ layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
   Menu.search = function () {
     let queryData = {};
     queryData['menuName'] = $("#menuName").val();
-    queryData['menuCode'] = $("#menuCode").val();
+    queryData['menuCode'] = $("#level").val();
     Menu.initTable(Menu.tableId, queryData);
   };
 
   /**
-   * 添加或修改菜单
+   * 弹出添加菜单对话框
    */
-  Menu.onAddModifyMenu = function (data) {
-    admin.putTempData('formOk', false);
-    top.layui.admin.open({
-      type: 2,
-      title: '添加修改菜单',
-      content: ctxPath + '/menu/addModifyPage?menuId=' + data.menuId,
-      end: function () {
-        admin.getTempData('formOk') && Menu.initTable(Menu.tableId);
+  Menu.openAddMenu = function () {
+    func.open({
+      height: 720,
+      width: 800,
+      title: '添加菜单',
+      content: ctxPath + '/menu/addModifyPage?menuId=',
+      tableId: Menu.tableId,
+      endCallback: function () {
+        Menu.initTable(Menu.tableId);
+      }
+    });
+  };
+
+  /**
+   * 点击编辑菜单按钮时
+   *
+   * @param data 点击按钮时候的行数据
+   */
+  Menu.onEditMenu = function (data) {
+    func.open({
+      height: 720,
+      title: '修改菜单',
+      content: ctxPath + "/menu/addModifyPage?menuId=" + data.menuId,
+      tableId: Menu.tableId,
+      endCallback: function () {
+        Menu.initTable(Menu.tableId);
       }
     });
   };
@@ -110,32 +130,27 @@ layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
         haveChildName: 'haveChild',  // 自定义标识是否还有子节点的字段名称
         isPidData: true         // 是否是pid形式数据
       },
-      height: "full-98",
+      height: "full-130",
       cols: Menu.initColumn(),
       reqData: function (data, callback) {
-        $.ajax({
-          type: "POST",
-          dataType: "json",
-          url: ctxPath + "/menu/menuTree",
-          data: reqData,
-          success : function(result) {
-            callback(result.data);
-          },
-          error : function(e){
-            layer.msg("数据加载出错", {icon: 2});
-          }
+        var ajax = new $ax(ctxPath + '/menu/menuTree', function (res) {
+          callback(res.data);
+        }, function (res) {
+          layer.msg("数据加载出错", {icon: 2});
         });
+        ajax.setData(reqData);
+        ajax.start();
       }
     });
   };
 
   // 渲染表格
-  let tableResult = Menu.initTable(Menu.tableId);
+  insTb = Menu.initTable(Menu.tableId);
   $('#expandAll').click(function () {
-    tableResult.expandAll('#' + Menu.tableId);
+    insTb.expandAll();
   });
   $('#foldAll').click(function () {
-    tableResult.foldAll('#' + Menu.tableId);
+    insTb.foldAll();
   });
 
   //渲染时间选择框
@@ -157,7 +172,7 @@ layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
 
   // 添加按钮点击事件
   $('#btnAdd').click(function () {
-    Menu.onAddModifyMenu({"menuId":""});
+    Menu.openAddMenu();
   });
 
   // 工具条点击事件
@@ -166,7 +181,7 @@ layui.use(['layer', 'func', 'ztree', 'laydate', 'admin', 'table', 'treetable'], 
     let layEvent = obj.event;
 
     if (layEvent === 'edit') {
-      Menu.onAddModifyMenu(data);
+      Menu.onEditMenu(data);
     } else if (layEvent === 'delete') {
       Menu.onDeleteMenu(data);
     }

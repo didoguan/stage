@@ -57,7 +57,7 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
         open: function (param) {
 
             //宽度计算
-            var width = '1000px';
+            var width = '1000';
             if (param.width) {
                 width = param.width;
             }
@@ -66,12 +66,12 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
             var clientHeight = func.getClientHeight();
             if (param.height) {
                 if (clientHeight < param.height) {
-                    param.area = [width, clientHeight + "px"];
+                    param.area = [width + "px", clientHeight + "px"];
                 } else {
-                    param.area = [width, param.height + "px"];
+                    param.area = [width + "px", param.height + "px"];
                 }
             } else {
-                param.area = [width, clientHeight + "px"];
+                param.area = [width + "px", clientHeight + "px"];
             }
 
             param.skin = 'layui-layer-admin';

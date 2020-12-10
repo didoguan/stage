@@ -18,6 +18,15 @@ var Stage = {
     }
     // 最后拼接字符串，得到一个格式为(yyyy-MM-dd)的日期
     return date.getFullYear() + seperator + nowMonth + seperator + strDate;
+  },
+  zTreeCheckedNodes : function (zTreeId) {
+    let zTree = $.fn.zTree.getZTreeObj(zTreeId);
+    let nodes = zTree.getCheckedNodes();
+    let ids = "";
+    for (let i = 0, l = nodes.length; i < l; i++) {
+      ids += "," + nodes[i].id;
+    }
+    return ids.substring(1);
   }
 };
 // 以下代码是配置layui扩展模块的目录，每个页面都需要引入
@@ -39,12 +48,12 @@ layui.config({
   zTree: 'zTree/zTree',
 
   //一下是用到的扩展插件
-  formSelects: '../plugins/expand/module/formSelects/formSelects-v4',
-  selectPlus: '../plugins/expand/module/selectPlus/selectPlus',
-  iconPicker: '../plugins/expand/module/iconPicker/iconPicker',
-  ztree: '../plugins/expand/module/ztree/ztree-object',
-  ax: '../plugins/expand/module/ax/ax',
-  func: '../plugins/expand/module/func/func'
+  formSelects: '../../plugins/expand/module/formSelects/formSelects-v4',
+  selectPlus: '../../plugins/expand/module/selectPlus/selectPlus',
+  iconPicker: '../../plugins/expand/module/iconPicker/iconPicker',
+  ztree: '../../plugins/expand/module/ztree/ztree-object',
+  ax: '../../plugins/expand/module/ax/ax',
+  func: '../../plugins/expand/module/func/func'
 }).use(['layer', 'admin'], function () {
   let $ = layui.jquery;
   let layer = layui.layer;

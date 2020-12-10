@@ -1,7 +1,8 @@
-layui.define(['jquery','ax'], function (exports) {
+layui.define(['layer','jquery','ax'], function (exports) {
 
     var $ = layui.$;
     var $ax = layui.ax;
+    var layer = layui.layer;
 
     var $ZTree = function(id, url) {
         this.id = id;
@@ -70,10 +71,10 @@ layui.define(['jquery','ax'], function (exports) {
          */
         loadNodes : function() {
             var zNodes = null;
-            var ajax = new $ax(Feng.ctxPath + this.url, function(data) {
+            var ajax = new $ax(ctxPath + this.url, function(data) {
                 zNodes = data;
             }, function(data) {
-                Feng.error("加载ztree信息失败!");
+                layer.msg("加载ztree信息失败!", {icon: 2});
             });
             ajax.start();
             return zNodes;

@@ -8,6 +8,7 @@ layui.use(['layer', 'form', 'admin', 'iconPicker'], function () {
   let admin = layui.admin;
   let layer = layui.layer;
   let iconPicker = layui.iconPicker;
+  let menuId = $("#menuId").val();
 
   let menuResult;
   //获取菜单信息
@@ -16,7 +17,7 @@ layui.use(['layer', 'form', 'admin', 'iconPicker'], function () {
     dataType: "json",
     async: false,
     url: ctxPath + "/menu/getMenuDetail",
-    data: {"menuId": $("#menuId").val()},
+    data: {"menuId": menuId},
     success : function(result) {
       menuResult = result;
       form.val('menuForm', result.data);
@@ -78,6 +79,10 @@ layui.use(['layer', 'form', 'admin', 'iconPicker'], function () {
 
     }
   });
+  if (menuId) {
+    iconPicker.checkIcon('iconPicker', menuResult.data.icon);
+  } else {
+    iconPicker.checkIcon('iconPicker', 'layui-icon-star-fill');
+  }
 
-  iconPicker.checkIcon('iconPicker', menuResult.data.icon);
 });

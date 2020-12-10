@@ -14,13 +14,13 @@
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">名称<span style="color: red;">*</span></label>
             <div class="layui-input-block">
-              <input name="name" placeholder="请输入名称" type="text" class="layui-input" lay-verify="required" required/>
+              <input name="name" placeholder="请输入名称" type="text" class="layui-input" autocomplete="off" lay-verify="required" required/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">菜单编号<span style="color: red;">*</span></label>
             <div class="layui-input-block">
-              <input name="code" placeholder="请输入菜单编号" type="text" class="layui-input" lay-verify="required" required/>
+              <input name="code" placeholder="请输入菜单编号" type="text" class="layui-input" autocomplete="off" lay-verify="required" required/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
@@ -29,6 +29,19 @@
               <input id="pid" name="pid" type="hidden">
               <input id="pcodeName" name="pcodeName" placeholder="请输入父级编号" type="text" class="layui-input"
                      autocomplete="off" lay-verify="required" required/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-block">
+              <input name="icon" id="icon" placeholder="请输入图标" lay-filter="iconPicker" type="text" class="layui-input"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">菜单状态<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input type="radio" name="status" value="ENABLE" title="启用" checked/>
+              <input type="radio" name="status" value="DISABLE" title="禁用"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
@@ -44,12 +57,6 @@
               <input id="url" name="url" placeholder="请输入请求地址" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
-          <div class="layui-inline layui-col-md12">
-            <label class="layui-form-label">图标</label>
-            <div class="layui-input-block">
-              <input name="icon" id="icon" placeholder="请输入图标" lay-filter="iconPicker" type="text" class="layui-input"/>
-            </div>
-          </div>
           <!--
           <div class="layui-inline layui-col-md12">
               <label class="layui-form-label">所属系统<span style="color: red;">*</span></label>
@@ -61,7 +68,7 @@
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">排序</label>
             <div class="layui-input-block">
-              <input name="sort" placeholder="请输入排序" type="text" class="layui-input"/>
+              <input name="sort" placeholder="请输入排序" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
         </div>

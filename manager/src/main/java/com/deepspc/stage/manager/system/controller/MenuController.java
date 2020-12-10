@@ -1,5 +1,6 @@
 package com.deepspc.stage.manager.system.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.pojo.LayuiPage;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author gzw
@@ -49,13 +52,23 @@ public class MenuController extends BaseController {
                            @RequestParam(required = false) String menuCode) {
         List<Menu> menus = menuService.selectMenuTree(menuName, menuCode);
         new MenuWrapper(menus).wrap();
-		LayuiPage layuiPage = new LayuiPage();
-		layuiPage.setData(menus);
+        LayuiPage layuiPage = new LayuiPage();
+        if (null != menus) {
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (Menu menu : menus) {
+                Map<String, Object> map = BeanUtil.beanToMap(menu);
+                if ("0".equals(menu.getPcode())) {
+                    map.remove("pcode");
+                }
+                list.add(map);
+            }
+            layuiPage.setData(list);
+        }
 
         return layuiPage;
     }
 
-    @GetMapping("/selectMenuTree")
+    @RequestMapping("/selectMenuTree")
     @ResponseBody
     public List<ZTreeNode> selectMenuTree() {
         List<ZTreeNode> menuTreeList = menuService.menuTree();

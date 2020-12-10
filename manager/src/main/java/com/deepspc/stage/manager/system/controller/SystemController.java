@@ -135,7 +135,7 @@ public class SystemController extends BaseController {
         return ResponseData.success();
     }
 
-    @PostMapping("/commonTreeSelect")
+    @GetMapping("/commonTreeSelect")
     public String commonTreeSelect(@RequestParam("formName") String formName,
                                    @RequestParam("formId") String formId,
                                    @RequestParam("treeUrl") String treeUrl,
@@ -149,6 +149,6 @@ public class SystemController extends BaseController {
             throw new StageException(ManagerExceptionCode.ENCODING_EXCEPTION.getCode(),
                         ManagerExceptionCode.ENCODING_EXCEPTION.getMessage());
         }
-        return null;
+        return "common/tree_select";
     }
 }
