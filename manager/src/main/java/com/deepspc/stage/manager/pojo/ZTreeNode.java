@@ -39,9 +39,6 @@ public class ZTreeNode {
 
     /**
      * 创建ztree的父级节点
-     *
-     * @author fengshuonan
-     * @Date 2018/12/23 4:51 PM
      */
     public static ZTreeNode createParent() {
         ZTreeNode zTreeNode = new ZTreeNode();
@@ -49,7 +46,7 @@ public class ZTreeNode {
         zTreeNode.setId(0L);
         zTreeNode.setName("顶级");
         zTreeNode.setOpen(true);
-        zTreeNode.setPId(0L);
+        zTreeNode.setpId(0L);
         return zTreeNode;
     }
 
@@ -61,11 +58,11 @@ public class ZTreeNode {
         this.id = id;
     }
 
-    public Long getPId() {
+    public Long getpId() {
         return pId;
     }
 
-    public void setPId(Long pId) {
+    public void setpId(Long pId) {
         this.pId = pId;
     }
 

@@ -20,6 +20,7 @@ layui.use(['layer', 'form', 'admin', 'iconPicker'], function () {
     data: {"menuId": menuId},
     success : function(result) {
       menuResult = result;
+      delete result.data.menuId;
       form.val('menuForm', result.data);
     },
     error : function(e){

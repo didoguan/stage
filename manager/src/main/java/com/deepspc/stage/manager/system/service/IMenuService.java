@@ -41,4 +41,11 @@ public interface IMenuService extends IService<Menu> {
      * @param menuId 菜单标识
      */
     void deleteSubMenusByCode(Long menuId);
+
+    /**
+     * 根据标识获取菜单详情并转换成dto
+     * @param menuId 标识
+     * @return MenuDto
+     */
+    MenuDto menuDetailToDto(Long menuId);
 }

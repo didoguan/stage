@@ -62,7 +62,7 @@ layui.use(['layer', 'ztree', 'laydate', 'ax', 'treeTable', 'func'], function () 
    */
   Menu.openAddMenu = function () {
     func.open({
-      height: 720,
+      height: 730,
       width: 800,
       title: '添加菜单',
       content: ctxPath + '/menu/addModifyPage?menuId=',
@@ -80,7 +80,8 @@ layui.use(['layer', 'ztree', 'laydate', 'ax', 'treeTable', 'func'], function () 
    */
   Menu.onEditMenu = function (data) {
     func.open({
-      height: 720,
+      height: 730,
+      width: 800,
       title: '修改菜单',
       content: ctxPath + "/menu/addModifyPage?menuId=" + data.menuId,
       tableId: Menu.tableId,

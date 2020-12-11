@@ -62,8 +62,8 @@
   <delete id="deleteSubMenusByCode">
     DELETE
     FROM
-        sys_menu a
+        sys_menu
     WHERE
-        EXISTS ( SELECT 1 FROM sys_menu b WHERE b.CODE = a.CODE AND b.pcodes LIKE CONCAT( '%$[',#{code},'$]%' ) ESCAPE '$' )
+        menu_id IN ( SELECT a.menu_id FROM ( SELECT menu_id FROM sys_menu WHERE pcodes LIKE CONCAT( '%$[',#{code},']%' ) ESCAPE '$' ) a )
   </delete>
 </mapper>

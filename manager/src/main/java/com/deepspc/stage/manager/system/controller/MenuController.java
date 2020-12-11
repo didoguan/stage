@@ -41,7 +41,7 @@ public class MenuController extends BaseController {
         if (null == menuId) {
             model.addAttribute("menuId", "");
         } else {
-            model.addAttribute("menuId", menuId);
+            model.addAttribute("menuId", menuId.toString());
         }
         return "system/menu/add_modify";
     }
@@ -57,6 +57,7 @@ public class MenuController extends BaseController {
             List<Map<String, Object>> list = new ArrayList<>();
             for (Menu menu : menus) {
                 Map<String, Object> map = BeanUtil.beanToMap(menu);
+                map.put("menuId", menu.getMenuId().toString());
                 if ("0".equals(menu.getPcode())) {
                     map.remove("pcode");
                 }
@@ -79,8 +80,8 @@ public class MenuController extends BaseController {
     @PostMapping("/getMenuDetail")
     @ResponseBody
     public ResponseData getMenuDetail(Long menuId) {
-        Menu menu = menuService.getById(menuId);
-        return ResponseData.success(menu);
+        MenuDto dto = menuService.menuDetailToDto(menuId);
+        return ResponseData.success(dto);
     }
 
     @PostMapping("/addModify")

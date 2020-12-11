@@ -48,8 +48,18 @@ layui.define(['layer','jquery','ax'], function (exports) {
             }else{
                 zNodeSeting = this.initSetting();
             }
-            var zNodes = this.loadNodes();
-            $.fn.zTree.init($("#" + this.id), zNodeSeting, zNodes);
+            var treeId = this.id;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: ctxPath + this.url,
+                success : function(result) {
+                  $.fn.zTree.init($("#" + treeId), zNodeSeting, result);
+                },
+                error : function(e){
+                  layer.msg("加载ztree信息失败!", {icon: 2});
+                }
+            });
         },
 
         /**

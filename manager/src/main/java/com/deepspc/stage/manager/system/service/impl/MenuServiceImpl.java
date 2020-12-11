@@ -43,7 +43,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveUpdateMenu(MenuDto menuDto) {
         //先判断菜单编码是否重复
         if (StringUtil.isBlank(menuDto.getCode())) {
@@ -52,12 +52,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         QueryWrapper<Menu> wrapper = new QueryWrapper<>();
         wrapper.eq("code", menuDto.getCode());
         Menu menu = this.baseMapper.selectOne(wrapper);
-        if (null != menu) {
+        if (null != menu && null != menuDto.getMenuId() && menu.getMenuId().longValue() != menuDto.getMenuId().longValue()) {
             throw new StageException(ManagerExceptionCode.MENU_CODE_EXISTS.getCode(),
                     ManagerExceptionCode.MENU_CODE_EXISTS.getMessage());
         }
         Menu entity = exchangeMenu(menuDto);
-        this.saveOrUpdate(entity);
+        if (null != entity.getMenuId()) {
+            this.baseMapper.updateById(entity);
+        } else {
+            this.baseMapper.insert(entity);
+        }
     }
 
     @Override
@@ -71,6 +75,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteSubMenusByCode(Long menuId) {
         if (null == menuId) {
             return;
@@ -79,6 +84,35 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             this.baseMapper.deleteById(menuId);
             this.baseMapper.deleteSubMenusByCode(menu.getCode());
         }
+    }
+
+    @Override
+    public MenuDto menuDetailToDto(Long menuId) {
+        Menu menu = this.baseMapper.selectById(menuId);
+        if (null == menu) {
+            return null;
+        }
+        MenuDto menuDto = new MenuDto();
+        menuDto.setMenuId(menu.getMenuId());
+        menuDto.setCode(menu.getCode());
+        menuDto.setPcode(menu.getPcode());
+        menuDto.setName(menu.getName());
+        menuDto.setIcon(menu.getIcon());
+        menuDto.setUrl(menu.getUrl());
+        menuDto.setSort(menu.getSort());
+        menuDto.setMenuFlag(menu.getMenuFlag());
+        menuDto.setDescription(menu.getDescription());
+        menuDto.setStatus(menu.getStatus());
+        menuDto.setLevels(menu.getLevels());
+        QueryWrapper<Menu> wrapper = new QueryWrapper<>();
+        wrapper.eq("code", menu.getPcode());
+        Menu parent = this.baseMapper.selectOne(wrapper);
+        if (null != parent) {
+            menuDto.setPid(parent.getMenuId());
+            menuDto.setPcodeName(parent.getName());
+        }
+
+        return menuDto;
     }
 
     private Menu exchangeMenu(MenuDto menuDto) {

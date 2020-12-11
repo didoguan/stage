@@ -171,8 +171,9 @@ layui.define(['laypage', 'form'], function (exports) {
              * @returns {string}
              */
             createList: function (text) {
-                var d = data,
-                    l = d.length,
+                var d = data;
+                d.splice(0, 0, "");
+                var l = d.length,//默认加一个空图标
                     pageHtml = '',
                     listHtml = $('<div class="layui-iconpicker-list">')//'<div class="layui-iconpicker-list">';
 
