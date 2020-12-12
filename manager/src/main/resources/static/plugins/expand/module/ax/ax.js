@@ -1,16 +1,16 @@
 layui.define(['jquery'], function (exports) {
     var $ = layui.$;
-    var defaultParam = {type:"post", dataType:"json", async:"false", contentType:"application/x-www-form-urlencoded;charset=UTF-8"};
+    var defaultParam = {type:"post", dataType:"json", async:false, contentType:"application/x-www-form-urlencoded;charset=UTF-8"};
     var $ax = function (url, success, error, param) {
         if (param === undefined || param === null) {
           param = defaultParam;
         }
         this.url = url;
-        this.type = param.type;
+        this.type = param.type|defaultParam.type;
         this.data = {};
-        this.dataType = param.dataType;
-        this.contentType = param.contentType;
-        this.async = param.async;
+        this.dataType = param.dataType|defaultParam.dataType;
+        this.contentType = param.contentType|defaultParam.contentType;
+        this.async = param.async|defaultParam.async;
         this.success = success;
         this.error = error;
     };

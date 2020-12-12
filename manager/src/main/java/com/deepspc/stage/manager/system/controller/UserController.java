@@ -5,9 +5,7 @@ import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author gzw
@@ -24,6 +22,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("")
+    public String userPage() {
+        return "system/user/user";
+    }
+
     @PostMapping("/getUserInfo")
     @ResponseBody
     public ResponseData getUserInfo(Long userId) {
@@ -35,6 +38,13 @@ public class UserController {
     @ResponseBody
     public ResponseData saveOrUpdateUser(User user) {
         userService.updateById(user);
+        return ResponseData.success();
+    }
+
+    @PostMapping("/loadUsers")
+    @ResponseBody
+    public ResponseData loadUsers(@RequestParam(required = false) String userName) {
+
         return ResponseData.success();
     }
 }

@@ -1,7 +1,6 @@
 package com.deepspc.stage.manager.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.deepspc.stage.shiro.model.ShiroUser;
@@ -19,10 +18,9 @@ import java.util.Date;
 public class User implements Serializable {
     private static final long serialVersionUID = -4690820194246122464L;
 
-    @TableId(value = "employee_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "user_id", type = IdType.ASSIGN_ID)
     private Long userId;
 
-    @TableField("employee_name")
     private String userName;
 
     private String account;
@@ -30,11 +28,12 @@ public class User implements Serializable {
     @JsonIgnore
     private String password;
 
-    @TableField("id_num")
-    private String userCode;
-
     @JsonIgnore
     private String salt;
+
+    private String userCode;
+
+    private String gender;
 
     private String avatar;
 
@@ -44,27 +43,43 @@ public class User implements Serializable {
 
     private String email;
 
-    private String contactNum;
+    private String contactNo;
 
-    private String gender;
+    private String idNo;
+
+    private String userStatus;
 
     /**
      * 后端到前端需要JsonFormat，前端到后端需要DateTimeFormat
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthDate;
+    private Date joinDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date desertDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date officialDate;
+
+    private String workAddress;
+
+    private String marriage;
+
+    private String position;
+
+    private String contactAddress;
+
+    private String systemCode;
 
     private Long creatorId;
 
-    @TableField(exist = false)
     private String creatorName;
 
     private Date createDate;
 
-    private Long updatetorId;
+    private Long updatorId;
 
-    @TableField(exist = false)
-    private String updatetorName;
+    private String updatorName;
 
     private Date updateDate;
 
@@ -118,14 +133,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
     public String getSalt() {
         return salt;
     }
@@ -134,52 +141,20 @@ public class User implements Serializable {
         this.salt = salt;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
-    public String getCreatorName() {
-        return creatorName;
+    public String getGender() {
+        return gender;
     }
 
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Long getUpdatetorId() {
-        return updatetorId;
-    }
-
-    public void setUpdatetorId(Long updatetorId) {
-        this.updatetorId = updatetorId;
-    }
-
-    public String getUpdatetorName() {
-        return updatetorName;
-    }
-
-    public void setUpdatetorName(String updatetorName) {
-        this.updatetorName = updatetorName;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getAvatar() {
@@ -214,27 +189,139 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getContactNum() {
-        return contactNum;
+    public String getContactNo() {
+        return contactNo;
     }
 
-    public void setContactNum(String contactNum) {
-        this.contactNum = contactNum;
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
     }
 
-    public String getGender() {
-        return gender;
+    public String getIdNo() {
+        return idNo;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public Date getDesertDate() {
+        return desertDate;
+    }
+
+    public void setDesertDate(Date desertDate) {
+        this.desertDate = desertDate;
+    }
+
+    public Date getOfficialDate() {
+        return officialDate;
+    }
+
+    public void setOfficialDate(Date officialDate) {
+        this.officialDate = officialDate;
+    }
+
+    public String getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(String workAddress) {
+        this.workAddress = workAddress;
+    }
+
+    public String getMarriage() {
+        return marriage;
+    }
+
+    public void setMarriage(String marriage) {
+        this.marriage = marriage;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getContactAddress() {
+        return contactAddress;
+    }
+
+    public void setContactAddress(String contactAddress) {
+        this.contactAddress = contactAddress;
+    }
+
+    public String getSystemCode() {
+        return systemCode;
+    }
+
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public String getUpdatorName() {
+        return updatorName;
+    }
+
+    public void setUpdatorName(String updatorName) {
+        this.updatorName = updatorName;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

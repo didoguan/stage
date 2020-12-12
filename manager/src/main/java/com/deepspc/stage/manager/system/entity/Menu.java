@@ -99,27 +99,18 @@ public class Menu implements Serializable {
     /**
      * 系统分类（字典）
      */
-    @TableField(exist = false)
-    private String systemType;
+    private String systemCode;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
+    private Long creatorId;
 
-    /**
-     * 修改时间
-     */
-    private Date updateTime;
+    private String creatorName;
 
-    /**
-     * 创建人
-     */
-    private Long createUser;
+    private Date createDate;
 
-    /**
-     * 修改人
-     */
-    private Long updateUser;
+    private Long updatorId;
+
+    private String updatorName;
+
+    private Date updateDate;
 
 }

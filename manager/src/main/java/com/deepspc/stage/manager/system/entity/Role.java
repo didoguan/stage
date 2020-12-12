@@ -1,7 +1,6 @@
 package com.deepspc.stage.manager.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -28,15 +27,13 @@ public class Role implements Serializable {
 
     private Long creatorId;
 
-    @TableField(exist = false)
     private String creatorName;
 
     private Date createDate;
 
-    private Long updatetorId;
+    private Long updatorId;
 
-    @TableField(exist = false)
-    private String updatetorName;
+    private String updatorName;
 
     private Date updateDate;
 
@@ -100,20 +97,20 @@ public class Role implements Serializable {
         this.createDate = createDate;
     }
 
-    public Long getUpdatetorId() {
-        return updatetorId;
+    public Long getUpdatorId() {
+        return updatorId;
     }
 
-    public void setUpdatetorId(Long updatetorId) {
-        this.updatetorId = updatetorId;
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
     }
 
-    public String getUpdatetorName() {
-        return updatetorName;
+    public String getUpdatorName() {
+        return updatorName;
     }
 
-    public void setUpdatetorName(String updatetorName) {
-        this.updatetorName = updatetorName;
+    public void setUpdatorName(String updatorName) {
+        this.updatorName = updatorName;
     }
 
     public Date getUpdateDate() {

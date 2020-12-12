@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.manager.system.mapper.DeptMapper">
+
+    <resultMap id="BaseMap" type="com.deepspc.stage.manager.system.entity.Dept">
+        <id column="dept_id" property="deptId" />
+        <result column="pid" property="pid" />
+        <result column="pids" property="pids" />
+        <result column="simple_name" property="simpleName" />
+        <result column="full_name" property="fullName" />
+        <result column="description" property="description" />
+        <result column="sort" property="sort" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="default_column">
+        dept_id "deptId", pid "pid", pids "pids", simple_name "simpleName", full_name "fullName", description "description", sort "sort", create_time "createTime", update_time "updateTime", create_user "createUser", update_user "updateUser"
+    </sql>
+
+    <select id="layuiTree" resultType="com.deepspc.stage.manager.pojo.LayuiTreeNode">
+		select dept_id "id", pid "pid", simple_name "title",
+		(
+		CASE
+		WHEN (pid = 0 OR pid IS NULL) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) "spread" from sys_dept
+	</select>
+
+    <select id="tree" resultType="com.deepspc.stage.manager.pojo.ZTreeNode">
+		select dept_id "id", pid "pId", simple_name "name",
+		(
+		CASE
+		WHEN (pid = 0 OR pid IS NULL) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) "open" from sys_dept
+	</select>
+
+    <select id="list" resultType="map">
+        select
+        <include refid="default_column"/>
+        from sys_dept where 1 = 1
+        <if test="name != null and name != ''">
+            and simple_name like CONCAT('%',#{name},'%') or full_name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="deptId != null and deptId != ''">
+            and (dept_id = #{deptId} or dept_id in ( select dept_id from sys_dept where pids like CONCAT('%$[', #{deptId}, '$]%') escape '$' ))
+        </if>
+        order by sort ASC
+    </select>
+
+</mapper>

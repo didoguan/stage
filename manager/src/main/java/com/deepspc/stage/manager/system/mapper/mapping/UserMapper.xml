@@ -3,11 +3,25 @@
 <mapper namespace="com.deepspc.stage.manager.system.mapper.UserMapper">
 
   <resultMap id="BaseUserMap" type="com.deepspc.stage.manager.system.entity.User">
-    <id column="employee_id" property="userId"/>
-    <result column="employee_name" property="userName"/>
-    <result column="id_num" property="userCode"/>
+    <id column="user_id" property="userId"/>
+    <result column="user_name" property="userName"/>
+    <result column="account" property="account"/>
+    <result column="password" property="password"/>
+    <result column="salt" property="salt"/>
+    <result column="dept_id" property="deptId"/>
+    <result column="dept_name" property="deptName"/>
+    <result column="email" property="email"/>
+    <result column="contact_no" property="contactNo"/>
+    <result column="gender" property="gender"/>
+    <result column="employee_status" property="userStatus"/>
+    <result column="avatar" property="avatar"/>
+    <result column="creator_id" property="creatorId"/>
   </resultMap>
-  
+
+  <sql id="column_security">
+    employee_id,employee_name,account,dept_id,dept_name,position,contact_num,email,gender,employee_status,avatar,creator_id
+  </sql>
+
   <select id="getUserForSecurity" resultType="com.deepspc.stage.manager.system.entity.User">
     SELECT
         employee_id "userId",
@@ -105,6 +119,16 @@
       sm.menu_id = pm.relateId
     AND sm.menu_flag = 'Y'
     ORDER BY sm.levels,sm.sort asc
+    </if>
+  </select>
+  
+  <select id="loadUsers" resultMap="BaseUserMap">
+    select
+    <include refid="column_security"/>
+    from oa_employee
+    where 1 = 1
+    <if test="userName != null and userName != ''">
+      and employee_name like CONCAT('%',#{userName},'%')
     </if>
   </select>
   
