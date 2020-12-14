@@ -1,5 +1,7 @@
 package com.deepspc.stage.manager.common;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.deepspc.stage.manager.pojo.LayuiPage;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -21,6 +23,13 @@ public class BaseController {
 
     protected HttpServletResponse getResponse() {
         return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+    }
+
+    protected LayuiPage layuiPage(IPage page) {
+        LayuiPage result = new LayuiPage();
+        result.setCount(page.getTotal());
+        result.setData(page.getRecords());
+        return result;
     }
 
 }

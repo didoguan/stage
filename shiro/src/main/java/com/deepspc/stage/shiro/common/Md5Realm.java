@@ -56,7 +56,7 @@ public class Md5Realm extends AuthorizingRealm {
             throw new CredentialsException();
         }
         ByteSource credentialsSalt = new Md5Hash(user.getSalt());
-        return new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt, getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt, super.getName());
     }
 
     /**

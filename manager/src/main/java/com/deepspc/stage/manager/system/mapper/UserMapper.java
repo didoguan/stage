@@ -1,6 +1,7 @@
 package com.deepspc.stage.manager.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.manager.system.entity.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,5 +28,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userName 名称
      * @return List<User>
      */
-    List<User> loadUsers(@Param("userName") String userName);
+    Page<User> loadUsers(@Param("page") Page page, @Param("userName") String userName);
 }

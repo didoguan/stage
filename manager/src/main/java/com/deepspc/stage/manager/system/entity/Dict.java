@@ -1,43 +1,29 @@
 package com.deepspc.stage.manager.system.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.util.Date;
 
 /**
  * @author gzw
- * @date 2020/12/12 13:42
+ * @date 2020/12/14 9:36
  */
-@TableName("sys_dept")
-public class Dept {
-    /**
-     * 主键id
-     */
-    @TableId(value = "dept_id", type = IdType.ASSIGN_ID)
-    private Long deptId;
+@TableName("sys_dict")
+public class Dict {
 
-    /**
-     * 父部门id
-     */
-    private Long pid;
+    @TableId(value = "dict_id", type = IdType.ASSIGN_ID)
+    private Long dictId;
 
-    /**
-     * 父级ids
-     */
-    private String pids;
+    private Long parentId;
 
-    private String deptName;
+    private String name;
 
-    private String deptCode;
+    private String code;
 
-    /**
-     * 描述
-     */
-    private String description;
+    private String text;
 
-    /**
-     * 排序
-     */
     private Integer sort;
 
     private String systemCode;
@@ -54,56 +40,46 @@ public class Dept {
 
     private Date updateDate;
 
-    public Dept() {
+    public Dict() {}
 
+    public Long getDictId() {
+        return dictId;
     }
 
-    public Long getDeptId() {
-        return deptId;
+    public void setDictId(Long dictId) {
+        this.dictId = dictId;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public Long getPid() {
-        return pid;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public String getName() {
+        return name;
     }
 
-    public String getPids() {
-        return pids;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPids(String pids) {
-        this.pids = pids;
+    public String getCode() {
+        return code;
     }
 
-    public String getDeptName() {
-        return deptName;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
+    public String getText() {
+        return text;
     }
 
-    public String getDeptCode() {
-        return deptCode;
-    }
-
-    public void setDeptCode(String deptCode) {
-        this.deptCode = deptCode;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Integer getSort() {

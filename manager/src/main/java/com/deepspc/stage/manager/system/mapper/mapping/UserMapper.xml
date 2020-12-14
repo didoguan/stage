@@ -8,36 +8,54 @@
     <result column="account" property="account"/>
     <result column="password" property="password"/>
     <result column="salt" property="salt"/>
+    <result column="user_code" property="userCode"/>
     <result column="dept_id" property="deptId"/>
     <result column="dept_name" property="deptName"/>
     <result column="email" property="email"/>
     <result column="contact_no" property="contactNo"/>
     <result column="gender" property="gender"/>
-    <result column="employee_status" property="userStatus"/>
+    <result column="id_no" property="idNo"/>
+    <result column="join_date" property="joinDate"/>
+    <result column="desert_date" property="desertDate"/>
+    <result column="official_date" property="officialDate"/>
+    <result column="work_address" property="workAddress"/>
+    <result column="marriage" property="marriage"/>
+    <result column="user_status" property="userStatus"/>
+    <result column="position" property="position"/>
+    <result column="contact_address" property="contactAddress"/>
     <result column="avatar" property="avatar"/>
+    <result column="system_code" property="systemCode"/>
     <result column="creator_id" property="creatorId"/>
+    <result column="creator_name" property="creatorName"/>
+    <result column="create_date" property="createDate"/>
+    <result column="updator_id" property="updatorId"/>
+    <result column="updator_name" property="updatorName"/>
+    <result column="update_date" property="updateDate"/>
   </resultMap>
 
-  <sql id="column_security">
-    employee_id,employee_name,account,dept_id,dept_name,position,contact_num,email,gender,employee_status,avatar,creator_id
+  <sql id="column_user_security">
+    user_id,user_name,account,dept_id,dept_name,position,contact_no,email,gender,user_status,avatar,system_code,creator_id,creator_name,create_date
+  </sql>
+
+  <sql id="default_user_column">
+    user_id,user_name,account,password,salt,user_code,dept_id,dept_name,position,contact_no,email,gender,id_no,join_date,desert_date,official_date,work_address,marriage,user_status,position,contact_address,avatar,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
   </sql>
 
   <select id="getUserForSecurity" resultType="com.deepspc.stage.manager.system.entity.User">
     SELECT
-        employee_id "userId",
-        employee_name "userName",
+        user_id "userId",
+        user_name "userName",
         account,
         password,
-        id_num "userCode",
+        user_code "userCode",
         salt,
         dept_id "deptId",
         dept_name "deptName",
         email,
-        contact_num "contactNum",
-        gender,
-        birth_date "birthDate"
+        contact_no "contactNo",
+        gender
     FROM
-        oa_employee
+        sys_user
     WHERE
         account = #{account}
   </select>
@@ -64,8 +82,8 @@
     FROM (
     </if>
     SELECT
-        b.employee_id "userId",
-        b.employee_name "userName",
+        b.user_id "userId",
+        b.user_name "userName",
         b.avatar,
         a.role_id "roleId",
         a.permission_id "permissionId",
@@ -106,10 +124,10 @@
             ua.access_id = p.permission_id
             AND ua.user_id = #{userId}
         ) a,
-        oa_employee b
+        sys_user b
     WHERE
-        b.employee_id = a.user_id
-        AND b.employee_id = #{userId}
+        b.user_id = a.user_id
+        AND b.user_id = #{userId}
     <if test="permissType = 'menu'">
       ) pm,
       sys_menu sm
@@ -124,11 +142,11 @@
   
   <select id="loadUsers" resultMap="BaseUserMap">
     select
-    <include refid="column_security"/>
-    from oa_employee
+    <include refid="column_user_security"/>
+    from sys_user
     where 1 = 1
     <if test="userName != null and userName != ''">
-      and employee_name like CONCAT('%',#{userName},'%')
+      and user_name like CONCAT('%',#{userName},'%')
     </if>
   </select>
   

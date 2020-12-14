@@ -1,7 +1,9 @@
 package com.deepspc.stage.manager.system.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.core.utils.StringUtil;
+import com.deepspc.stage.manager.common.BaseOrmService;
 import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.mapper.UserMapper;
@@ -19,7 +21,7 @@ import java.util.*;
  * @date 2020/11/25 16:55
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements IUserService {
 
     @Override
     public ShiroUser getUser(String account) {
@@ -56,6 +58,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         list.add(systemMenus);
         return list;
+    }
+
+    @Override
+    public Page<User> getUsers(String userName) {
+        Page page = defaultPage();
+        return this.baseMapper.loadUsers(page, userName);
     }
 
     private List<MenuNode> getUserMenus() {

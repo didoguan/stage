@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.manager.system.mapper.MenuMapper">
+  <resultMap id="BaseDictMap" type="com.deepspc.stage.manager.system.entity.Dict">
+    <id column="dict_id" property="dictId"/>
+    <result column="parent_id" property="parentId"/>
+    <result column="name" property="name"/>
+    <result column="code" property="code"/>
+    <result column="text" property="text"/>
+    <result column="sort" property="sort"/>
+    <result column="system_code" property="systemCode"/>
+    <result column="creator_id" property="creatorId"/>
+    <result column="creator_name" property="creatorName"/>
+    <result column="create_date" property="createDate"/>
+    <result column="updator_id" property="updatorId"/>
+    <result column="updator_name" property="updatorName"/>
+    <result column="update_date" property="updateDate"/>
+  </resultMap>
+
+  <sql id="default_dict_column">
+    dict_id,parent_id,name,code,text,sort,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
+  </sql>
+
+</mapper>

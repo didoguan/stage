@@ -33,7 +33,7 @@
 
             <div class="info-list-item">
               <i class="layui-icon layui-icon-cellphone"></i>
-              <p th:text="${User.contactNum}">13800138000</p>
+              <p th:text="${User.contactNo}">13800138000</p>
             </div>
             <div class="info-list-item">
               <i class="layui-icon layui-icon-location"></i>
@@ -83,15 +83,9 @@
                     </div>
                   </div>
                   <div class="layui-form-item">
-                    <label class="layui-form-label">生日:</label>
-                    <div class="layui-input-block">
-                      <input type="text" id="birthDate" name="birthDate" th:value="${#dates.format(User.birthDate, 'yyyy-MM-dd')}" class="layui-input" autocomplete="off"/>
-                    </div>
-                  </div>
-                  <div class="layui-form-item">
                     <label class="layui-form-label">电话:</label>
                     <div class="layui-input-block">
-                      <input type="text" name="contactNum" id="contactNum" th:value="${User.contactNum}" class="layui-input" autocomplete="off"/>
+                      <input type="text" name="contactNum" id="contactNo" th:value="${User.contactNo}" class="layui-input" autocomplete="off"/>
                     </div>
                   </div>
                   <div class="layui-form-item">

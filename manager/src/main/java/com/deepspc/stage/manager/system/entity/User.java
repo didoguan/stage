@@ -14,7 +14,7 @@ import java.util.Date;
  * @author user
  * @date 2020/11/25 16:25
  */
-@TableName("oa_employee")
+@TableName("sys_user")
 public class User implements Serializable {
     private static final long serialVersionUID = -4690820194246122464L;
 

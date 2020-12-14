@@ -1,5 +1,7 @@
 package com.deepspc.stage.manager.system.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.model.MenuNode;
 import com.deepspc.stage.shiro.service.IShiroUserService;
 
@@ -13,4 +15,11 @@ public interface IUserService extends IShiroUserService {
      * @return List<Map<String, Object>>
      */
     List<Map<String, Object>> getUserSystemMenus();
+
+    /**
+     * 根据条件获取用户列表
+     * @param userName 用户名称
+     * @return List<User>
+     */
+    Page<User> getUsers(String userName);
 }

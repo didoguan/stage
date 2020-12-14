@@ -11,7 +11,7 @@ import java.util.Date;
  * @author gzw
  * @date 2020/12/4 9:51
  */
-@TableName("oa_busi_attachment")
+@TableName("sys_attachment")
 public class AttachmentInfo implements Serializable {
 
     private static final long serialVersionUID = 2068601733648391231L;

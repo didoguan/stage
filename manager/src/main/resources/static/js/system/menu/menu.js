@@ -1,7 +1,6 @@
-layui.use(['layer', 'ztree', 'laydate', 'ax', 'treeTable', 'func'], function () {
+layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
   let layer = layui.layer;
   let $ZTree = layui.ztree;
-  let $ax = layui.ax;
   let laydate = layui.laydate;
   let treeTable = layui.treeTable;
   let func = layui.func;
@@ -134,13 +133,18 @@ layui.use(['layer', 'ztree', 'laydate', 'ax', 'treeTable', 'func'], function () 
       height: "full-130",
       cols: Menu.initColumn(),
       reqData: function (data, callback) {
-        var ajax = new $ax(ctxPath + '/menu/menuTree', function (res) {
-          callback(res.data);
-        }, function (res) {
-          layer.msg("数据加载出错", {icon: 2});
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: ctxPath + "/menu/menuTree",
+          data: reqData,
+          success : function(result) {
+            callback(result.data);
+          },
+          error : function(e){
+            layer.msg("数据加载出错！", {icon: 2});
+          }
         });
-        ajax.setData(reqData);
-        ajax.start();
       }
     });
   };

@@ -1,11 +1,16 @@
 package com.deepspc.stage.manager.system.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
+import com.deepspc.stage.manager.system.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author gzw
@@ -13,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserServiceImpl userService;
 
@@ -43,8 +48,9 @@ public class UserController {
 
     @PostMapping("/loadUsers")
     @ResponseBody
-    public ResponseData loadUsers(@RequestParam(required = false) String userName) {
-
-        return ResponseData.success();
+    public Object loadUsers(@RequestParam(required = false) String userName) {
+        Page<User> list = userService.getUsers(userName);
+        new UserWrapper(list).wrap();
+        return layuiPage(list);
     }
 }

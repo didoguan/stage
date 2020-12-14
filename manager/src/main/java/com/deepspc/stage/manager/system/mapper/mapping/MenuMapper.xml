@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deepspc.stage.manager.system.mapper.MenuMapper">
-  <resultMap id="BaseMap" type="com.deepspc.stage.manager.system.entity.Menu">
+  <resultMap id="BaseMenuMap" type="com.deepspc.stage.manager.system.entity.Menu">
     <id column="menu_id" property="menuId"/>
     <result column="code" property="code"/>
     <result column="pcode" property="pcode"/>
@@ -16,19 +16,22 @@
     <result column="status" property="status"/>
     <result column="new_page_flag" property="newPageFlag"/>
     <result column="open_flag" property="openFlag"/>
-    <result column="create_time" property="createTime"/>
-    <result column="update_time" property="updateTime"/>
-    <result column="create_user" property="createUser"/>
-    <result column="update_user" property="updateUser"/>
+    <result column="system_code" property="systemCode"/>
+    <result column="creator_id" property="creatorId"/>
+    <result column="creator_name" property="creatorName"/>
+    <result column="create_date" property="createDate"/>
+    <result column="updator_id" property="updatorId"/>
+    <result column="updator_name" property="updatorName"/>
+    <result column="update_date" property="updateDate"/>
   </resultMap>
 
-  <sql id="base_column">
-    menu_id,code,pcode,pcodes,name,icon,url,sort,levels,menu_flag,description,status,new_page_flag,open_flag,create_time,update_time,create_user,update_user
+  <sql id="default_menu_column">
+    menu_id,code,pcode,pcodes,name,icon,url,sort,levels,menu_flag,description,status,new_page_flag,open_flag,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
   </sql>
 
-  <select id="selectMenuTree" resultMap="BaseMap">
+  <select id="selectMenuTree" resultMap="BaseMenuMap">
     select
-    <include refid="base_column"/>
+    <include refid="default_menu_column"/>
     from sys_menu
     where status = 'ENABLE'
     <if test="menuName != null and menuName != ''">
@@ -52,9 +55,9 @@
         m1.menu_id ASC
   </select>
   
-  <select id="getSubMenusByCode" resultMap="BaseMap">
+  <select id="getSubMenusByCode" resultMap="BaseMenuMap">
     SELECT
-    <include refid="base_column"/>
+    <include refid="default_menu_column"/>
     FROM sys_menu
     WHERE pcodes LIKE CONCAT('%$[',#{code},'$]%') escape '$'
   </select>

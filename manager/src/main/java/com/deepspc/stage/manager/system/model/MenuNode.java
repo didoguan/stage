@@ -1,6 +1,6 @@
 package com.deepspc.stage.manager.system.model;
 
-import com.deepspc.stage.core.enums.StageCoreEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.*;
@@ -59,6 +59,7 @@ public class MenuNode implements Comparable, Serializable {
     /**
      * 子节点的集合
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<MenuNode> children;
 
     /**
