@@ -1,7 +1,6 @@
-layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
+layui.use(['layer', 'ztree', 'treeTable', 'func'], function () {
   let layer = layui.layer;
   let $ZTree = layui.ztree;
-  let laydate = layui.laydate;
   let treeTable = layui.treeTable;
   let func = layui.func;
 
@@ -53,7 +52,7 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
     let queryData = {};
     queryData['menuName'] = $("#menuName").val();
     queryData['menuCode'] = $("#level").val();
-    Menu.initTable(Menu.tableId, queryData);
+    Menu.initTable( queryData);
   };
 
   /**
@@ -67,7 +66,7 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
       content: ctxPath + '/menu/addModifyPage?menuId=',
       tableId: Menu.tableId,
       endCallback: function () {
-        Menu.initTable(Menu.tableId);
+        Menu.initTable();
       }
     });
   };
@@ -85,7 +84,7 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
       content: ctxPath + "/menu/addModifyPage?menuId=" + data.menuId,
       tableId: Menu.tableId,
       endCallback: function () {
-        Menu.initTable(Menu.tableId);
+        Menu.initTable();
       }
     });
   };
@@ -107,7 +106,7 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
         success : function(result) {
           layer.msg("删除成功！", {icon: 1});
           Menu.condition.menuId = "";
-          Menu.initTable(Menu.tableId);
+          Menu.initTable();
         },
         error : function(e){
           layer.msg("删除失败！", {icon: 2});
@@ -120,9 +119,9 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
   /**
    * 初始化表格
    */
-  Menu.initTable = function (menuId, reqData) {
+  Menu.initTable = function (reqData) {
     return treeTable.render({
-      elem: '#' + menuId,
+      elem: '#' + Menu.tableId,
       tree: {
         iconIndex: 1,           // 折叠图标显示在第几列
         idName: 'code',         // 自定义id字段的名称
@@ -150,19 +149,12 @@ layui.use(['layer', 'ztree', 'laydate', 'treeTable', 'func'], function () {
   };
 
   // 渲染表格
-  insTb = Menu.initTable(Menu.tableId);
+  insTb = Menu.initTable();
   $('#expandAll').click(function () {
     insTb.expandAll();
   });
   $('#foldAll').click(function () {
     insTb.foldAll();
-  });
-
-  //渲染时间选择框
-  laydate.render({
-    elem: '#timeLimit',
-    range: true,
-    max: Stage.currentDate()
   });
 
   //初始化左侧部门树

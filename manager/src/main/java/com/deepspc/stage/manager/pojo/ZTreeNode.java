@@ -1,6 +1,9 @@
 package com.deepspc.stage.manager.pojo;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 /**
  * jquery ztree 插件的节点
  *
@@ -10,11 +13,13 @@ public class ZTreeNode {
     /**
      * 节点id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 父节点id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long pId;
 
     /**

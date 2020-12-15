@@ -30,20 +30,13 @@ public class DeptController extends BaseController {
         return "system/dept/dept";
     }
 
-    @GetMapping("/deptTree")
+    @RequestMapping("/deptTree")
     @ResponseBody
     public List<LayuiTreeNode> deptTree() {
         List<LayuiTreeNode> list = deptService.layuiTree();
-        LayuiTreeNode treeNode = new LayuiTreeNode();
-        treeNode.setChecked(true);
-        treeNode.setId(0L);
-        treeNode.setTitle("顶级");
-        treeNode.setSpread(true);
-        treeNode.setPid(-1L);
-        list.add(treeNode);
 
         DefaultBuildTreeFactory<LayuiTreeNode> buildTreeFactory = new DefaultBuildTreeFactory<>();
-        buildTreeFactory.setRootParentId("-1");
+        buildTreeFactory.setRootParentId("0");
         return buildTreeFactory.doTreeBuild(list);
     }
 }

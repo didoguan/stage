@@ -21,7 +21,7 @@
     let ctxPath = [[${#httpServletRequest.getContextPath()}]];
   </script>
 </head>
-<body th:fragment="public_js(scripts)">
+<body style="height: 100%" th:fragment="public_js(scripts)">
 <script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/js/common.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/expand/plugins/jquery-layout/jquery-2.1.4.min.js}"></script>

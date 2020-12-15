@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -19,6 +21,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -4690820194246122464L;
 
     @TableId(value = "user_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     private String userName;
@@ -37,6 +40,7 @@ public class User implements Serializable {
 
     private String avatar;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long deptId;
 
     private String deptName;

@@ -28,5 +28,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userName 名称
      * @return List<User>
      */
-    Page<User> loadUsers(@Param("page") Page page, @Param("userName") String userName);
+    Page<User> loadUsers(@Param("page") Page page, @Param("userName") String userName, @Param("deptId") Long deptId);
 }

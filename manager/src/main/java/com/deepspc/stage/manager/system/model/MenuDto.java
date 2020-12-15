@@ -1,5 +1,8 @@
 package com.deepspc.stage.manager.system.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +15,7 @@ public class MenuDto implements Serializable {
     /**
      * 主键id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long menuId;
     /**
      * 菜单编号
@@ -20,6 +24,7 @@ public class MenuDto implements Serializable {
     /**
      * 菜单父级id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long pid;
     /**
      * 菜单父编号

@@ -34,7 +34,7 @@
   </resultMap>
 
   <sql id="column_user_security">
-    user_id,user_name,account,dept_id,dept_name,position,contact_no,email,gender,user_status,avatar,system_code,creator_id,creator_name,create_date
+    user_id,user_name,account,user_code,dept_id,dept_name,position,contact_no,email,gender,id_no,join_date,desert_date,official_date,work_address,marriage,user_status,position,contact_address,avatar,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
   </sql>
 
   <sql id="default_user_column">
@@ -147,6 +147,9 @@
     where 1 = 1
     <if test="userName != null and userName != ''">
       and user_name like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="deptId != null">
+      and dept_id = #{deptId}
     </if>
   </select>
   

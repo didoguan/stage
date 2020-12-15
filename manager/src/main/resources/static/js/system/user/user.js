@@ -12,6 +12,7 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
     tableId: "userTable",    //表格id
     condition: {
       userName: "",
+      deptId: ""
     }
   };
 
@@ -21,15 +22,18 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
   User.initColumn = function () {
     return [[
       {type: 'checkbox'},
-      {field: 'userId', hide: true, sort: true, title: '用户id'},
-      {field: 'account', align: "center", sort: true, title: '账号'},
-      {field: 'userName', align: "center", sort: true, title: '名称'},
-      {field: 'deptName', align: "center", sort: true, title: '部门'},
-      {field: 'position', align: "center", sort: true, title: '职位'},
-      {field: 'contactNum', align: "center", sort: true, title: '联系电话', minWidth: 117},
-      {field: 'createDate', align: "center", sort: true, title: '创建日期', minWidth: 160},
-      {field: 'userStatus', align: "center", sort: true, title: '状态'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 480}
+      {field: 'userId', hide: true, sort: false, title: '用户id'},
+      {field: 'account', align: "center", sort: false, title: '账号'},
+      {field: 'userName', align: "center", sort: false, title: '名称'},
+      {field: 'userCode', align: "center", sort: false, title: '编号'},
+      {field: 'deptName', align: "center", sort: false, title: '部门', width: 120},
+      {field: 'position', align: "center", sort: false, title: '职位'},
+      {field: 'contactNum', align: "center", sort: false, title: '联系电话', width: 117},
+      {field: 'gender', align: "center", sort: false, title: '性别'},
+      {field: 'joinDate', align: "center", sort: false, title: '入职日期', width: 160},
+      {field: 'createDate', align: "center", sort: false, title: '创建日期', width: 160},
+      {field: 'userStatus', align: "center", sort: false, title: '状态'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 120}
     ]];
   };
 
@@ -46,10 +50,13 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
    */
   User.search = function () {
     let queryData = {};
-    queryData['userName'] = $("#userName").val();
+    queryData['userName'] = User.condition.userName;
+    queryData['deptId'] = User.condition.deptId;
     table.reload(User.tableId, {
       where: queryData, page: {curr: 1}
     });
+    User.condition.userName = "";
+    User.condition.deptId = "";
   };
 
   /**
@@ -149,6 +156,8 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
     elem: '#' + User.tableId,
     url: ctxPath + '/user/loadUsers',
     page: true,
+    limits: [30,50,100],
+    limit: 30,
     height: "full-98",
     cellMinWidth: 100,
     cols: User.initColumn()

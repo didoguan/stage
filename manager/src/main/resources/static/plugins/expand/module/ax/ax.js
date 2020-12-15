@@ -6,11 +6,11 @@ layui.define(['jquery'], function (exports) {
           param = defaultParam;
         }
         this.url = url;
-        this.type = param.type|defaultParam.type;
+        this.type = param.type || defaultParam.type;
         this.data = {};
-        this.dataType = param.dataType|defaultParam.dataType;
-        this.contentType = param.contentType|defaultParam.contentType;
-        this.async = param.async|defaultParam.async;
+        this.dataType = param.dataType || defaultParam.dataType;
+        this.contentType = param.contentType || defaultParam.contentType;
+        this.async = param.async || defaultParam.async;
         this.success = success;
         this.error = error;
     };

@@ -61,9 +61,9 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
     }
 
     @Override
-    public Page<User> getUsers(String userName) {
+    public Page<User> getUsers(String userName, Long deptId) {
         Page page = defaultPage();
-        return this.baseMapper.loadUsers(page, userName);
+        return this.baseMapper.loadUsers(page, userName, deptId);
     }
 
     private List<MenuNode> getUserMenus() {

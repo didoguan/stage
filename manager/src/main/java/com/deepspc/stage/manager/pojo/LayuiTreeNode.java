@@ -1,6 +1,8 @@
 package com.deepspc.stage.manager.pojo;
 
 import com.deepspc.stage.core.common.Tree;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,11 +18,13 @@ public class LayuiTreeNode implements Serializable, Tree {
     /**
      * 节点id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 父级节点id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long pid;
 
     /**

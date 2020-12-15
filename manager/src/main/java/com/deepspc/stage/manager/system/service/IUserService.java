@@ -19,7 +19,8 @@ public interface IUserService extends IShiroUserService {
     /**
      * 根据条件获取用户列表
      * @param userName 用户名称
+     * @param deptId 部门标识
      * @return List<User>
      */
-    Page<User> getUsers(String userName);
+    Page<User> getUsers(String userName, Long deptId);
 }

@@ -110,6 +110,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         if (null != parent) {
             menuDto.setPid(parent.getMenuId());
             menuDto.setPcodeName(parent.getName());
+        } else {
+            menuDto.setPid(0L);
+            menuDto.setPcodeName("顶级");
         }
 
         return menuDto;
