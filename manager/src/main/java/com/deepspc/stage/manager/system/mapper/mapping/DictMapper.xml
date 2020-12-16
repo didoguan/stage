@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.deepspc.stage.manager.system.mapper.MenuMapper">
+<mapper namespace="com.deepspc.stage.manager.system.mapper.DictMapper">
   <resultMap id="BaseDictMap" type="com.deepspc.stage.manager.system.entity.Dict">
     <id column="dict_id" property="dictId"/>
     <result column="parent_id" property="parentId"/>
+    <result column="parent_code" property="parentCode"/>
     <result column="name" property="name"/>
     <result column="code" property="code"/>
     <result column="text" property="text"/>
@@ -18,7 +19,42 @@
   </resultMap>
 
   <sql id="default_dict_column">
-    dict_id,parent_id,name,code,text,sort,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
+    dict_id,parent_id,parent_code,name,code,text,sort,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
   </sql>
 
+  <select id="loadDict" resultMap="BaseDictMap">
+    SELECT
+    <include refid="default_dict_column"/>
+    FROM
+        sys_dict
+    WHERE
+        1 = 1
+    <if test="parentCode != null and parentCode != ''">
+    AND parent_code = #{parentCode}
+    </if>
+    <if test="code != null and code != ''">
+    AND CODE = #{code}
+    </if>
+    <if test="name != null and name != ''">
+    AND NAME = #{name}
+    </if>
+  </select>
+  
+  <select id="getDictAndChildren" resultMap="BaseDictMap">
+    SELECT
+    <include refid="default_dict_column"/>
+    FROM
+        sys_dict
+    WHERE
+      parent_code IN
+    <foreach collection="codes" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+      OR CODE IN
+    <foreach collection="codes" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    ORDER BY
+        sort
+  </select>
 </mapper>

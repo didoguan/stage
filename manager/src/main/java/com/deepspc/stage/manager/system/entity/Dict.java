@@ -1,22 +1,33 @@
 package com.deepspc.stage.manager.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author gzw
  * @date 2020/12/14 9:36
  */
 @TableName("sys_dict")
-public class Dict {
+public class Dict implements Serializable {
+
+    private static final long serialVersionUID = -2666673013746764583L;
 
     @TableId(value = "dict_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long dictId;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
+
+    private String parentCode;
 
     private String name;
 
@@ -39,6 +50,9 @@ public class Dict {
     private String updatorName;
 
     private Date updateDate;
+
+    @TableField(exist = false)
+    private List<Dict> children;
 
     public Dict() {}
 
@@ -144,5 +158,21 @@ public class Dict {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public List<Dict> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Dict> children) {
+        this.children = children;
     }
 }

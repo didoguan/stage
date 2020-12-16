@@ -73,6 +73,10 @@ public class User implements Serializable {
 
     private String contactAddress;
 
+    private String emergencyContactPerson;
+
+    private String emergencyContactNumber;
+
     private String systemCode;
 
     private Long creatorId;
@@ -327,5 +331,21 @@ public class User implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getEmergencyContactPerson() {
+        return emergencyContactPerson;
+    }
+
+    public void setEmergencyContactPerson(String emergencyContactPerson) {
+        this.emergencyContactPerson = emergencyContactPerson;
+    }
+
+    public String getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
     }
 }

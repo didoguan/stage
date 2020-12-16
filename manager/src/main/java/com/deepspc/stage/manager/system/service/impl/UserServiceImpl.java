@@ -1,10 +1,13 @@
 package com.deepspc.stage.manager.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.core.utils.StringUtil;
 import com.deepspc.stage.manager.common.BaseOrmService;
 import com.deepspc.stage.manager.constant.Const;
+import com.deepspc.stage.manager.exception.ManagerExceptionCode;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.mapper.UserMapper;
 import com.deepspc.stage.manager.system.model.MenuNode;
@@ -13,6 +16,7 @@ import com.deepspc.stage.manager.system.service.IUserService;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -64,6 +68,44 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
     public Page<User> getUsers(String userName, Long deptId) {
         Page page = defaultPage();
         return this.baseMapper.loadUsers(page, userName, deptId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveUpdateUser(User user) {
+        Long userId = user.getUserId();
+        String account = user.getAccount();
+        String userCode = user.getUserCode();
+        ShiroUser shiroUser = ShiroKit.getShiroUser();
+        if (StringUtil.isNotBlank(userCode)) {
+            //检查userCode是否已经存在
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("user_code", userCode);
+            User exists = this.baseMapper.selectOne(wrapper);
+            if (null != exists && null != userId && exists.getUserId().longValue() != userId.longValue()) {
+                throw new StageException(ManagerExceptionCode.USER_CODE_EXISTS.getCode(),
+                        ManagerExceptionCode.USER_CODE_EXISTS.getMessage());
+            }
+        }
+        if (null == userId) {
+            //检查账号是否已经存在
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("account", account);
+            User exists = this.baseMapper.selectOne(wrapper);
+            if (null != exists) {
+                throw new StageException(ManagerExceptionCode.USER_ACCOUNT_EXISTS.getCode(),
+                        ManagerExceptionCode.USER_ACCOUNT_EXISTS.getMessage());
+            }
+            user.setCreatorId(shiroUser.getUserId());
+            user.setCreateDate(new Date());
+            user.setCreatorName(shiroUser.getUserName());
+            this.baseMapper.insert(user);
+        } else {
+            user.setUpdatorId(shiroUser.getUserId());
+            user.setUpdatorName(shiroUser.getUserName());
+            user.setUpdateDate(new Date());
+            this.baseMapper.updateById(user);
+        }
     }
 
     private List<MenuNode> getUserMenus() {

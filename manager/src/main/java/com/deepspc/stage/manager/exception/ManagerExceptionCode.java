@@ -19,7 +19,10 @@ public enum ManagerExceptionCode {
 
     ENCODING_EXCEPTION("718", "编码出错"),
     MENU_CODE_EXISTS("719", "菜单编码已存在"),
-    MENU_CODE_PCODE_MATCH("720", "菜单编码与父编码不能一样");
+    MENU_CODE_PCODE_MATCH("720", "菜单编码与父编码不能一样"),
+
+    USER_CODE_EXISTS("721", "用户编号已经存在"),
+    USER_ACCOUNT_EXISTS("722", "用户账号已经存在");
 
     private String code;
 

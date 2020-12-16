@@ -23,4 +23,10 @@ public interface IUserService extends IShiroUserService {
      * @return List<User>
      */
     Page<User> getUsers(String userName, Long deptId);
+
+    /**
+     * 添加或修改用户
+     * @param user 用户信息
+     */
+    void saveUpdateUser(User user);
 }

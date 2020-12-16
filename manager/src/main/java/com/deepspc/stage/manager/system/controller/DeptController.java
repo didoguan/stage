@@ -3,6 +3,7 @@ package com.deepspc.stage.manager.system.controller;
 import com.deepspc.stage.core.factory.DefaultBuildTreeFactory;
 import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.pojo.LayuiTreeNode;
+import com.deepspc.stage.manager.pojo.ZTreeNode;
 import com.deepspc.stage.manager.system.service.IDeptService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,5 +39,11 @@ public class DeptController extends BaseController {
         DefaultBuildTreeFactory<LayuiTreeNode> buildTreeFactory = new DefaultBuildTreeFactory<>();
         buildTreeFactory.setRootParentId("0");
         return buildTreeFactory.doTreeBuild(list);
+    }
+
+    @RequestMapping("/selectDeptTree")
+    @ResponseBody
+    public List<ZTreeNode> selectDeptTree() {
+        return deptService.tree();
     }
 }
