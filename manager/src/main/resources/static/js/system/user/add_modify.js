@@ -85,8 +85,15 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     //职位
     let positionDatas = dictMap["position"].children;
     if (positionDatas) {
+      let selected = false;
+      let positionVal = $("#position").attr("value");
       $.each(positionDatas, function (index, item) {
-        $("#position").append(new Option(item.name, item.code));
+        if (item.code == positionVal) {
+          selected = true;
+        } else {
+          selected = false;
+        }
+        $("#position").append(new Option(item.name, item.code, false, selected));
       })
     }
     form.render('select');

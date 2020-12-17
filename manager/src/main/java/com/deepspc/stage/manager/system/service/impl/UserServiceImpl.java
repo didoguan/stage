@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.core.utils.JsonUtil;
+import com.deepspc.stage.core.utils.StageUtil;
 import com.deepspc.stage.core.utils.StringUtil;
 import com.deepspc.stage.manager.common.BaseOrmService;
 import com.deepspc.stage.manager.constant.Const;
@@ -77,28 +78,25 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
         String account = user.getAccount();
         String userCode = user.getUserCode();
         ShiroUser shiroUser = ShiroKit.getShiroUser();
-        if (StringUtil.isNotBlank(userCode)) {
-            //检查userCode是否已经存在
-            QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("user_code", userCode);
-            User exists = this.baseMapper.selectOne(wrapper);
-            if (null != exists && null != userId && exists.getUserId().longValue() != userId.longValue()) {
-                throw new StageException(ManagerExceptionCode.USER_CODE_EXISTS.getCode(),
-                        ManagerExceptionCode.USER_CODE_EXISTS.getMessage());
-            }
+        //检查userCode,account是否已经存在
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_code", userCode)
+                .or()
+                .eq("account", account);
+        User exists = this.baseMapper.selectOne(wrapper);
+        if ((null != exists && null != userId && userId.longValue() != exists.getUserId().longValue()) || (null != exists && null == userId)) {
+            throw new StageException(ManagerExceptionCode.USER_CODE_ACCOUNT_EXISTS.getCode(),
+                    ManagerExceptionCode.USER_CODE_ACCOUNT_EXISTS.getMessage());
         }
         if (null == userId) {
-            //检查账号是否已经存在
-            QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("account", account);
-            User exists = this.baseMapper.selectOne(wrapper);
-            if (null != exists) {
-                throw new StageException(ManagerExceptionCode.USER_ACCOUNT_EXISTS.getCode(),
-                        ManagerExceptionCode.USER_ACCOUNT_EXISTS.getMessage());
-            }
+            String salt = StageUtil.getRandomString(5);
+            String pasword = ShiroKit.md5(Const.defaultPassword, salt);
+            user.setSalt(salt);
+            user.setPassword(pasword);
             user.setCreatorId(shiroUser.getUserId());
             user.setCreateDate(new Date());
             user.setCreatorName(shiroUser.getUserName());
+            user.setUserStatus("01");
             this.baseMapper.insert(user);
         } else {
             user.setUpdatorId(shiroUser.getUserId());

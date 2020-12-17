@@ -28,7 +28,7 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
       {field: 'userCode', align: "center", sort: false, title: '编号'},
       {field: 'deptName', align: "center", sort: false, title: '部门', width: 120},
       {field: 'position', align: "center", sort: false, title: '职位'},
-      {field: 'contactNum', align: "center", sort: false, title: '联系电话', width: 117},
+      {field: 'contactNo', align: "center", sort: false, title: '联系电话', width: 117},
       {field: 'gender', align: "center", sort: false, title: '性别'},
       {field: 'joinDate', align: "center", sort: false, title: '入职日期', width: 160},
       {field: 'createDate', align: "center", sort: false, title: '创建日期', width: 160},
@@ -78,7 +78,7 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
   User.onEditUser = function (data) {
     func.open({
       title: '修改用户',
-      content: ctxPath + '/user/addModify?userId=' + data.userId,
+      content: ctxPath + '/user/addModifyPage?userId=' + data.userId,
       tableId: User.tableId
     });
   };

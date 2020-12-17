@@ -8,6 +8,7 @@ import com.deepspc.stage.manager.constant.Const;
 import com.deepspc.stage.manager.exception.ManagerExceptionCode;
 import com.deepspc.stage.manager.system.entity.User;
 import com.deepspc.stage.manager.system.model.ModifyPassword;
+import com.deepspc.stage.manager.system.service.IDictService;
 import com.deepspc.stage.manager.system.service.impl.UserServiceImpl;
 import com.deepspc.stage.manager.system.wrapper.UserWrapper;
 import com.deepspc.stage.shiro.common.ShiroKit;
@@ -70,7 +71,7 @@ public class UserController extends BaseController {
         return layuiPage(list);
     }
 
-    @GetMapping("/deleteUser")
+    @PostMapping("/deleteUser")
     @ResponseBody
     public ResponseData deleteUser(Long userId) {
         if (null != userId) {

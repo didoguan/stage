@@ -51,4 +51,14 @@
          memoryStoreEvictionPolicy="LRU"
   />
 
+  <!-- 存放字典对象，有效期30分钟 -->
+  <cache name="DictCache"
+         eternal="false"
+         maxElementsInMemory="1000"
+         overflowToDisk="false"
+         diskPersistent="false"
+         timeToIdleSeconds="1800"
+         memoryStoreEvictionPolicy="LRU"
+  />
+
 </ehcache>

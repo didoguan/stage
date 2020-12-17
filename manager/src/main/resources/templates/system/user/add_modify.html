@@ -64,43 +64,43 @@
           <div class="layui-inline layui-col-md6">
             <label class="layui-form-label">入职日期</label>
             <div class="layui-input-block">
-              <input id="joinDate" name="joinDate" th:value="${User?.joinDate}" placeholder="请输入入职日期" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="joinDate" name="joinDate" th:value="${#dates.format(User?.joinDate,'yyyy-MM-dd')}" placeholder="请输入入职日期" type="text" class="layui-input date-icon" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md6">
             <label class="layui-form-label">转正日期</label>
             <div class="layui-input-block">
-              <input id="officialDate" name="officialDate" th:value="${User?.officialDate}" placeholder="请输入转正日期" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="officialDate" name="officialDate" th:value="${#dates.format(User?.officialDate,'yyyy-MM-dd')}" placeholder="请输入转正日期" type="text" class="layui-input date-icon" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md6">
             <label class="layui-form-label">离职日期</label>
             <div class="layui-input-block">
-              <input id="desertDate" name="desertDate" th:value="${User?.desertDate}" placeholder="请输入离职日期" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="desertDate" name="desertDate" th:value="${#dates.format(User?.desertDate,'yyyy-MM-dd')}" placeholder="请输入离职日期" type="text" class="layui-input date-icon" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md6">
             <label class="layui-form-label">紧急联系人</label>
             <div class="layui-input-block">
-              <input id="emergencyContactPerson" name="emergencyContactPerson" th:value="${User?.emergencyContactPerson}" placeholder="请输入紧急联系人" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="emergencyContactPerson" name="emergencyContactPerson" th:value="${User?.emergencyContactPerson}" placeholder="请输入紧急联系人" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">紧急联系人电话</label>
             <div class="layui-input-block">
-              <input id="emergencyContactNumber" name="emergencyContactNumber" th:value="${User?.emergencyContactNumber}" lay-verify="phone" placeholder="请输入紧急联系人电话" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="emergencyContactNumber" name="emergencyContactNumber" th:value="${User?.emergencyContactNumber}" lay-verify="phone" placeholder="请输入紧急联系人电话" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">工作地址</label>
             <div class="layui-input-block">
-              <input id="workAddress" name="workAddress" th:value="${User?.workAddress}" placeholder="请输入工作地址" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="workAddress" name="workAddress" th:value="${User?.workAddress}" placeholder="请输入工作地址" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">联系地址</label>
             <div class="layui-input-block">
-              <input id="contactAddress" name="contactAddress" th:value="${User?.contactAddress}" placeholder="请输入联系地址" type="text" class="layui-input date-icon" autocomplete="off"/>
+              <input id="contactAddress" name="contactAddress" th:value="${User?.contactAddress}" placeholder="请输入联系地址" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
           <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">职位<span style="color: red;">*</span></label>
             <div class="layui-input-block">
-              <select name="position" id="position" xm-select="selPosition" lay-verify="required" required>
+              <select name="position" id="position" th:value="${User?.position}" lay-verify="required" required>
                 <option value="">--请选择--</option>
               </select>
             </div>

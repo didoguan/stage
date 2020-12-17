@@ -22,7 +22,8 @@ public enum ManagerExceptionCode {
     MENU_CODE_PCODE_MATCH("720", "菜单编码与父编码不能一样"),
 
     USER_CODE_EXISTS("721", "用户编号已经存在"),
-    USER_ACCOUNT_EXISTS("722", "用户账号已经存在");
+    USER_ACCOUNT_EXISTS("722", "用户账号已经存在"),
+    USER_CODE_ACCOUNT_EXISTS("723", "用户编号或账号已经存在");
 
     private String code;
 

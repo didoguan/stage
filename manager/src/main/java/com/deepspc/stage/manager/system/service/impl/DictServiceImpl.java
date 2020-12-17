@@ -30,8 +30,8 @@ public class DictServiceImpl extends BaseOrmService<DictMapper, Dict> implements
         Map<String, Dict> codeMap = null;
         if (null != codes && !codes.isEmpty()) {
             codeMap = new HashMap<>();
-            for (int i = 0; i < codes.size(); i++) {
-                codeMap.put(codes.get(i), new Dict());
+            for (String code : codes) {
+                codeMap.put(code, new Dict());
             }
             List<Dict> list = this.baseMapper.getDictAndChildren(codes);
             if (null != list && !list.isEmpty()) {

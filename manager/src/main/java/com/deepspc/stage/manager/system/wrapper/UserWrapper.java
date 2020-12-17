@@ -2,19 +2,54 @@ package com.deepspc.stage.manager.system.wrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.enums.StageCoreEnum;
+import com.deepspc.stage.core.utils.ApplicationContextUtil;
 import com.deepspc.stage.manager.common.BaseWrapper;
+import com.deepspc.stage.manager.system.entity.Dict;
 import com.deepspc.stage.manager.system.entity.User;
+import com.deepspc.stage.manager.system.service.IDictService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author lenovo
+ * @author gzw
  * @date 2020/12/14 11:10
  */
 public class UserWrapper extends BaseWrapper<User> {
 
+    private IDictService dictService;
+
+    private Map<String, Object> positionMap;
+
+    private Map<String, Object> userStatusMap;
+
     public UserWrapper(Page<User> list) {
         super(list);
+        this.dictService = ApplicationContextUtil.getBean(IDictService.class);
+        List<String> codes = new ArrayList<>(1);
+        codes.add("position");
+        codes.add("user_status");
+        Map<String, Dict> dicts = this.dictService.getDictAndChildren(codes);
+        if (null != dicts && !dicts.isEmpty()) {
+            Dict position = dicts.get("position");
+            List<Dict> positionList = position.getChildren();
+            if (null != position && null != positionList) {
+                positionMap = new HashMap<>();
+                for (Dict dict : positionList) {
+                    positionMap.put(dict.getCode(), dict.getName());
+                }
+            }
+            Dict userStatus = dicts.get("user_status");
+            List<Dict> userStatusList = userStatus.getChildren();
+            if (null != userStatus && null != userStatusList) {
+                userStatusMap = new HashMap<>();
+                for (Dict dict : userStatusList) {
+                    userStatusMap.put(dict.getCode(), dict.getName());
+                }
+            }
+        }
     }
 
     @Override
@@ -28,6 +63,12 @@ public class UserWrapper extends BaseWrapper<User> {
             user.setMarriage(StageCoreEnum.MARRIED.getText());
         } else if (StageCoreEnum.UNMARRIED.getCode().equals(user.getMarriage())) {
             user.setMarriage(StageCoreEnum.UNMARRIED.getText());
+        }
+        if (null != positionMap) {
+            user.setPosition(positionMap.get(user.getPosition()).toString());
+        }
+        if (null != userStatusMap) {
+            user.setUserStatus(userStatusMap.get(user.getUserStatus()).toString());
         }
     }
 }
