@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.manager.system.mapper.RoleMapper">
+  <resultMap id="BaseRoleMap" type="com.deepspc.stage.manager.system.entity.Role">
+    <id column="role_id" property="roleId" />
+    <result column="role_name" property="roleName" />
+    <result column="role_code" property="roleCode" />
+    <result column="description" property="description" />
+    <result column="system_code" property="systemCode" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <sql id="default_role_column">
+    role_id, role_name, role_code, description, system_code, creator_id, creator_name, create_date,updator_id,updator_name,update_date
+  </sql>
+  
+  <select id="loadRoles" resultMap="BaseRoleMap">
+    SELECT
+    <include refid="default_role_column"/>
+    FROM
+        sys_role
+    WHERE
+        1 = 1
+    <if test="roleName != null and roleName != ''">
+      AND role_name like CONCAT('%',#{roleName},'%')
+    </if>
+    <if test="roleCode != null and roleCode != ''">
+      AND role_code like CONCAT('%',#{roleCode},'%')
+    </if>
+  </select>
+</mapper>

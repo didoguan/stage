@@ -33,7 +33,7 @@ public class DeptController extends BaseController {
         return "system/dept/dept";
     }
 
-    @GetMapping("addModifyPage")
+    @GetMapping("/addModifyPage")
     public String addModifyPage(@RequestParam(required = false) Long deptId, Model model) {
         Dept dept = null;
         if (null != deptId) {

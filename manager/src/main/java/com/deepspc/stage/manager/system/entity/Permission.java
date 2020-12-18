@@ -3,6 +3,8 @@ package com.deepspc.stage.manager.system.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,10 +18,12 @@ public class Permission implements Serializable {
     private static final long serialVersionUID = 3801997747308423748L;
 
     @TableId(value = "permission_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long permissionId;
 
     private String permissionName;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long relateId;
     /**
      * 01-菜单，02-按钮

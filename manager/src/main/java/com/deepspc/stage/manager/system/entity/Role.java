@@ -3,6 +3,8 @@ package com.deepspc.stage.manager.system.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +19,7 @@ public class Role implements Serializable {
     private static final long serialVersionUID = -7672499012562714337L;
 
     @TableId(value = "role_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
     private String roleName;

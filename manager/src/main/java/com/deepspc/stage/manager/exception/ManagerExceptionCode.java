@@ -25,7 +25,9 @@ public enum ManagerExceptionCode {
     USER_ACCOUNT_EXISTS("722", "用户账号已经存在"),
     USER_CODE_ACCOUNT_EXISTS("723", "用户编号或账号已经存在"),
 
-    DEPT_CODE_EXISTS("724", "部门编码已经存在");
+    DEPT_CODE_EXISTS("724", "部门编码已经存在"),
+    ROLE_CODE_EXISTS("725", "角色编码已经存在"),
+    PERMISSION_CODE_EXISTS("726", "权限编码已经存在");
 
     private String code;
 
