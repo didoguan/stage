@@ -29,7 +29,7 @@ layui.use(['layer', 'ztree', 'treeTable', 'func'], function () {
       {field: 'code', align: "center", sort: true, title: '菜单编号', minWidth: 120},
       {field: 'pcode', align: "center", sort: true, title: '菜单父编号'},
       {field: 'url', align: "center", sort: true, title: '请求地址'},
-      {field: 'sort', align: "center", sort: true, title: '排序'},
+      {field: 'sort', align: "center", sort: true, title: '序号'},
       {field: 'levels', align: "center", sort: true, title: '层级'},
       {field: 'menuFlag', align: "center", sort: true, title: '是否是菜单'},
       {field: 'status', align: "center", sort: true, title: '状态'},

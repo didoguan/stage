@@ -104,7 +104,7 @@ public class MenuNode implements Comparable, Serializable {
      * 构建页面菜单列表
      */
     public static List<MenuNode> buildTitle(List<MenuNode> nodes) {
-        if (nodes.size() <= 0) {
+        if (null == nodes || nodes.isEmpty()) {
             return nodes;
         }
 

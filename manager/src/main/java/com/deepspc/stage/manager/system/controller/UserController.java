@@ -80,7 +80,7 @@ public class UserController extends BaseController {
         return ResponseData.success();
     }
 
-    @GetMapping("/resetPassword")
+    @PostMapping("/resetPassword")
     @ResponseBody
     public ResponseData resetPassword(Long userId) {
         if (null != userId) {

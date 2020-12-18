@@ -4,7 +4,7 @@
   <title></title>
 </head>
 <div class="layui-body-header">
-  <span class="layui-body-header-title">用户管理</span>
+  <span class="layui-body-header-title">部门管理</span>
 </div>
 
 <div id="myContiner" style="height: 100%">
@@ -15,6 +15,7 @@
       </div>
     </div>
   </div>
+
   <div class="ui-layout-center">
     <div class="layui-fluid">
       <div class="layui-row">
@@ -24,7 +25,7 @@
               <div class="layui-form toolbar">
                 <div class="layui-form-item">
                   <div class="layui-inline">
-                    <input id="userName" class="layui-input" type="text" placeholder="姓名"/>
+                    <input id="deptName" name="deptName" class="layui-input" type="text" placeholder="部门名称"/>
                   </div>
                   <div class="layui-inline">
                     <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
@@ -32,7 +33,7 @@
                   </div>
                 </div>
               </div>
-              <table class="layui-table" id="userTable" lay-filter="userTable"></table>
+              <table class="layui-table" id="deptTable" lay-filter="deptTable"></table>
             </div>
           </div>
         </div>
@@ -41,10 +42,9 @@
   </div>
 </div>
 <div th:replace="common/tree_container :: public_js(~{::script})">
-  <script type="text/javascript" th:src="@{/js/system/user/user.js}"></script>
+  <script type="text/javascript" th:src="@{/js/system/dept/dept.js}"></script>
   <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="reset">重置密码</a>
   </script>
 </div>

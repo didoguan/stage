@@ -65,13 +65,13 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {
     let ajax = new $ax(ctxPath + "/user/saveOrUpdate", function (data) {
-      layer.msg("修改成功！", {icon: 1});
+      layer.msg("提交成功！", {icon: 1});
       //传给上个页面，刷新table用
       admin.putTempData('formOk', true);
       //关掉对话框
       admin.closeThisDialog();
     }, function (data) {
-      layer.msg("修改失败！", {icon: 2});
+      layer.msg("提交失败！", {icon: 2});
     });
     ajax.set(data.field);
     ajax.start();

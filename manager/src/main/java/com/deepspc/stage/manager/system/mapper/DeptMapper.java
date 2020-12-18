@@ -27,5 +27,12 @@ public interface DeptMapper extends BaseMapper<Dept> {
      * @param deptName 部门名称
      * @return List<Dept>
      */
-    List<Dept> loadDepts(@Param("page") Page page, @Param("deptName") String deptName, @Param("deptId") Long deptId);
+    Page<Dept> loadDepts(@Param("page") Page page, @Param("deptName") String deptName, @Param("deptId") Long deptId);
+
+    /**
+     * 查询部门列表(带有父级部门信息)
+     * @param deptId 部门标识
+     * @return List<Dept>
+     */
+    List<Dept> getDeptsWithParent(@Param("deptId") Long deptId);
 }

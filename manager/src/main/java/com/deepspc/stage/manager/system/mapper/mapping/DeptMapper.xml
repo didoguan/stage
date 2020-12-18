@@ -7,6 +7,7 @@
         <result column="pid" property="pid" />
         <result column="pids" property="pids" />
         <result column="dept_name" property="deptName" />
+        <result column="pname" property="pname" />
         <result column="dept_code" property="deptCode" />
         <result column="description" property="description" />
         <result column="sort" property="sort" />
@@ -60,4 +61,29 @@
         order by sort ASC
     </select>
 
+    <select id="getDeptsWithParent" resultMap="BaseDeptMap">
+        SELECT
+            a.dept_id,
+            a.pid,
+            a.pids,
+            a.dept_code,
+            a.dept_name,
+            b.dept_name "pname",
+            a.description,
+            a.sort,
+            a.creator_id,
+            a.creator_name,
+            a.create_date,
+            a.updator_id,
+            a.updator_name,
+            a.update_date
+        FROM
+            sys_dept a
+            LEFT JOIN sys_dept b ON a.pid = b.dept_id
+        WHERE
+            1 = 1
+      <if test="deptId != null">
+            AND a.dept_id = #{deptId}
+      </if>
+    </select>
 </mapper>

@@ -26,14 +26,14 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
       {field: 'account', align: "center", sort: false, title: '账号'},
       {field: 'userName', align: "center", sort: false, title: '名称'},
       {field: 'userCode', align: "center", sort: false, title: '编号'},
-      {field: 'deptName', align: "center", sort: false, title: '部门', width: 120},
+      {field: 'deptName', align: "center", sort: false, title: '部门', width: 130},
       {field: 'position', align: "center", sort: false, title: '职位'},
       {field: 'contactNo', align: "center", sort: false, title: '联系电话', width: 117},
       {field: 'gender', align: "center", sort: false, title: '性别'},
       {field: 'joinDate', align: "center", sort: false, title: '入职日期', width: 160},
       {field: 'createDate', align: "center", sort: false, title: '创建日期', width: 160},
       {field: 'userStatus', align: "center", sort: false, title: '状态'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 120}
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 200}
     ]];
   };
 
@@ -132,7 +132,7 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
    * @param data 点击按钮时候的行数据
    */
   User.resetPassword = function (data) {
-    layer.confirm('是否重置该用户密码？',{
+    layer.confirm('是否重置'+data.userName+'密码？',{
       icon:7,title:'提示'
     },function(index){
       $.ajax({

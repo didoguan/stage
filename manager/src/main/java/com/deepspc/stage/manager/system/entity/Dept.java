@@ -1,7 +1,10 @@
 package com.deepspc.stage.manager.system.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,22 +12,29 @@ import java.util.Date;
  * @date 2020/12/12 13:42
  */
 @TableName("sys_dept")
-public class Dept {
+public class Dept implements Serializable {
+
+    private static final long serialVersionUID = 5385246350678221698L;
     /**
      * 主键id
      */
     @TableId(value = "dept_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long deptId;
 
     /**
      * 父部门id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long pid;
 
     /**
      * 父级ids
      */
     private String pids;
+
+    @TableField(exist = false)
+    private String pname;
 
     private String deptName;
 
@@ -168,5 +178,13 @@ public class Dept {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 }
