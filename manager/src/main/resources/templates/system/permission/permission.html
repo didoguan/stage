@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{},~{})">
+  <title></title>
 </head>
-<body>
+<div class="layui-body-header">
+  <span class="layui-body-header-title">权限管理</span>
+</div>
 
-</body>
-</html>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <div class="layui-form toolbar">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <input id="permissionName" name="permissionName" class="layui-input" type="text" autocomplete="off" placeholder="权限名称"/>
+              </div>
+              <div class="layui-inline">
+                <select name="permissionType" id="permissionType">
+                  <option value="">--权限类型--</option>
+                </select>
+              </div>
+              <div class="layui-inline">
+                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
+                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon layui-icon-add-circle"></i>添加</button>
+                <button id="userAssign" class="layui-btn icon-btn"><i class="layui-icon layui-icon-user"></i>用户分配</button>
+              </div>
+            </div>
+          </div>
+          <table class="layui-table" id="permissionTable" lay-filter="permissionTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="common/common :: public_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/system/permission/permission.js}"></script>
+  <script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+  </script>
+</div>

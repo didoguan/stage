@@ -184,11 +184,6 @@ layui.use(['layer', 'table', 'ax', 'func', 'tree'], function () {
     User.openAddUser();
   });
 
-  // 导出excel
-  $('#btnExp').click(function () {
-    User.exportExcel();
-  });
-
   // 工具条点击事件
   table.on('tool(' + User.tableId + ')', function (obj) {
     let data = obj.data;

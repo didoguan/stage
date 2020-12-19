@@ -1,6 +1,7 @@
 package com.deepspc.stage.manager.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,6 +26,9 @@ public class Permission implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long relateId;
+
+    @TableField(exist = false)
+    private String relateName;
     /**
      * 01-菜单，02-按钮
      */
@@ -148,5 +152,13 @@ public class Permission implements Serializable {
 
     public void setDataUrl(String dataUrl) {
         this.dataUrl = dataUrl;
+    }
+
+    public String getRelateName() {
+        return relateName;
+    }
+
+    public void setRelateName(String relateName) {
+        this.relateName = relateName;
     }
 }
