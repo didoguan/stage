@@ -21,6 +21,10 @@ var Stage = {
   },
   zTreeCheckedNodes : function (zTreeId) {
     let zTree = $.fn.zTree.getZTreeObj(zTreeId);
+    return zTree.getCheckedNodes();
+  },
+  zTreeCheckedNodeIds : function (zTreeId) {
+    let zTree = $.fn.zTree.getZTreeObj(zTreeId);
     let nodes = zTree.getCheckedNodes();
     let ids = "";
     for (let i = 0, l = nodes.length; i < l; i++) {

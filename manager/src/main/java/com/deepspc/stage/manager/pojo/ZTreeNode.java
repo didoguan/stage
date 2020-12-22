@@ -43,6 +43,11 @@ public class ZTreeNode {
     private String iconSkin;
 
     /**
+     * 节点类型
+     */
+    private String nodeType;
+
+    /**
      * 创建ztree的父级节点
      */
     public static ZTreeNode createParent() {
@@ -101,5 +106,13 @@ public class ZTreeNode {
 
     public void setIconSkin(String iconSkin) {
         this.iconSkin = iconSkin;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
     }
 }

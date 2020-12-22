@@ -21,6 +21,13 @@ public interface IDeptService extends IService<Dept> {
     List<LayuiTreeNode> layuiTree();
 
     /**
+     * 角色权限分配时选择的用户部门树
+     * @param accessId 权限或角色标识
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> deptUserAssignTree(Long accessId);
+
+    /**
      * 根据条件获取部门列表
      * @param deptId 部门标识
      * @param deptName 部门名称
@@ -35,5 +42,11 @@ public interface IDeptService extends IService<Dept> {
      * @param deptId 部门标识
      * @return List<Dept>
      */
-    List<Dept> getDeptsWithParent(@Param("deptId") Long deptId);
+    List<Dept> getDeptsWithParent(Long deptId);
+
+    /**
+     * 部门及用户树
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> deptUserTree(Long roleId, Long permissionId);
 }

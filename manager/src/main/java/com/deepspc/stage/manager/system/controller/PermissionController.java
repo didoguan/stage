@@ -61,4 +61,25 @@ public class PermissionController extends BaseController {
         }
         return ResponseData.success();
     }
+
+    @GetMapping("/userAssign")
+    public String userAssign(Long permissionId, Model model) {
+        model.addAttribute("selId", permissionId);
+        model.addAttribute("submitUri", "/permission/saveUserAssign");
+        model.addAttribute("treeUri", "/dept/getDeptUserAssignTree?accessId="+permissionId);
+        return "system/access_assign";
+    }
+
+    /**
+     * 保存授权信息
+     * @param selId 权限标识
+     * @param assignId 用户标识
+     * @return
+     */
+    @PostMapping("/saveUserAssign")
+    @ResponseBody
+    public ResponseData saveUserAssign(Long selId, String assignId) {
+        permissionService.saveUserAccess(selId, assignId);
+        return ResponseData.success();
+    }
 }

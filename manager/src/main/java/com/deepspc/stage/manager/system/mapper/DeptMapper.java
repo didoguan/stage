@@ -17,6 +17,19 @@ public interface DeptMapper extends BaseMapper<Dept> {
     List<ZTreeNode> tree();
 
     /**
+     * 部门及用户树
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> deptUserTree(@Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
+
+    /**
+     * 角色权限分配时选择的用户部门树
+     * @param accessId 权限或角色标识
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> deptUserAssignTree(@Param("accessId") Long accessId);
+
+    /**
      * 获取layui树形节点
      */
     List<LayuiTreeNode> layuiTree();

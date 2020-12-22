@@ -76,7 +76,7 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
   };
 
   /**
-   * 点击编辑角色
+   * 点击编辑权限
    *
    * @param data 点击按钮时候的行数据
    */
@@ -119,11 +119,11 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
   Permission.userAssign = function (data) {
     parent.layer.open({
       type: 2,
-      title: '用户分配',
+      title: '权限分配',
       area: ['300px', '450px'], //宽高
       fix: false,
       maxmin: true,
-      content: ctxPath + '/permission/userAssign/' + data.permissionId,
+      content: ctxPath + '/permission/userAssign?permissionId=' + data.permissionId,
       end: function () {
         table.reload(Permission.tableId);
       }
@@ -153,9 +153,11 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
   });
 
   // 用户分配
+  /*
   $('#userAssign').click(function () {
     Permission.userAssign();
   });
+  */
 
   // 工具条点击事件
   table.on('tool(' + Permission.tableId + ')', function (obj) {
@@ -166,6 +168,8 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
       Permission.onEditPermission(data);
     } else if (layEvent === 'delete') {
       Permission.onDeletePermission(data);
+    } else if (layEvent === 'userAssign') {
+      Permission.userAssign(data);
     }
   });
 });

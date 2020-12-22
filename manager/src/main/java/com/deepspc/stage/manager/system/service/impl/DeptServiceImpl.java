@@ -37,6 +37,11 @@ public class DeptServiceImpl extends BaseOrmService<DeptMapper, Dept> implements
     }
 
     @Override
+    public List<ZTreeNode> deptUserAssignTree(Long accessId) {
+        return baseMapper.deptUserAssignTree(accessId);
+    }
+
+    @Override
     public Page<Dept> getDepts(Long deptId, String deptName) {
         Page page = defaultPage();
         return this.baseMapper.loadDepts(page, deptName, deptId);
@@ -81,5 +86,10 @@ public class DeptServiceImpl extends BaseOrmService<DeptMapper, Dept> implements
     @Override
     public List<Dept> getDeptsWithParent(Long deptId) {
         return this.baseMapper.getDeptsWithParent(deptId);
+    }
+
+    @Override
+    public List<ZTreeNode> deptUserTree(Long roleId, Long permissionId) {
+        return this.baseMapper.deptUserTree(roleId, permissionId);
     }
 }

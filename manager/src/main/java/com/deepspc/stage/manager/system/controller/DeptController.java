@@ -62,6 +62,21 @@ public class DeptController extends BaseController {
         return deptService.tree();
     }
 
+    @RequestMapping("/getDeptUserTree")
+    @ResponseBody
+    public List<ZTreeNode> getDeptUserTree(@RequestParam(required = false) Long roleId, @RequestParam(required = false) Long permissionId) {
+        return deptService.deptUserTree(roleId, permissionId);
+    }
+
+    @RequestMapping("/getDeptUserAssignTree")
+    @ResponseBody
+    public List<ZTreeNode> getDeptUserAssignTree(@RequestParam(required = false) Long accessId) {
+        if (null == accessId) {
+            accessId = -1L;
+        }
+        return deptService.deptUserAssignTree(accessId);
+    }
+
     @RequestMapping("/loadDepts")
     @ResponseBody
     public Object loadDepts(@RequestParam(required = false) Long deptId, @RequestParam(required = false) String deptName) {
