@@ -1,9 +1,6 @@
 package com.deepspc.stage.manager.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -39,16 +36,22 @@ public class Dict implements Serializable {
 
     private String systemCode;
 
+    @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
+    @TableField(fill = FieldFill.INSERT)
     private String creatorName;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createDate;
 
+    @TableField(fill = FieldFill.UPDATE)
     private Long updatorId;
 
+    @TableField(fill = FieldFill.UPDATE)
     private String updatorName;
 
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateDate;
 
     @TableField(exist = false)

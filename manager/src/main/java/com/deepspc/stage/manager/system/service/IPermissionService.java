@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deepspc.stage.manager.system.entity.Permission;
 import com.deepspc.stage.manager.system.entity.UserAccess;
+import com.deepspc.stage.manager.system.model.AccessAssign;
 
 import java.util.List;
 
@@ -28,8 +29,6 @@ public interface IPermissionService extends IService<Permission> {
 
     /**
      * 保存分配给用户的权限
-     * @param selId 权限标识
-     * @param assignId 用户标识，多个用逗号隔开
      */
-    void saveUserAccess(Long selId, String assignId);
+    void saveUserAccess(List<AccessAssign> list);
 }

@@ -43,14 +43,20 @@
     };
 
     $("#saveButton").bind("click", function () {
-      let ids = Stage.zTreeCheckedNodeIds("zTree");
+      let selNodes = Stage.zTreeCheckedNodes("zTree");
+      let datas = [];
+      let dataSize = selNodes.length;
+      if (dataSize > 0) {
+        for (let i = 0, l = dataSize; i < l; i++) {
+          datas[i] = {"selId": selId, "nodeType": selNodes[i].nodeType, "assignId": selNodes[i].id};
+        }
+      } else {
+        datas[0] = {"selId": selId, "nodeType": "", "assignId": null};
+      }
       let ajax = new $ax(ctxPath + submitUri, function (data) {
         parent.layer.close(ZTreeDlg.index);
-      }, function (data) {
-
-      });
-      ajax.set("selId", selId);
-      ajax.set("assignId", ids);
+      }, function (data) {}, {async:true,contentType:"application/json;charset=utf-8"});
+      ajax.setData(JSON.stringify(datas));
       ajax.start();
     });
 

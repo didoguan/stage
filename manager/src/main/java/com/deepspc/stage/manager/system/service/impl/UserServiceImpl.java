@@ -3,7 +3,6 @@ package com.deepspc.stage.manager.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.exception.StageException;
-import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.core.utils.StageUtil;
 import com.deepspc.stage.core.utils.StringUtil;
 import com.deepspc.stage.manager.common.BaseOrmService;
@@ -77,7 +76,6 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
         Long userId = user.getUserId();
         String account = user.getAccount();
         String userCode = user.getUserCode();
-        ShiroUser shiroUser = ShiroKit.getShiroUser();
         //检查userCode,account是否已经存在
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_code", userCode)
@@ -93,15 +91,9 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
             String pasword = ShiroKit.md5(Const.defaultPassword, salt);
             user.setSalt(salt);
             user.setPassword(pasword);
-            user.setCreatorId(shiroUser.getUserId());
-            user.setCreateDate(new Date());
-            user.setCreatorName(shiroUser.getUserName());
             user.setUserStatus("01");
             this.baseMapper.insert(user);
         } else {
-            user.setUpdatorId(shiroUser.getUserId());
-            user.setUpdatorName(shiroUser.getUserName());
-            user.setUpdateDate(new Date());
             this.baseMapper.updateById(user);
         }
     }

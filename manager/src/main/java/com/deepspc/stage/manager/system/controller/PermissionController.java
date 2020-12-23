@@ -4,11 +4,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.system.entity.Permission;
+import com.deepspc.stage.manager.system.model.AccessAssign;
 import com.deepspc.stage.manager.system.service.IPermissionService;
 import com.deepspc.stage.manager.system.wrapper.PermissionWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author gzw
@@ -64,7 +67,7 @@ public class PermissionController extends BaseController {
 
     @GetMapping("/userAssign")
     public String userAssign(Long permissionId, Model model) {
-        model.addAttribute("selId", permissionId);
+        model.addAttribute("selId", permissionId.toString());
         model.addAttribute("submitUri", "/permission/saveUserAssign");
         model.addAttribute("treeUri", "/dept/getDeptUserAssignTree?accessId="+permissionId);
         return "system/access_assign";
@@ -72,14 +75,12 @@ public class PermissionController extends BaseController {
 
     /**
      * 保存授权信息
-     * @param selId 权限标识
-     * @param assignId 用户标识
      * @return
      */
     @PostMapping("/saveUserAssign")
     @ResponseBody
-    public ResponseData saveUserAssign(Long selId, String assignId) {
-        permissionService.saveUserAccess(selId, assignId);
+    public ResponseData saveUserAssign(@RequestBody List<AccessAssign> list) {
+        permissionService.saveUserAccess(list);
         return ResponseData.success();
     }
 }
