@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.system.entity.Role;
+import com.deepspc.stage.manager.system.model.AccessAssign;
+import com.deepspc.stage.manager.system.service.IPermissionService;
 import com.deepspc.stage.manager.system.service.IRoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author gzw
@@ -19,8 +23,11 @@ public class RoleController extends BaseController {
 
     private final IRoleService roleService;
 
-    public RoleController(IRoleService roleService) {
+    private final IPermissionService permissionService;
+
+    public RoleController(IRoleService roleService, IPermissionService permissionService) {
         this.roleService = roleService;
+        this.permissionService = permissionService;
     }
 
     @GetMapping("")
@@ -56,8 +63,27 @@ public class RoleController extends BaseController {
     @ResponseBody
     public ResponseData deleteRole(Long roleId) {
         if (null != roleId) {
-            roleService.removeById(roleId);
+            roleService.removeRolePermission(roleId);
         }
+        return ResponseData.success();
+    }
+
+    @GetMapping("/userAssign")
+    public String userAssign(Long roleId, Model model) {
+        model.addAttribute("selId", roleId.toString());
+        model.addAttribute("submitUri", "/role/saveUserAssign");
+        model.addAttribute("treeUri", "/dept/getDeptUserAssignTree?accessId="+roleId);
+        return "system/access_assign";
+    }
+
+    /**
+     * 保存授权信息
+     * @return
+     */
+    @PostMapping("/saveUserAssign")
+    @ResponseBody
+    public ResponseData saveUserAssign(@RequestBody List<AccessAssign> list) {
+        permissionService.saveUserAccess(list);
         return ResponseData.success();
     }
 

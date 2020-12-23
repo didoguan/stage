@@ -6,9 +6,14 @@ import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.manager.common.BaseOrmService;
 import com.deepspc.stage.manager.exception.ManagerExceptionCode;
 import com.deepspc.stage.manager.system.entity.Role;
+import com.deepspc.stage.manager.system.entity.UserAccess;
 import com.deepspc.stage.manager.system.mapper.RoleMapper;
+import com.deepspc.stage.manager.system.mapper.UserAccessMapper;
 import com.deepspc.stage.manager.system.service.IRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * @author gzw
@@ -16,6 +21,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoleServiceImpl extends BaseOrmService<RoleMapper, Role> implements IRoleService {
+
+    @Resource
+    private UserAccessMapper userAccessMapper;
 
     @Override
     public Page<Role> loadRoles(String roleName, String roleCode) {
@@ -39,5 +47,14 @@ public class RoleServiceImpl extends BaseOrmService<RoleMapper, Role> implements
         } else {
             this.baseMapper.updateById(role);
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void removeRolePermission(Long roleId) {
+        this.baseMapper.deleteById(roleId);
+        QueryWrapper<UserAccess> wrapper = new QueryWrapper<>();
+        wrapper.eq("access_id", roleId);
+        userAccessMapper.delete(wrapper);
     }
 }

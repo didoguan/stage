@@ -116,7 +116,7 @@ layui.use(['layer', 'table', 'func'], function () {
       area: ['300px', '450px'], //宽高
       fix: false,
       maxmin: true,
-      content: ctxPath + '/role/role_assign/' + data.roleId,
+      content: ctxPath + '/role/userAssign?roleId=' + data.roleId,
       end: function () {
         table.reload(Role.tableId);
       }
@@ -143,16 +143,6 @@ layui.use(['layer', 'table', 'func'], function () {
     Role.openAddRole();
   });
 
-  // 用户分配
-  $('#btnAdd').click(function () {
-    Role.userAssign();
-  });
-
-  // 权限分配
-  $('#btnAdd').click(function () {
-    Role.permissionAssign();
-  });
-
   // 工具条点击事件
   table.on('tool(' + Role.tableId + ')', function (obj) {
     let data = obj.data;
@@ -162,6 +152,10 @@ layui.use(['layer', 'table', 'func'], function () {
       Role.onEditRole(data);
     } else if (layEvent === 'delete') {
       Role.onDeleteRole(data);
+    } else if (layEvent === 'userAssign') {
+      Role.userAssign(data);
+    } else if (layEvent === 'permissionAssign') {
+      Role.permissionAssign(data);
     }
   });
 });

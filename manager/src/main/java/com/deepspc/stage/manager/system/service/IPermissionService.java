@@ -31,4 +31,6 @@ public interface IPermissionService extends IService<Permission> {
      * 保存分配给用户的权限
      */
     void saveUserAccess(List<AccessAssign> list);
+
+    void removePermissionAccess(Long permissionId);
 }

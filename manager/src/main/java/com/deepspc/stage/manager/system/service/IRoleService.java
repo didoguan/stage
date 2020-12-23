@@ -15,4 +15,6 @@ public interface IRoleService extends IService<Role> {
     Page<Role> loadRoles(String roleName, String roleCode);
 
     void saveUpdateRole(Role role);
+
+    void removeRolePermission(Long roleId);
 }

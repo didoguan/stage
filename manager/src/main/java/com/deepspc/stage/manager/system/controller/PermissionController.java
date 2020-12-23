@@ -60,7 +60,7 @@ public class PermissionController extends BaseController {
     @ResponseBody
     public ResponseData deletePermission(Long permissionId) {
         if (null != permissionId) {
-            permissionService.removeById(permissionId);
+            permissionService.removePermissionAccess(permissionId);
         }
         return ResponseData.success();
     }

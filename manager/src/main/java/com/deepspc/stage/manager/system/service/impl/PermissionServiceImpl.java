@@ -89,4 +89,13 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
             userAccessMapper.saveBatch(userAccesses);
         }
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void removePermissionAccess(Long permissionId) {
+        this.baseMapper.deleteById(permissionId);
+        QueryWrapper<UserAccess> wrapper = new QueryWrapper<>();
+        wrapper.eq("access_id", permissionId);
+        userAccessMapper.delete(wrapper);
+    }
 }

@@ -82,11 +82,26 @@
         sys_dept d
         LEFT JOIN (
         SELECT
-            dept_id
+            a.dept_id
         FROM
-            sys_dept
+            sys_dept a,
+            (
+            SELECT
+                d.dept_id,
+                d.pids
+            FROM
+                sys_user u,
+                sys_user_access ua,
+                sys_dept d
+            WHERE
+                u.dept_id = d.dept_id
+                AND ua.user_id = u.user_id
+                AND ua.access_id = #{accessId}
+            ) b
         WHERE
-            LOCATE(dept_id,fn_user_access_dept ( #{accessId} ))) d2 ON d.dept_id = d2.dept_id
+            LOCATE( a.dept_id, b.pids )
+            OR a.dept_id = b.dept_id
+        ) d2 ON d.dept_id = d2.dept_id
     UNION
     SELECT
         u.user_id "id",
