@@ -164,4 +164,5 @@ public class Permission implements Serializable {
     public void setRelateName(String relateName) {
         this.relateName = relateName;
     }
+
 }

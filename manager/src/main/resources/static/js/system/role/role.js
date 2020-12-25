@@ -99,10 +99,10 @@ layui.use(['layer', 'table', 'func'], function () {
     parent.layer.open({
       type: 2,
       title: '权限分配',
-      area: ['300px', '450px'], //宽高
+      area: ['850px', '630px'], //宽高
       fix: false,
       maxmin: true,
-      content: ctxPath + '/role/role_assign/' + data.roleId,
+      content: ctxPath + '/role/permissionAssign?roleId=' + data.roleId,
       end: function () {
         table.reload(Role.tableId);
       }
@@ -128,6 +128,8 @@ layui.use(['layer', 'table', 'func'], function () {
     elem: '#' + Role.tableId,
     url: ctxPath + '/role/loadRoles',
     page: true,
+    limits: [30,50,100],
+    limit: 30,
     height: "full-98",
     cellMinWidth: 100,
     cols: Role.initColumn()

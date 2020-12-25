@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.manager.system.entity.Permission;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface PermissionMapper extends BaseMapper<Permission> {
 
     /**
@@ -18,7 +20,14 @@ public interface PermissionMapper extends BaseMapper<Permission> {
     /**
      * 根据标识获取带关联菜单资源的权限信息
      * @param permissionId
-     * @return
+     * @return Permission
      */
     Permission getMenuPermissionInfo(@Param("permissionId") Long permissionId);
+
+    /**
+     * 获取指定角色下的所有权限
+     * @param roleId 角色标识
+     * @return List<Permission>
+     */
+    List<Permission> loadRolePermission(@Param("roleId") Long roleId);
 }

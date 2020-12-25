@@ -25,7 +25,7 @@
   <select id="loadPermissions" resultMap="BasePermissionMap">
     SELECT
         a.*,
-        b.NAME relate_name
+        b.NAME "relate_name"
     FROM
         sys_permission a
         LEFT JOIN sys_menu b ON a.relate_id = b.menu_id
@@ -42,11 +42,15 @@
   <select id="getMenuPermissionInfo" resultMap="BasePermissionMap">
     SELECT
         a.*,
-        b.NAME relate_name
+        b.NAME "relate_name"
     FROM
         sys_permission a
         LEFT JOIN sys_menu b ON a.relate_id = b.menu_id
     WHERE
         permission_id = #{permissionId}
+  </select>
+  
+  <select id="loadRolePermission" resultMap="BasePermissionMap">
+    select p.* from sys_permission p,sys_role_permission r where r.permission_id = p.permission_id and r.role_id = #{roleId}
   </select>
 </mapper>

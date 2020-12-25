@@ -2,7 +2,9 @@ package com.deepspc.stage.manager.system.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.manager.common.BaseController;
+import com.deepspc.stage.manager.system.entity.Permission;
 import com.deepspc.stage.manager.system.entity.Role;
 import com.deepspc.stage.manager.system.model.AccessAssign;
 import com.deepspc.stage.manager.system.service.IPermissionService;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +48,22 @@ public class RoleController extends BaseController {
         return "system/role/add_modify";
     }
 
+    @GetMapping("/permissionAssign")
+    public String permissionAssign(@RequestParam("roleId") Long roleId, Model model) {
+        //获取该角色下的所有权限
+        List<Permission> rolePermissions = permissionService.loadRolePermission(roleId);
+        List<String> permissionIds = new ArrayList<>();
+        if (null != rolePermissions && !rolePermissions.isEmpty()) {
+            for (Permission permission : rolePermissions) {
+                permissionIds.add(permission.getPermissionId().toString());
+            }
+        }
+
+        model.addAttribute("selId", roleId.toString());
+        model.addAttribute("permissionIds", permissionIds);
+        return "system/permission/permission_assign";
+    }
+
     @RequestMapping("/loadRoles")
     @ResponseBody
     public Object loadRoles(@RequestParam(required = false) String roleName, @RequestParam(required = false) String roleCode) {
@@ -77,13 +96,23 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 保存授权信息
-     * @return
+     * 保存用户角色分配信息
      */
     @PostMapping("/saveUserAssign")
     @ResponseBody
     public ResponseData saveUserAssign(@RequestBody List<AccessAssign> list) {
         permissionService.saveUserAccess(list);
+        return ResponseData.success();
+    }
+
+    /**
+     * 保存角色权限信息
+     * @param list 权限列表
+     */
+    @PostMapping("/saveRolePermission")
+    @ResponseBody
+    public ResponseData saveRolePermission(@RequestBody List<AccessAssign> list) {
+        roleService.saveRolePermission(list);
         return ResponseData.success();
     }
 

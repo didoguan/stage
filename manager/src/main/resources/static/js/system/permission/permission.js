@@ -91,7 +91,7 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
   };
 
   /**
-   * 点击删除角色
+   * 点击删除权限
    *
    * @param data 点击按钮时候的行数据
    */

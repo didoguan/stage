@@ -3,6 +3,9 @@ package com.deepspc.stage.manager.system.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deepspc.stage.manager.system.entity.Role;
+import com.deepspc.stage.manager.system.model.AccessAssign;
+
+import java.util.List;
 
 public interface IRoleService extends IService<Role> {
 
@@ -17,4 +20,10 @@ public interface IRoleService extends IService<Role> {
     void saveUpdateRole(Role role);
 
     void removeRolePermission(Long roleId);
+
+    /**
+     * 保存角色权限列表
+     * @param list 权限列表
+     */
+    void saveRolePermission(List<AccessAssign> list);
 }

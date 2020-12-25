@@ -3,7 +3,6 @@ package com.deepspc.stage.manager.system.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deepspc.stage.manager.system.entity.Permission;
-import com.deepspc.stage.manager.system.entity.UserAccess;
 import com.deepspc.stage.manager.system.model.AccessAssign;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public interface IPermissionService extends IService<Permission> {
 
     /**
      * 根据标识获取带关联菜单资源的权限信息
-     * @param permissionId
-     * @return
+     * @param permissionId 权限标识
+     * @return Permission
      */
     Permission getMenuPermissionInfo(Long permissionId);
 
@@ -33,4 +32,11 @@ public interface IPermissionService extends IService<Permission> {
     void saveUserAccess(List<AccessAssign> list);
 
     void removePermissionAccess(Long permissionId);
+
+    /**
+     * 获取指定角色下的所有权限
+     * @param roleId 角色标识
+     * @return List<Permission>
+     */
+    List<Permission> loadRolePermission(Long roleId);
 }

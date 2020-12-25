@@ -98,4 +98,9 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
         wrapper.eq("access_id", permissionId);
         userAccessMapper.delete(wrapper);
     }
+
+    @Override
+    public List<Permission> loadRolePermission(Long roleId) {
+        return this.baseMapper.loadRolePermission(roleId);
+    }
 }
