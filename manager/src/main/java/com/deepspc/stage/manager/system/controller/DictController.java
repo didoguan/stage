@@ -1,6 +1,8 @@
 package com.deepspc.stage.manager.system.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.core.utils.StringUtil;
 import com.deepspc.stage.manager.common.BaseController;
 import com.deepspc.stage.manager.system.entity.Dict;
@@ -42,7 +44,7 @@ public class DictController extends BaseController {
         }
         Map<String, Dict> dicts = dictService.getDictAndChildren(codes);
         if (null != dicts && !dicts.isEmpty()) {
-            model.addAttribute("Dict", dicts.get(0));
+            model.addAttribute("Dict", dicts.get(dictCode));
         } else {
             model.addAttribute("Dict", null);
         }
@@ -53,5 +55,26 @@ public class DictController extends BaseController {
     @ResponseBody
     public ResponseData getDictByCode(@RequestBody List<String> dictCode) {
         return ResponseData.success(dictService.getDictAndChildren(dictCode));
+    }
+
+    @RequestMapping("/loadDict")
+    @ResponseBody
+    public Object loadDict(@RequestParam(required = false) String dictName, @RequestParam(required = false) String dictCode) {
+        Page<Dict> list = dictService.loadDict(dictCode, dictName);
+        return layuiPage(list);
+    }
+
+    @RequestMapping("/saveOrUpdate")
+    @ResponseBody
+    public ResponseData saveUpdateDict(@RequestBody Dict dict) {
+        dictService.saveUpdateDict(dict);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/deleteDict")
+    @ResponseBody
+    public ResponseData deleteDict(Long dictId) {
+        dictService.deleteDict(dictId);
+        return ResponseData.success();
     }
 }

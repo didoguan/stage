@@ -17,6 +17,9 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
   /***********如果权限类型为菜单或按钮则获取菜单资源**********/
   $('#relateName').click(function () {
+    if (!typeVal) {
+      typeVal = $("#permissionType").val();
+    }
     if ("01" == typeVal || "02" == typeVal) {
       let formName = encodeURIComponent("parent.MenuResource.menuName");
       let formId = encodeURIComponent("parent.MenuResource.menuId");

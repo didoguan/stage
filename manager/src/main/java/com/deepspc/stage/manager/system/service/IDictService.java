@@ -1,5 +1,6 @@
 package com.deepspc.stage.manager.system.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deepspc.stage.manager.system.entity.Dict;
 
@@ -8,7 +9,7 @@ import java.util.Map;
 
 public interface IDictService extends IService<Dict> {
 
-    List<Dict> loadDict(String parentCode, String code, String name);
+    Page<Dict> loadDict(String dictCode, String dictName);
 
     /**
      * 根据编码获取字典及其子字典
@@ -16,4 +17,8 @@ public interface IDictService extends IService<Dict> {
      * @return Map<String, Dict>
      */
     Map<String, Dict> getDictAndChildren(List<String> codes);
+
+    void saveUpdateDict(Dict dict);
+
+    void deleteDict(Long dictId);
 }

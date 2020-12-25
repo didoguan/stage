@@ -27,7 +27,9 @@ public enum ManagerExceptionCode {
 
     DEPT_CODE_EXISTS("724", "部门编码已经存在"),
     ROLE_CODE_EXISTS("725", "角色编码已经存在"),
-    PERMISSION_CODE_EXISTS("726", "权限编码已经存在");
+    PERMISSION_CODE_EXISTS("726", "权限编码已经存在"),
+
+    DICT_CODE_EXISTS("727", "字典编码已经存在");
 
     private String code;
 

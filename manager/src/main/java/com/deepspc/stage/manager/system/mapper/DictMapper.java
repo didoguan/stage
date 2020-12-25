@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DictMapper extends BaseMapper<Dict> {
 
-    List<Dict> loadDict(@Param("page") Page page, @Param("parentCode") String parentCode, @Param("code") String code, @Param("name") String name);
+    Page<Dict> loadDict(@Param("page") Page page, @Param("dictCode") String dictCode, @Param("dictName") String dictName);
 
     /**
      * 根据编码获取字典及其子字典
@@ -17,4 +17,6 @@ public interface DictMapper extends BaseMapper<Dict> {
      * @return List<Dict>
      */
     List<Dict> getDictAndChildren(@Param("codes") List<String> codes);
+
+    void saveBatchDict(@Param("list") List<Dict> list);
 }
