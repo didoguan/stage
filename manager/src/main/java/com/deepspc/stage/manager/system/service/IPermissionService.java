@@ -20,16 +20,14 @@ public interface IPermissionService extends IService<Permission> {
     void saveUpdatePermission(Permission permission);
 
     /**
-     * 根据标识获取带关联菜单资源的权限信息
-     * @param permissionId 权限标识
-     * @return Permission
-     */
-    Permission getMenuPermissionInfo(Long permissionId);
-
-    /**
      * 保存分配给用户的权限
      */
     void saveUserAccess(List<AccessAssign> list);
+
+    /**
+     * 保存分配给权限的菜单
+     */
+    void saveMenuAssign(List<AccessAssign> list);
 
     void removePermissionAccess(Long permissionId);
 

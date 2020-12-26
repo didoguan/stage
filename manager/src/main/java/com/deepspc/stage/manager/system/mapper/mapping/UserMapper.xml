@@ -64,24 +64,18 @@
     <if test="permissType = 'menu'">
     SELECT
       sm.menu_id "id",
-      sm.code "code",
+      ( CASE WHEN ( sm2.menu_id = 0 OR sm2.menu_id IS NULL ) THEN 0 ELSE sm2.menu_id END ) "parentId",
+      sm.CODE "code",
       sm.icon "icon",
-      (
-      CASE
-      WHEN (sm2.menu_id = 0 OR sm2.menu_id IS NULL) THEN
-      0
-      ELSE
-      sm2.menu_id
-      END
-      ) "parentId",
-      sm.name "name",
+      sm.NAME "name",
       sm.url "url",
       sm.levels "levels",
       sm.menu_flag "ismenu",
       sm.sort "num"
-    FROM (
+    FROM
+      (
     </if>
-    SELECT
+      SELECT
         b.user_id "userId",
         b.user_name "userName",
         b.avatar,
@@ -89,54 +83,65 @@
         a.permission_id "permissionId",
         a.permission_type "permissionType",
         a.content,
-        a.relate_id "relateId",
+        a.resource_id "resourceId",
         a.data_url "dataUrl"
-    FROM
+      FROM
         (
         SELECT
-            ua.user_id,
-            rp.role_id,
-            rp.permission_id,
-            p.permission_type,
-            p.content,
-            p.relate_id,
-            p.data_url
+          ua.user_id,
+          rp.role_id,
+          rp.permission_id,
+          ppr.permission_type,
+          ppr.content,
+          ppr.resource_id,
+          ppr.data_url
         FROM
-            sys_user_access ua,
-            sys_role_permission rp
-            LEFT JOIN sys_permission p ON rp.permission_id = p.permission_id
+          sys_user_access ua,
+          sys_role_permission rp
+          LEFT JOIN (
+            SELECT
+              p.permission_id,
+              pr.resource_id,
+              p.permission_type,
+              p.content,
+              p.data_url
+            FROM
+              sys_permission p
+              LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
+          ) ppr ON rp.permission_id = ppr.permission_id
         WHERE
-            ua.access_id = rp.role_id
-            AND ua.user_id = #{userId}
+          ua.access_id = rp.role_id
+          AND ua.user_id = #{userId}
         UNION ALL
         SELECT
-            ua.user_id,
-            NULL role_id,
-            p.permission_id,
-            p.permission_type,
-            p.content,
-            p.relate_id,
-            p.data_url
+          ua.user_id,
+          NULL role_id,
+          p.permission_id,
+          p.permission_type,
+          p.content,
+          pr.resource_id,
+          p.data_url
         FROM
-            sys_user_access ua,
-            sys_permission p
+          sys_user_access ua,
+          sys_permission p
+          LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
         WHERE
-            ua.access_id = p.permission_id
-            AND ua.user_id = #{userId}
+          ua.access_id = p.permission_id
+          AND ua.user_id = #{userId}
         ) a,
         sys_user b
-    WHERE
+      WHERE
         b.user_id = a.user_id
         AND b.user_id = #{userId}
     <if test="permissType = 'menu'">
       ) pm,
       sys_menu sm
-      LEFT JOIN
-        sys_menu sm2 on sm.pcode = sm2.code
+      LEFT JOIN sys_menu sm2 ON sm.pcode = sm2.CODE
     WHERE
-      sm.menu_id = pm.relateId
-    AND sm.menu_flag = 'Y'
-    ORDER BY sm.levels,sm.sort asc
+      sm.menu_id = pm.resourceId
+    ORDER BY
+      sm.levels,
+      sm.sort ASC
     </if>
   </select>
   

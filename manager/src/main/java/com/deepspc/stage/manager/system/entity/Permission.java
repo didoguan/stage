@@ -21,9 +21,6 @@ public class Permission implements Serializable {
 
     private String permissionName;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long relateId;
-
     @TableField(exist = false)
     private String relateName;
     /**
@@ -139,14 +136,6 @@ public class Permission implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public Long getRelateId() {
-        return relateId;
-    }
-
-    public void setRelateId(Long relateId) {
-        this.relateId = relateId;
     }
 
     public String getDataUrl() {

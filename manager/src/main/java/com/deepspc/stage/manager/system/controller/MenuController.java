@@ -23,7 +23,8 @@ import java.util.Map;
  */
 @RequestMapping("/menu")
 @Controller
-public class MenuController extends BaseController {
+public class
+MenuController extends BaseController {
 
     private final IMenuService menuService;
 
@@ -75,6 +76,12 @@ public class MenuController extends BaseController {
         List<ZTreeNode> menuTreeList = menuService.menuTree();
         menuTreeList.add(ZTreeNode.createParent());
         return menuTreeList;
+    }
+
+    @RequestMapping("/selectMenuPermissionTree")
+    @ResponseBody
+    public List<ZTreeNode> selectMenuPermissionTree(@RequestParam(required = false) Long permissionId) {
+        return menuService.menuPermissionTree(permissionId);
     }
 
     @PostMapping("/getMenuDetail")

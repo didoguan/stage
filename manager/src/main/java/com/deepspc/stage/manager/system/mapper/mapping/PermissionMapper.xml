@@ -4,8 +4,6 @@
   <resultMap id="BasePermissionMap" type="com.deepspc.stage.manager.system.entity.Permission">
     <id column="permission_id" property="permissionId" />
     <result column="permission_name" property="permissionName" />
-    <result column="relate_id" property="relateId" />
-    <result column="relate_name" property="relateName" />
     <result column="permission_type" property="permissionType" />
     <result column="content" property="content" />
     <result column="data_url" property="dataUrl" />
@@ -18,17 +16,15 @@
     <result column="update_date" property="updateDate" />
   </resultMap>
 
-  <sql id="default_role_column">
-    permission_id, permission_name, relate_id, permission_type, content, data_url, system_code, creator_id, creator_name, create_date,updator_id,updator_name,update_date
+  <sql id="default_permission_column">
+    permission_id, permission_name, permission_type, content, data_url, system_code, creator_id, creator_name, create_date,updator_id,updator_name,update_date
   </sql>
 
   <select id="loadPermissions" resultMap="BasePermissionMap">
     SELECT
-        a.*,
-        b.NAME "relate_name"
+    <include refid="default_permission_column"/>
     FROM
-        sys_permission a
-        LEFT JOIN sys_menu b ON a.relate_id = b.menu_id
+        sys_permission
     WHERE
         1 = 1
     <if test="permissionName != null and permissionName != ''">
@@ -37,17 +33,6 @@
     <if test="permissionType != null and permissionType != ''">
         AND a.permission_type = #{permissionType}
     </if>
-  </select>
-  
-  <select id="getMenuPermissionInfo" resultMap="BasePermissionMap">
-    SELECT
-        a.*,
-        b.NAME "relate_name"
-    FROM
-        sys_permission a
-        LEFT JOIN sys_menu b ON a.relate_id = b.menu_id
-    WHERE
-        permission_id = #{permissionId}
   </select>
   
   <select id="loadRolePermission" resultMap="BasePermissionMap">

@@ -10,33 +10,33 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
   let layer = layui.layer;
 
   //如果是菜单或按钮资源则权限地址不可用
-  let typeVal = $("#permissionType").attr("value");
-  if ("01" == typeVal || "02" == typeVal) {
-    $("#dataUrl").attr("disabled", true);
-  }
+  // let typeVal = $("#permissionType").attr("value");
+  // if ("01" == typeVal || "02" == typeVal) {
+  //   $("#dataUrl").attr("disabled", true);
+  // }
 
   /***********如果权限类型为菜单或按钮则获取菜单资源**********/
-  $('#relateName').click(function () {
-    if (!typeVal) {
-      typeVal = $("#permissionType").val();
-    }
-    if ("01" == typeVal || "02" == typeVal) {
-      let formName = encodeURIComponent("parent.MenuResource.menuName");
-      let formId = encodeURIComponent("parent.MenuResource.menuId");
-      let treeUrl = encodeURIComponent("/menu/selectMenuTree");
-
-      layer.open({
-        type: 2,
-        title: '菜单资源',
-        area: ['300px', '400px'],
-        content: ctxPath + '/sys/commonTreeSelect?formName=' + formName + "&formId=" + formId + "&treeUrl=" + treeUrl,
-        end: function () {
-          $("#relateId").val(MenuResource.menuId);
-          $("#relateName").val(MenuResource.menuName);
-        }
-      });
-    }
-  });
+  // $('#relateName').click(function () {
+  //   if (!typeVal) {
+  //     typeVal = $("#permissionType").val();
+  //   }
+  //   if ("01" == typeVal || "02" == typeVal) {
+  //     let formName = encodeURIComponent("parent.MenuResource.menuName");
+  //     let formId = encodeURIComponent("parent.MenuResource.menuId");
+  //     let treeUrl = encodeURIComponent("/menu/selectMenuTree");
+  //
+  //     layer.open({
+  //       type: 2,
+  //       title: '菜单资源',
+  //       area: ['300px', '400px'],
+  //       content: ctxPath + '/sys/commonTreeSelect?formName=' + formName + "&formId=" + formId + "&treeUrl=" + treeUrl,
+  //       end: function () {
+  //         $("#relateId").val(MenuResource.menuId);
+  //         $("#relateName").val(MenuResource.menuName);
+  //       }
+  //     });
+  //   }
+  // });
 
   /******初始化下拉框*****/
   let selAjax = new $ax(ctxPath + "/dict/getDictByCode", function (data) {
@@ -60,14 +60,14 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
   selAjax.start();
 
   //权限类型事件
-  form.on('select(changePermissionType)', function(data){
-    let selVal = data.value;
-    if ("01" == selVal || "02" == selVal) {
-      $("#dataUrl").attr("disabled", true);
-    } else {
-      $("#dataUrl").removeAttr("disabled");
-    }
-  });
+  // form.on('select(changePermissionType)', function(data){
+  //   let selVal = data.value;
+  //   if ("01" == selVal || "02" == selVal) {
+  //     $("#dataUrl").attr("disabled", true);
+  //   } else {
+  //     $("#dataUrl").removeAttr("disabled");
+  //   }
+  // });
 
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {

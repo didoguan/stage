@@ -55,6 +55,20 @@
         m1.menu_id ASC
   </select>
   
+  <select id="menuPermissionTree" resultType="com.deepspc.stage.manager.pojo.ZTreeNode">
+    SELECT
+        m.menu_id "id",
+        ( CASE WHEN p.menu_id IS NULL THEN 0 ELSE p.menu_id END ) "pId",
+        m.name "name",
+        ( CASE WHEN ( m.pcode = '0' OR m.pcode IS NULL ) THEN 'true' ELSE 'false' END ) "open",
+        ( CASE WHEN ( r.resource_id = 0 OR r.resource_id IS NULL ) THEN 'false' ELSE 'true' END ) "checked"
+    FROM
+        sys_menu m
+        LEFT JOIN sys_menu p ON m.pcode = p.code
+        LEFT JOIN sys_permission_resource r ON r.resource_id = m.menu_id
+	    AND r.permission_id = #{permissionId}
+  </select>
+  
   <select id="getSubMenusByCode" resultMap="BaseMenuMap">
     SELECT
     <include refid="default_menu_column"/>

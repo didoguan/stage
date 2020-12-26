@@ -2,13 +2,12 @@ package com.deepspc.stage.manager.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.manager.common.BaseOrmService;
-import com.deepspc.stage.manager.system.entity.Menu;
 import com.deepspc.stage.manager.system.entity.Permission;
+import com.deepspc.stage.manager.system.entity.PermissionResource;
 import com.deepspc.stage.manager.system.entity.UserAccess;
-import com.deepspc.stage.manager.system.mapper.MenuMapper;
 import com.deepspc.stage.manager.system.mapper.PermissionMapper;
+import com.deepspc.stage.manager.system.mapper.PermissionResourceMapper;
 import com.deepspc.stage.manager.system.mapper.UserAccessMapper;
 import com.deepspc.stage.manager.system.model.AccessAssign;
 import com.deepspc.stage.manager.system.service.IPermissionService;
@@ -27,9 +26,9 @@ import java.util.List;
 public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Permission> implements IPermissionService {
 
     @Resource
-    private MenuMapper menuMapper;
-    @Resource
     private UserAccessMapper userAccessMapper;
+    @Resource
+    private PermissionResourceMapper permissionResourceMapper;
 
     @Override
     public Page<Permission> loadPermissions(String permissionName, String permissionType) {
@@ -40,29 +39,11 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
     @Override
     public void saveUpdatePermission(Permission permission) {
         Long permissionId = permission.getPermissionId();
-        Long relateId = permission.getRelateId();
-        String permissionType = permission.getPermissionType();
-        if ("01".equals(permissionType) || "02".equals(permissionType)) {
-            Menu menu = menuMapper.selectById(relateId);
-            if (null != menu) {
-                if (StageCoreEnum.YES.getCode().equals(menu.getMenuFlag())) {
-                    permission.setPermissionType("01");
-                } else {
-                    permission.setPermissionType("02");
-                }
-                permission.setDataUrl(menu.getUrl());
-            }
-        }
         if (null == permissionId) {
             this.baseMapper.insert(permission);
         } else {
             this.baseMapper.updateById(permission);
         }
-    }
-
-    @Override
-    public Permission getMenuPermissionInfo(Long permissionId) {
-        return this.baseMapper.getMenuPermissionInfo(permissionId);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -92,11 +73,39 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
 
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public void saveMenuAssign(List<AccessAssign> list) {
+        if (null == list || list.isEmpty()) {
+            return;
+        }
+        Long selId = list.get(0).getSelId();
+        QueryWrapper<PermissionResource> wrapper = new QueryWrapper<>();
+        wrapper.eq("permission_id", selId);
+        permissionResourceMapper.delete(wrapper);
+
+        List<PermissionResource> resources = new ArrayList<>();
+        for (AccessAssign accessAssign : list) {
+            if (null != accessAssign.getAssignId()) {
+                PermissionResource pr = new PermissionResource();
+                pr.setPermissionId(selId);
+                pr.setResourceId(accessAssign.getAssignId());
+                resources.add(pr);
+            }
+        }
+        if (!resources.isEmpty()) {
+            permissionResourceMapper.saveBatchPermissionResource(resources);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public void removePermissionAccess(Long permissionId) {
         this.baseMapper.deleteById(permissionId);
         QueryWrapper<UserAccess> wrapper = new QueryWrapper<>();
         wrapper.eq("access_id", permissionId);
         userAccessMapper.delete(wrapper);
+        QueryWrapper<PermissionResource> pr = new QueryWrapper<>();
+        pr.eq("permission_id", permissionId);
+        permissionResourceMapper.delete(pr);
     }
 
     @Override

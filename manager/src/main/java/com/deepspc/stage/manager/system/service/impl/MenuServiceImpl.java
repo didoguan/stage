@@ -43,6 +43,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
+    public List<ZTreeNode> menuPermissionTree(Long permissionId) {
+        return this.baseMapper.menuPermissionTree(permissionId);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveUpdateMenu(MenuDto menuDto) {
         //先判断菜单编码是否重复

@@ -22,9 +22,16 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
     /**
      * 查询菜单，返回特定树
-     * @return
+     * @return List<ZTreeNode>
      */
     List<ZTreeNode> menuTree();
+
+    /**
+     * 菜单权限树
+     * @param permissionId 权限标识
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> menuPermissionTree(@Param("permissionId") Long permissionId);
 
     /**
      * 根据编码获取所有子菜单

@@ -43,7 +43,6 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
       {field: 'permissionId', hide: true, sort: false, title: '权限标识'},
       {field: 'permissionName', sort: false, title: '权限名称'},
       {field: 'permissionType', sort: false, title: '权限类型'},
-      {field: 'relateName', sort: false, title: '资源名称'},
       {field: 'dataUrl', sort: false, title: '权限地址'},
       {field: 'content', sort: false, title: '权限内容'},
       {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
@@ -67,7 +66,7 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
    */
   Permission.openAddPermission = function () {
     func.open({
-      height: 700,
+      height: 550,
       width: 600,
       title: '添加权限',
       content: ctxPath + '/permission/addModifyPage',
@@ -82,7 +81,7 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
    */
   Permission.onEditPermission = function (data) {
     func.open({
-      height: 700,
+      height: 550,
       width: 600,
       title: '修改权限',
       content: ctxPath + "/permission/addModifyPage?permissionId=" + data.permissionId,
@@ -130,6 +129,20 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
     });
   };
 
+  Permission.menuAssign = function (data) {
+    parent.layer.open({
+      type: 2,
+      title: '菜单分配',
+      area: ['300px', '450px'], //宽高
+      fix: false,
+      maxmin: true,
+      content: ctxPath + '/permission/menuAssign?permissionId=' + data.permissionId,
+      end: function () {
+        table.reload(Permission.tableId);
+      }
+    });
+  };
+
   // 渲染表格
   let tableResult = table.render({
     elem: '#' + Permission.tableId,
@@ -170,6 +183,8 @@ layui.use(['layer', 'table', 'func', 'ax', 'form'], function () {
       Permission.onDeletePermission(data);
     } else if (layEvent === 'userAssign') {
       Permission.userAssign(data);
+    } else if (layEvent === 'menuAssign') {
+      Permission.menuAssign(data);
     }
   });
 });

@@ -24,6 +24,13 @@ public interface IMenuService extends IService<Menu> {
     List<ZTreeNode> menuTree();
 
     /**
+     * 菜单权限树
+     * @param permissionId 权限标识
+     * @return List<ZTreeNode>
+     */
+    List<ZTreeNode> menuPermissionTree(Long permissionId);
+
+    /**
      * 新增或修改菜单
      * @param menuDto 表单数据
      */

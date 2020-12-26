@@ -1,5 +1,6 @@
 package com.deepspc.stage.manager.system.model;
 
+import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -109,7 +110,7 @@ public class MenuNode implements Comparable, Serializable {
         }
 
         //剔除非菜单
-        //nodes.removeIf(node -> !node.getIsmenu().equals(StageCoreEnum.YES.name()));
+        nodes.removeIf(node -> !node.getIsmenu().equals(StageCoreEnum.YES.getCode()));
 
         //对菜单排序，返回列表按菜单等级，序号的排序方式排列
         Collections.sort(nodes);

@@ -40,5 +40,8 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="userAssign">用户分配</a>
+    {{#  if(d.permissionType == '菜单'){ }}
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="menuAssign">菜单分配</a>
+    {{#  } }}
   </script>
 </div>

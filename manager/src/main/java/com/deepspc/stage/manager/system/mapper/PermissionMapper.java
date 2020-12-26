@@ -18,13 +18,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
     Page<Permission> loadPermissions(@Param("page") Page page, @Param("permissionName") String permissionName, @Param("permissionType") String permissionType);
 
     /**
-     * 根据标识获取带关联菜单资源的权限信息
-     * @param permissionId
-     * @return Permission
-     */
-    Permission getMenuPermissionInfo(@Param("permissionId") Long permissionId);
-
-    /**
      * 获取指定角色下的所有权限
      * @param roleId 角色标识
      * @return List<Permission>

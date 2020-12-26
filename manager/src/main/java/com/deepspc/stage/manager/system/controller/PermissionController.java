@@ -35,7 +35,7 @@ public class PermissionController extends BaseController {
     public String addModifyPage(@RequestParam(required = false) Long permissionId, Model model) {
         Permission permission = null;
         if (null != permissionId) {
-            permission = permissionService.getMenuPermissionInfo(permissionId);
+            permission = permissionService.getById(permissionId);
         }
         model.addAttribute("Permission", permission);
         return "system/permission/add_modify";
@@ -73,6 +73,14 @@ public class PermissionController extends BaseController {
         return "system/access_assign";
     }
 
+    @GetMapping("/menuAssign")
+    public String menuAssign(Long permissionId, Model model) {
+        model.addAttribute("selId", permissionId.toString());
+        model.addAttribute("submitUri", "/permission/saveMenuAssign");
+        model.addAttribute("treeUri", "/menu/selectMenuPermissionTree?permissionId="+permissionId);
+        return "system/access_assign";
+    }
+
     /**
      * 保存授权信息
      * @return
@@ -81,6 +89,13 @@ public class PermissionController extends BaseController {
     @ResponseBody
     public ResponseData saveUserAssign(@RequestBody List<AccessAssign> list) {
         permissionService.saveUserAccess(list);
+        return ResponseData.success();
+    }
+
+    @PostMapping("/saveMenuAssign")
+    @ResponseBody
+    public ResponseData saveMenuAssign(@RequestBody List<AccessAssign> list) {
+        permissionService.saveMenuAssign(list);
         return ResponseData.success();
     }
 }
