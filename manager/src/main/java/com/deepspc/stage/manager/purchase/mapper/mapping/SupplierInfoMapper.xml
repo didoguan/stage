@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.manager.purchase.mapper.SupplierInfoMapper">
+
+  <resultMap id="BaseSupplierMap" type="com.deepspc.stage.manager.purchase.entity.SupplierInfo">
+    <id column="supplier_id" property="supplierId" />
+    <result column="supplier_name" property="supplierName" />
+    <result column="company_contacts" property="companyContacts" />
+    <result column="contact_number" property="contactNumber" />
+    <result column="contact_address" property="contactAddress" />
+    <result column="ali_url" property="aliUrl" />
+    <result column="start_level" property="startLevel" />
+    <result column="blacklist" property="blacklist" />
+    <result column="supplier_status" property="supplierStatus" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <sql id="default_supplier_column">
+    supplier_id, supplier_name, company_contacts, contact_number, contact_address, ali_url, start_level, blacklist, supplier_status, creator_id, creator_name, create_date,updator_id,updator_name,update_date
+  </sql>
+  
+  <select id="loadSupplierInfo" resultMap="BaseSupplierMap">
+    SELECT
+    <include refid="default_supplier_column"/>
+    FROM
+        ec_supplier_info
+    WHERE
+        1 = 1
+    <if test="supplierName != null and supplierName != ''">
+      AND supplier_name like CONCAT('%',#{supplierName},'%')
+    </if>
+  </select>
+</mapper>

@@ -23,8 +23,7 @@ import java.util.Map;
  */
 @RequestMapping("/menu")
 @Controller
-public class
-MenuController extends BaseController {
+public class MenuController extends BaseController {
 
     private final IMenuService menuService;
 
