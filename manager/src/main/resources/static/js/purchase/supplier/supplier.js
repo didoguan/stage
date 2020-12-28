@@ -25,7 +25,22 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
       {field: 'companyContacts', sort: false, title: '联系人'},
       {field: 'contactNumber', sort: false, title: '联系电话'},
       {field: 'blacklist', sort: false, templet: '#blacklistTpl', title: '黑名单'},
-      {field: 'startLevel', sort: false, title: '星级'},
+      {field: 'startLevel', sort: false, title: '星级', templet: function(d) {
+          let str = "";
+        if (d.startLevel) {
+          for (let i = 0; i < d.startLevel; i++) {
+            str += "<img src='../../images/fill_start_16.png' />";
+          }
+          for (let i = 0; i < 5 - d.startLevel; i++) {
+            str += "<img src='../../images/emp_start_16.png' />";
+          }
+        } else {
+          for (let i = 0; i < 5; i++) {
+            str += "<img src='../../images/emp_start_16.png' />";
+          }
+        }
+        return str;
+        }},
       {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'},
       {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
     ]];
