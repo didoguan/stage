@@ -1,11 +1,10 @@
-package com.deepspc.stage.manager.conf;
+package com.deepspc.stage.esmanager.conf;
 
+import com.deepspc.stage.sys.common.SysPropertiesConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.text.SimpleDateFormat;
 
 /**
  * @author gzw
@@ -14,11 +13,11 @@ import java.text.SimpleDateFormat;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final PropertiesConfig propertiesConfig;
+    private final SysPropertiesConfig sysPropertiesConfig;
 
     @Autowired
-    public WebConfig(PropertiesConfig propertiesConfig) {
-        this.propertiesConfig = propertiesConfig;
+    public WebConfig(SysPropertiesConfig sysPropertiesConfig) {
+        this.sysPropertiesConfig = sysPropertiesConfig;
     }
 
     /**
@@ -26,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/attachment/**").addResourceLocations("file:///" + propertiesConfig.getAttachmentPath());
+        registry.addResourceHandler("/attachment/**").addResourceLocations("file:///" + sysPropertiesConfig.getAttachmentPath());
     }
 
 }

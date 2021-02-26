@@ -6,10 +6,10 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-public class ManagerApplication {
+public class EsmanagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ManagerApplication.class, args);
+		SpringApplication.run(EsmanagerApplication.class, args);
 	}
 
 }

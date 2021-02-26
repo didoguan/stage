@@ -1,4 +1,4 @@
-package com.deepspc.stage.manager.conf;
+package com.deepspc.stage.esmanager.conf;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;

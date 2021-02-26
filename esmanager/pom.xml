@@ -6,13 +6,14 @@
     <artifactId>stage</artifactId>
     <groupId>com.deepspc</groupId>
     <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>manager</artifactId>
+  <artifactId>esmanager</artifactId>
   <version>1.0.0</version>
   <packaging>war</packaging>
-  <name>manager</name>
-  <description>系统后台功能管理应用</description>
+  <name>esmanager</name>
+  <description>电商后台管理，包括商品、供应商、物流等管理功能</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,6 +25,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>shiro</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>sys</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -97,16 +104,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
@@ -162,17 +159,11 @@
         </configuration>
       </plugin>
     </plugins>
-    <resources>
 
+    <resources>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
       </resource>
     </resources>
   </build>

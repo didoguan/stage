@@ -1,9 +1,9 @@
-package com.deepspc.stage.manager.purchase.wrapper;
+package com.deepspc.stage.esmanager.purchase.wrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.enums.StageCoreEnum;
-import com.deepspc.stage.manager.common.BaseWrapper;
-import com.deepspc.stage.manager.purchase.entity.SupplierInfo;
+import com.deepspc.stage.esmanager.purchase.entity.SupplierInfo;
+import com.deepspc.stage.sys.common.BaseWrapper;
 
 /**
  * @author lenovo

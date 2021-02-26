@@ -1,11 +1,11 @@
-package com.deepspc.stage.manager.purchase.controller;
+package com.deepspc.stage.esmanager.purchase.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.core.enums.StageCoreEnum;
-import com.deepspc.stage.manager.common.BaseController;
-import com.deepspc.stage.manager.purchase.entity.SupplierInfo;
-import com.deepspc.stage.manager.purchase.service.ISupplierInfoService;
+import com.deepspc.stage.esmanager.purchase.entity.SupplierInfo;
+import com.deepspc.stage.esmanager.purchase.service.ISupplierInfoService;
+import com.deepspc.stage.sys.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

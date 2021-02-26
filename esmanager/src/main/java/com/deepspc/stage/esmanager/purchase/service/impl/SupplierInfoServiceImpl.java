@@ -1,10 +1,10 @@
-package com.deepspc.stage.manager.purchase.service.impl;
+package com.deepspc.stage.esmanager.purchase.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.deepspc.stage.manager.common.BaseOrmService;
-import com.deepspc.stage.manager.purchase.entity.SupplierInfo;
-import com.deepspc.stage.manager.purchase.mapper.SupplierInfoMapper;
-import com.deepspc.stage.manager.purchase.service.ISupplierInfoService;
+import com.deepspc.stage.esmanager.purchase.entity.SupplierInfo;
+import com.deepspc.stage.esmanager.purchase.mapper.SupplierInfoMapper;
+import com.deepspc.stage.esmanager.purchase.service.ISupplierInfoService;
+import com.deepspc.stage.sys.common.BaseOrmService;
 import org.springframework.stereotype.Service;
 
 /**

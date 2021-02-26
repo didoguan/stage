@@ -1,4 +1,4 @@
-package com.deepspc.stage.manager.purchase.entity;
+package com.deepspc.stage.esmanager.purchase.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
