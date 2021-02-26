@@ -6,6 +6,7 @@
     <artifactId>stage</artifactId>
     <groupId>com.deepspc</groupId>
     <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -81,18 +82,7 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-        </configuration>
-      </plugin>
-    </plugins>
+    <finalName>${project.artifactId}</finalName>
   </build>
 
 </project>
