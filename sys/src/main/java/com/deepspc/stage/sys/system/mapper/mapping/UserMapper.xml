@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.sys.system.mapper.UserMapper">
+
+  <resultMap id="BaseUserMap" type="com.deepspc.stage.sys.system.entity.User">
+    <id column="user_id" property="userId"/>
+    <result column="user_name" property="userName"/>
+    <result column="account" property="account"/>
+    <result column="password" property="password"/>
+    <result column="salt" property="salt"/>
+    <result column="user_code" property="userCode"/>
+    <result column="dept_id" property="deptId"/>
+    <result column="dept_name" property="deptName"/>
+    <result column="email" property="email"/>
+    <result column="contact_no" property="contactNo"/>
+    <result column="gender" property="gender"/>
+    <result column="id_no" property="idNo"/>
+    <result column="join_date" property="joinDate"/>
+    <result column="desert_date" property="desertDate"/>
+    <result column="official_date" property="officialDate"/>
+    <result column="work_address" property="workAddress"/>
+    <result column="marriage" property="marriage"/>
+    <result column="user_status" property="userStatus"/>
+    <result column="position" property="position"/>
+    <result column="contact_address" property="contactAddress"/>
+    <result column="avatar" property="avatar"/>
+    <result column="system_code" property="systemCode"/>
+    <result column="creator_id" property="creatorId"/>
+    <result column="creator_name" property="creatorName"/>
+    <result column="create_date" property="createDate"/>
+    <result column="updator_id" property="updatorId"/>
+    <result column="updator_name" property="updatorName"/>
+    <result column="update_date" property="updateDate"/>
+  </resultMap>
+
+  <sql id="column_user_security">
+    user_id,user_name,account,user_code,dept_id,dept_name,position,contact_no,email,gender,id_no,join_date,desert_date,official_date,work_address,marriage,user_status,position,contact_address,avatar,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
+  </sql>
+
+  <sql id="default_user_column">
+    user_id,user_name,account,password,salt,user_code,dept_id,dept_name,position,contact_no,email,gender,id_no,join_date,desert_date,official_date,work_address,marriage,user_status,position,contact_address,avatar,system_code,creator_id,creator_name,create_date,updator_id,updator_name,update_date
+  </sql>
+
+  <select id="getUserForSecurity" resultType="com.deepspc.stage.sys.system.entity.User">
+    SELECT
+        user_id "userId",
+        user_name "userName",
+        account,
+        password,
+        user_code "userCode",
+        salt,
+        dept_id "deptId",
+        dept_name "deptName",
+        email,
+        contact_no "contactNo",
+        gender
+    FROM
+        sys_user
+    WHERE
+        account = #{account}
+  </select>
+
+  <select id="getUserPermission" resultType="map">
+    <if test="permissType = 'menu'">
+    SELECT
+      sm.menu_id "id",
+      ( CASE WHEN ( sm2.menu_id = 0 OR sm2.menu_id IS NULL ) THEN 0 ELSE sm2.menu_id END ) "parentId",
+      sm.CODE "code",
+      sm.icon "icon",
+      sm.NAME "name",
+      sm.url "url",
+      sm.levels "levels",
+      sm.menu_flag "ismenu",
+      sm.sort "num"
+    FROM
+      (
+    </if>
+      SELECT
+        b.user_id "userId",
+        b.user_name "userName",
+        b.avatar,
+        a.role_id "roleId",
+        a.permission_id "permissionId",
+        a.permission_type "permissionType",
+        a.content,
+        a.resource_id "resourceId",
+        a.data_url "dataUrl"
+      FROM
+        (
+        SELECT
+          ua.user_id,
+          rp.role_id,
+          rp.permission_id,
+          ppr.permission_type,
+          ppr.content,
+          ppr.resource_id,
+          ppr.data_url
+        FROM
+          sys_user_access ua,
+          sys_role_permission rp
+          LEFT JOIN (
+            SELECT
+              p.permission_id,
+              pr.resource_id,
+              p.permission_type,
+              p.content,
+              p.data_url
+            FROM
+              sys_permission p
+              LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
+          ) ppr ON rp.permission_id = ppr.permission_id
+        WHERE
+          ua.access_id = rp.role_id
+          AND ua.user_id = #{userId}
+        UNION ALL
+        SELECT
+          ua.user_id,
+          NULL role_id,
+          p.permission_id,
+          p.permission_type,
+          p.content,
+          pr.resource_id,
+          p.data_url
+        FROM
+          sys_user_access ua,
+          sys_permission p
+          LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
+        WHERE
+          ua.access_id = p.permission_id
+          AND ua.user_id = #{userId}
+        ) a,
+        sys_user b
+      WHERE
+        b.user_id = a.user_id
+        AND b.user_id = #{userId}
+    <if test="permissType = 'menu'">
+      ) pm,
+      sys_menu sm
+      LEFT JOIN sys_menu sm2 ON sm.pcode = sm2.CODE
+    WHERE
+      sm.menu_id = pm.resourceId
+    ORDER BY
+      sm.levels,
+      sm.sort ASC
+    </if>
+  </select>
+  
+  <select id="loadUsers" resultMap="BaseUserMap">
+    select
+    <include refid="column_user_security"/>
+    from sys_user
+    where 1 = 1
+    <if test="userName != null and userName != ''">
+      and user_name like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="deptId != null">
+      and dept_id = #{deptId}
+    </if>
+  </select>
+  
+</mapper>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{},~{})">
+  <title th:text="${appName}"></title>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <!--引入头部-->
+    <div th:replace="common/header :: header_content"/>
+    <!--引入左侧导航栏-->
+    <div th:replace="common/sidebar :: sidebar_content"/>
+    <!--引入主体-->
+    <div th:replace="common/content :: main_content"/>
+    <!--引入底部-->
+    <div th:replace="common/footer :: footer_content"/>
+    <div th:replace="common/footer :: footer_mobile_shade"/>
+  </div>
+  <!-- 加载动画，移除位置在common.js中 -->
+  <div th:replace="common/loading :: loadingPage"/>
+  <div th:replace="common/common :: public_js(~{::script})">
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+  </div>
+</body>
+</html>

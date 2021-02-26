@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{::link},~{})">
+  <meta charset="UTF-8">
+  <title>用户登录</title>
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<div id="container" class="login-wrapper">
+  <input type="hidden" id="pub" name="pub" th:value="${pub}">
+  <div class="layui-form">
+    <h2 th:text="${appName}">电商后台管理系统</h2>
+    <div class="layui-form-item layui-input-icon-group">
+      <i class="layui-icon layui-icon-username"></i>
+      <input class="layui-input" id="account" name="account" placeholder="请输入账号" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+    </div>
+    <div class="layui-form-item layui-input-icon-group">
+      <i class="layui-icon layui-icon-password"></i>
+      <input class="layui-input" id="password" name="password" placeholder="请输入密码" type="password" lay-verType="tips" lay-verify="required" required/>
+    </div>
+    <div class="layui-form-item layui-input-icon-group login-captcha-group">
+      <i class="layui-icon layui-icon-auz"></i>
+      <input class="layui-input" id="verifyCode" name="verifyCode" placeholder="请输入验证码" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+      <img class="login-captcha" th:src="@{/loadCaptcha}" onclick="this.src=this.src+'?'">
+    </div>
+    <div class="layui-form-item">
+      <button class="layui-btn layui-btn-fluid" id="login" lay-filter="login-submit" type="button" lay-submit>登录</button>
+    </div>
+  </div>
+  <div class="login-copyright">copyright © 2020 deepspc.com all rights reserved.</div>
+</div>
+
+<div th:replace="common/common :: public_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/jsencrypt.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/login.js}"></script>
+</div>
+</body>
+</html>

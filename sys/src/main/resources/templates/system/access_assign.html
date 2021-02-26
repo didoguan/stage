@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>资源分配</title>
+  <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
+  <link rel="stylesheet" th:href="@{/plugins/expand/plugins/ztree/zTreeStyle.css}"/>
+  <style>
+    .ztree li span.button.user_ico_docu {
+      background: url("../../images/user_icon.png") no-repeat scroll 0 0 transparent;
+    }
+  </style>
+  <script th:inline="javascript" type="text/javascript">
+    let ctxPath = [[${#httpServletRequest.getContextPath()}]];
+    let submitUri = [[${submitUri}]];
+    let treeUri = [[${treeUri}]];
+    let selId = [[${selId}]];
+  </script>
+</head>
+<body>
+<div id="treeForm" class="layui-fluid">
+  <div class="layui-row" style="margin-top:15px;background: #f2f7f8;padding: 20px;">
+    <ul id="zTree" class="ztree"></ul>
+  </div>
+  <div class="layui-row" style="background: #CFD4D5;padding: 10px;">
+    <div style="text-align: center;">
+      <button class="layui-btn layui-btn-sm" id="saveButton">保存</button>
+      <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" th:src="@{/plugins/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery/jquery-3.2.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/expand/plugins/ztree/jquery.ztree.all.min.js}"></script>
+<script type="text/javascript">
+  layui.use(['ztree', 'ax'], function () {
+    let $ZTree = layui.ztree;
+    let $ax = layui.ax;
+
+    let ZTreeDlg = {
+      index: parent.layer.getFrameIndex(window.name)
+    };
+
+    $("#saveButton").bind("click", function () {
+      let selNodes = Stage.zTreeCheckedNodes("zTree");
+      let datas = [];
+      let dataSize = selNodes.length;
+      if (dataSize > 0) {
+        for (let i = 0, l = dataSize; i < l; i++) {
+          datas[i] = {"selId": selId, "nodeType": selNodes[i].nodeType, "assignId": selNodes[i].id};
+        }
+      } else {
+        datas[0] = {"selId": selId, "nodeType": "", "assignId": null};
+      }
+      let ajax = new $ax(ctxPath + submitUri, function (data) {
+        parent.layer.close(ZTreeDlg.index);
+      }, function (data) {}, {async:true,contentType:"application/json;charset=utf-8"});
+      ajax.setData(JSON.stringify(datas));
+      ajax.start();
+    });
+
+    let setting = {
+      check: {
+        enable: true,
+        chkboxType: {
+          "Y": "ps",
+          "N": "ps"
+        }
+      },
+      data: {
+        simpleData: {
+          enable: true
+        }
+      }
+    };
+
+    let ztree = new $ZTree("zTree", ctxPath + treeUri);
+    ztree.setSettings(setting);
+    ztree.init();
+  });
+</script>
+</body>
+</html>
