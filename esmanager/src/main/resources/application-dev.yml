@@ -1,7 +1,14 @@
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://139.159.191.121:3306/ec_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-    username: deepspc
-    password: deepspc
-
+    druid:
+      primary:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://139.159.191.121:3306/ec_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+        username: deepspc
+        password: deepspc
+      second:
+        enabled: true
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://139.159.191.121:3306/oa_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+        username: dlsoa_test
+        password: dlsOaTest2020

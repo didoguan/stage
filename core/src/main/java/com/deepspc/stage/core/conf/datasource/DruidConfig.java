@@ -1,14 +1,18 @@
-package com.deepspc.stage.core.conf;
+package com.deepspc.stage.core.conf.datasource;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.deepspc.stage.core.enums.DataSourceEnum;
 import com.deepspc.stage.core.properties.DruidDataSourceProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -23,17 +27,44 @@ import java.util.Map;
 public class DruidConfig {
 
     @Bean
-    public DataSource druidDataSource() {
-        DruidDataSource dataSource = new DruidDataSource();
-        DruidDataSourceProperties druidDataSourceProperties = druidDataSourceProperties();
-        druidDataSourceProperties.init(dataSource);
+    @ConfigurationProperties("spring.datasource.druid")
+    public DruidDataSourceProperties druidDataSourceProperties() {
+        return new DruidDataSourceProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.primary")
+    public DataSource primaryDataSource() {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        DruidDataSourceProperties properties = druidDataSourceProperties();
+        properties.init(dataSource);
         return dataSource;
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DruidDataSourceProperties druidDataSourceProperties() {
-        return new DruidDataSourceProperties();
+    @ConfigurationProperties("spring.datasource.druid.second")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.second", name = "enabled", havingValue = "true")
+    public DataSource secondDataSource() {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        DruidDataSourceProperties properties = druidDataSourceProperties();
+        properties.init(dataSource);
+        return dataSource;
+    }
+
+    /**
+     * 添加多个数据源并设置默认数据源
+     * @param primaryDataSource 默认数据源
+     * @param secondDataSource 从数据源
+     * @return DynamicDataSource
+     */
+    @Bean
+    @Primary
+    public DynamicDataSource dataSource(DataSource primaryDataSource, DataSource secondDataSource){
+        Map<Object,Object> targetDataSource = new HashMap<>(2);
+        targetDataSource.put(DataSourceEnum.PRIMARY.getDataSourceName(), primaryDataSource);
+        targetDataSource.put(DataSourceEnum.SECOND.getDataSourceName(), secondDataSource);
+
+        return new DynamicDataSource(primaryDataSource ,targetDataSource);
     }
 
     /**
