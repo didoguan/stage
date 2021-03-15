@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-/**
+/** 采购信息管理
  * @author gzw
  * @date 2020/12/28 10:14
  */

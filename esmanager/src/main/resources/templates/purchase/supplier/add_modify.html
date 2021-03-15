@@ -44,6 +44,30 @@
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">发票抬头</label>
+            <div class="layui-input-block">
+              <input id="invoiceTitle" name="invoiceTitle" th:value="${Supplier?.invoiceTitle}" placeholder="请输入发票抬头" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">开户银行</label>
+            <div class="layui-input-block">
+              <input id="bankName" name="bankName" th:value="${Supplier?.bankName}" placeholder="请输入开户银行" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">银行账号</label>
+            <div class="layui-input-block">
+              <input id="bankAccount" name="bankAccount" th:value="${Supplier?.bankAccount}" placeholder="请输入银行账号" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">税号</label>
+            <div class="layui-input-block">
+              <input id="taxNumber" name="taxNumber" th:value="${Supplier?.taxNumber}" placeholder="请输入税号" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">详细地址</label>
             <div class="layui-input-block">
               <input id="contactAddress" name="contactAddress" th:value="${Supplier?.contactAddress}" placeholder="请输入详细地址" type="text" class="layui-input" autocomplete="off"/>

@@ -125,7 +125,7 @@ body:before {
 
 @media screen and (min-height: 550px) {
   .login-wrapper {
-    margin: -250px auto 0;
+    /*margin: -250px auto 0;*/
     position: absolute;
     top: 50%;
     left: 0;

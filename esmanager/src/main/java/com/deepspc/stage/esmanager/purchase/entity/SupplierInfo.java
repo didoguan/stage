@@ -36,6 +36,14 @@ public class SupplierInfo implements Serializable {
 
     private String supplierStatus;
 
+    private String invoiceTitle;
+
+    private String bankName;
+
+    private String bankAccount;
+
+    private String taxNumber;
+
     @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
@@ -176,5 +184,41 @@ public class SupplierInfo implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getInvoiceTitle() {
+        return invoiceTitle;
+    }
+
+    public void setInvoiceTitle(String invoiceTitle) {
+        this.invoiceTitle = invoiceTitle;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(String taxNumber) {
+        this.taxNumber = taxNumber;
     }
 }

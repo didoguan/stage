@@ -12,6 +12,10 @@
     <result column="start_level" property="startLevel" />
     <result column="blacklist" property="blacklist" />
     <result column="supplier_status" property="supplierStatus" />
+    <result column="invoice_title" property="invoiceTitle" />
+    <result column="bank_name" property="bankName" />
+    <result column="bank_account" property="bankAccount" />
+    <result column="tax_number" property="taxNumber" />
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
     <result column="create_date" property="createDate" />
@@ -21,7 +25,25 @@
   </resultMap>
 
   <sql id="default_supplier_column">
-    supplier_id, supplier_name, company_contacts, contact_number, contact_address, ali_url, start_level, blacklist, supplier_status, creator_id, creator_name, create_date,updator_id,updator_name,update_date
+    supplier_id,
+    supplier_name,
+    company_contacts,
+    contact_number,
+    contact_address,
+    ali_url,
+    start_level,
+    blacklist,
+    supplier_status,
+    invoice_title,
+    bank_name,
+    bank_account,
+    tax_number,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
   </sql>
   
   <select id="loadSupplierInfo" resultMap="BaseSupplierMap">
