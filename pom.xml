@@ -14,6 +14,7 @@
     <module>esmanager</module>
     <module>shiro</module>
     <module>sys</module>
+    <module>workshop</module>
   </modules>
 
   <properties>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.workshop.base.mapper.UserMapper">
+
+  <resultMap id="BaseUserMap" type="com.deepspc.stage.workshop.base.entity.User">
+    <id column="user_id" property="userId"/>
+    <result column="user_name" property="userName"/>
+    <result column="user_account" property="userAccount"/>
+    <result column="user_password" property="userPassword"/>
+    <result column="salt" property="salt"/>
+    <result column="user_type" property="userType"/>
+    <result column="dept_id" property="deptId"/>
+    <result column="dept_name" property="deptName"/>
+  </resultMap>
+
+  <select id="getUserForSecurity" resultType="com.deepspc.stage.workshop.base.entity.User">
+    SELECT
+      user_id "userId",
+      user_name "userName",
+      user_account "userAccount",
+      user_password "userPassword",
+      salt,
+      dept_id "deptId",
+      dept_name "deptName",
+      user_type "userType"
+    FROM
+      ws_user
+    WHERE
+      user_account = #{account}
+  </select>
+  
+</mapper>
