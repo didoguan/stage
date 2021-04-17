@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<form id="propertiesForm" lay-filter="propertiesForm" class="layui-form model-form">
+  <input id="propertyId" name="propertyId" type="hidden" th:value="${GoodsProperty?.propertyId}"/>
+  <div class="layui-form-item">
+    <label class="layui-form-label">属性名称<span style="color: red;">*</span></label>
+    <div class="layui-input-block">
+      <input id="propertyName" name="propertyName" th:value="${GoodsProperty?.propertyName}" placeholder="请输入属性名称" type="text" class="layui-input" lay-verify="required" required autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">类目<span style="color: red;">*</span></label>
+    <div class="layui-input-block">
+      <select name="categoryCode" id="categoryCode" th:value="${GoodsProperty?.categoryCode}" lay-verify="required" class="layui-input" lay-search>
+        <option value="26">箱包</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否多选</label>
+    <div class="layui-input-block">
+      <input name="multipleChoice" th:value="N" type="radio" title="否" th:checked="${null == GoodsProperty || GoodsProperty.multipleChoice == 'N'}">
+      <input name="multipleChoice" th:value="Y" type="radio" title="是" th:checked="${GoodsProperty?.multipleChoice} == 'Y'">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">排序号</label>
+    <div class="layui-input-block">
+      <input id="sort" name="sort" th:value="${GoodsProperty?.sort}" placeholder="排序号" type="text" lay-verify="number" class="layui-input" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item" style="margin-left: 30px;">
+    <table class="layui-table" id="valueTable" lay-filter="valueTable"></table>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script th:inline="javascript" type="text/javascript">
+    let propertiesValues = [[${GoodsProperty?.values}]];
+  </script>
+  <script type="text/javascript" th:src="@{/js/goods/add_modify_properties.js}"></script>
+  <script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+  </script>
+</div>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyInfoMapper">
+  <resultMap id="BaseGoodsPropertyInfoMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsPropertyInfo">
+    <result column="goods_id" property="goodsId" />
+    <result column="property_id" property="propertyId" />
+    <result column="property_value_id" property="propertyValueId" />
+  </resultMap>
+
+  <select id="getPropertiesByGoods" resultMap="BaseGoodsPropertyInfoMap">
+    SELECT
+        goods_id,
+        property_id,
+        property_value_id
+    FROM
+        ec_goods_property_info
+    WHERE
+        goods_id = #{goodsId}
+  </select>
+
+</mapper>

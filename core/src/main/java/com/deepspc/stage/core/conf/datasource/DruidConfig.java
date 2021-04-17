@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 数据源配置
@@ -107,5 +109,12 @@ public class DruidConfig {
         bean.setInitParameters(initParams);
 
         return bean;
+    }
+
+    @PostConstruct
+    public void setProperties() {
+        Properties properties = System.getProperties();
+        properties.setProperty("druid.mysql.usePingMethod", "false");
+        System.setProperties(properties);
     }
 }

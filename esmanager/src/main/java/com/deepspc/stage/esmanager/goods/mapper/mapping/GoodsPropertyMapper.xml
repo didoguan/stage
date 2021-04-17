@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyMapper">
+
+  <resultMap id="BaseGoodsPropertyMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsProperty">
+    <id column="property_id" property="propertyId" />
+    <result column="property_name" property="propertyName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="category_name" property="categoryName" />
+    <result column="multiple_choice" property="multipleChoice" />
+    <result column="sort" property="sort" />
+  </resultMap>
+
+  <resultMap id="GoodsPropertyDetailMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsProperty">
+    <id column="property_id" property="propertyId" />
+    <result column="property_name" property="propertyName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="category_name" property="categoryName" />
+    <result column="multiple_choice" property="multipleChoice" />
+    <result column="sort" property="sort" />
+    <!--fetchType="eager" 急加载，查询主表时加载子表-->
+    <collection property="values" column="property_id" fetchType="eager" select="getPropertyValues" ofType="com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue"/>
+  </resultMap>
+
+  <sql id="default_goods_property_column">
+    property_id,
+    property_name,
+    category_code,
+    category_name,
+    multiple_choice,
+    sort
+  </sql>
+
+  <select id="loadGoodsProperty" resultMap="BaseGoodsPropertyMap">
+    SELECT
+    <include refid="default_goods_property_column"/>
+    FROM
+      ec_goods_property
+    WHERE
+      1 = 1
+    <if test="propertyName != null and propertyName != ''">
+      AND property_name like CONCAT('%',#{propertyName},'%')
+    </if>
+    <if test="categoryName != null and categoryName != ''">
+      AND category_name like CONCAT('%',#{categoryName},'%')
+    </if>
+    ORDER BY
+      sort ASC
+  </select>
+
+  <select id="getGoodsPropertyDetail" resultMap="GoodsPropertyDetailMap">
+    SELECT
+    <include refid="default_goods_property_column"/>
+    FROM
+        ec_goods_property
+    WHERE
+        property_id = #{propertyId}
+    ORDER BY
+        sort ASC
+  </select>
+
+  <select id="getPropertyValues" resultType="com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue">
+    SELECT
+        property_value_id "propertyValueId",
+        property_id "propertyId",
+        property_value_name "propertyValueName",
+        category_code "categoryCode",
+        category_name "categoryName",
+        sort
+    FROM
+        ec_goods_property_value
+    WHERE
+        property_id = #{propertyId}
+    ORDER BY
+        property_id,
+        sort ASC
+  </select>
+
+  <delete id="deleteProperties">
+    DELETE a, b
+    FROM
+    ec_goods_property a
+    LEFT JOIN ec_goods_property_value b ON a.property_id = b.property_id
+    WHERE
+    a.property_id IN
+    <foreach collection="propertyIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+</mapper>

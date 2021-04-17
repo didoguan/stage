@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.goods.mapper.GoodsInfoMapper">
+
+  <resultMap id="BaseGoodsInfoMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsInfo">
+    <id column="goods_id" property="goodsId" />
+    <result column="goods_name" property="goodsName" />
+    <result column="sku" property="sku" />
+    <result column="bar_code" property="barCode" />
+    <result column="goods_type" property="goodsType" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="brand_name" property="brandName" />
+    <result column="brand_code" property="brandCode" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+  
+  <resultMap id="GoodsDataMap" type="com.deepspc.stage.esmanager.goods.model.GoodsData">
+    <id column="goods_id" property="goodsId" />
+    <result column="goods_name" property="goodsName" />
+    <result column="sku" property="sku" />
+    <result column="bar_code" property="barCode" />
+    <result column="goods_type" property="goodsType" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="brand_name" property="brandName" />
+    <result column="brand_code" property="brandCode" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+    <!-- fetchType="eager" 急加载，查询主表时加载子表-->
+    <collection property="pics" column="goods_id" fetchType="eager" select="getGoodsPic" ofType="com.deepspc.stage.esmanager.goods.entity.GoodsAttachment"/>
+  </resultMap>
+
+  <sql id="default_goods_column">
+    goods_id,
+    goods_name,
+    sku,
+    bar_code,
+    goods_type,
+    category_name,
+    category_code,
+    brand_name,
+    brand_code,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
+  </sql>
+  
+  <select id="loadGoods" resultMap="GoodsDataMap">
+    SELECT
+      goods_id,
+      goods_name,
+      sku,
+      bar_code,
+      goods_type,
+      category_name,
+      category_code,
+      brand_name,
+      brand_code,
+      creator_name,
+      date_format(create_date, '%Y-%m-%d') "create_date",
+      updator_name,
+      date_format(update_date, '%Y-%m-%d') "update_date"
+    FROM
+      ec_goods_info
+    WHERE
+        1 = 1
+    <if test="sku != null and sku != ''">
+      AND sku like CONCAT('%',#{sku},'%')
+    </if>
+    <if test="goodsType != null and goodsType != ''">
+      AND goods_type = #{goodsType}
+    </if>
+    ORDER BY create_date DESC
+  </select>
+
+  <select id="getGoodsPic" resultType="com.deepspc.stage.esmanager.goods.entity.GoodsAttachment">
+    SELECT
+        goods_attachment_id "goodsAttachmentId",
+        goods_id "goodsId",
+        original_file_name "originalFileName",
+        new_file_name "newFileName",
+        file_category "fileCategory",
+        file_path "filePath"
+    FROM
+        ec_goods_attachment
+    WHERE
+        goods_id = #{goodsId}
+  </select>
+
+  <select id="getGoodsDetail" resultMap="GoodsDataMap">
+    SELECT
+      goods_id,
+      goods_name,
+      sku,
+      bar_code,
+      goods_type,
+      category_name,
+      category_code,
+      brand_name,
+      brand_code,
+      creator_name,
+      date_format(create_date, '%Y-%m-%d') "create_date",
+      updator_name,
+      date_format(update_date, '%Y-%m-%d') "update_date"
+    FROM
+      ec_goods_info
+    WHERE
+      goods_id = #{goodsId}
+  </select>
+</mapper>

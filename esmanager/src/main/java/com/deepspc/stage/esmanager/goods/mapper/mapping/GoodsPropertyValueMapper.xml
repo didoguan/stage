@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyValueMapper">
+
+  <resultMap id="BaseGoodsInfoMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue">
+    <id column="property_value_id" property="propertyValueId" />
+    <result column="property_id" property="propertyId" />
+    <result column="property_value_name" property="propertyValueName" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="sort" property="sort" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <insert id="insertBatch">
+    INSERT INTO ec_goods_property_value(property_value_id, property_id, property_value_name, category_code, category_name, sort)
+    VALUES
+    <foreach collection="list" item="property" separator =",">
+      (#{property.propertyValueId}, #{property.propertyId}, #{property.propertyValueName}, #{property.categoryName}, #{property.categoryCode}, #{property.sort})
+    </foreach>
+  </insert>
+</mapper>
