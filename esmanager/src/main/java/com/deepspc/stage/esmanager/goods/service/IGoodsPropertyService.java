@@ -15,4 +15,6 @@ public interface IGoodsPropertyService extends IService<GoodsProperty> {
     void saveProperties(GoodsProperty goodsProperty);
 
     void deleteProperties(List<Long> propertyIds);
+
+    List<GoodsProperty> getCategoryProperty(String categoryCode);
 }

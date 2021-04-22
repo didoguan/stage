@@ -8,6 +8,7 @@
     <result column="original_file_name" property="originalFileName" />
     <result column="new_file_name" property="newFileName" />
     <result column="file_category" property="fileCategory" />
+    <result column="file_type" property="fileType" />
     <result column="file_size" property="fileSize" />
     <result column="file_path" property="filePath" />
     <result column="creator_id" property="creatorId" />

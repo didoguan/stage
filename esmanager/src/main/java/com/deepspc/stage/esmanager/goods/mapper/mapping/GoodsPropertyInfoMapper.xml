@@ -18,4 +18,12 @@
         goods_id = #{goodsId}
   </select>
 
+  <insert id="insertBatch">
+    INSERT INTO ec_goods_property_info(goods_id, property_id, property_code, property_value_id, property_value_code)
+    VALUES
+    <foreach collection="list" item="item" separator =",">
+      (#{item.goodsId}, #{item.propertyId}, #{item.propertyCode}, #{item.propertyValueId}, #{item.propertyValueCode})
+    </foreach>
+  </insert>
+
 </mapper>

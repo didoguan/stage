@@ -1,8 +1,10 @@
 package com.deepspc.stage.esmanager.goods.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
 import com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue;
 import com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyMapper;
@@ -10,6 +12,7 @@ import com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyValueMapper;
 import com.deepspc.stage.esmanager.goods.service.IGoodsPropertyService;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,6 +39,7 @@ public class GoodsPropertyServiceImpl extends BaseOrmService<GoodsPropertyMapper
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveProperties(GoodsProperty goodsProperty) {
         this.saveOrUpdate(goodsProperty);
         List<GoodsPropertyValue> values = goodsProperty.getValues();
@@ -56,5 +60,10 @@ public class GoodsPropertyServiceImpl extends BaseOrmService<GoodsPropertyMapper
     @Override
     public void deleteProperties(List<Long> propertyIds) {
         this.baseMapper.deleteProperties(propertyIds);
+    }
+
+    @Override
+    public List<GoodsProperty> getCategoryProperty(String categoryCode) {
+        return this.baseMapper.getCategoryProperty(categoryCode);
     }
 }

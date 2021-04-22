@@ -88,4 +88,13 @@
     </foreach>
   </delete>
 
+  <select id="getCategoryProperty" resultMap="GoodsPropertyDetailMap">
+    SELECT
+    <include refid="default_goods_property_column"/>
+    FROM
+      ec_goods_property
+    WHERE
+      category_code = #{categoryCode}
+  </select>
+
 </mapper>

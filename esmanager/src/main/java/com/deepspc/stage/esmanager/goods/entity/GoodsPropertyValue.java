@@ -26,6 +26,8 @@ public class GoodsPropertyValue implements Serializable {
 
     private String propertyValueName;
 
+    private String propertyValueCode;
+
     private String categoryCode;
 
     private String categoryName;
@@ -80,5 +82,13 @@ public class GoodsPropertyValue implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getPropertyValueCode() {
+        return propertyValueCode;
+    }
+
+    public void setPropertyValueCode(String propertyValueCode) {
+        this.propertyValueCode = propertyValueCode;
     }
 }

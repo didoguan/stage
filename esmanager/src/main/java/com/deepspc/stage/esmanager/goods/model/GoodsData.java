@@ -2,6 +2,8 @@ package com.deepspc.stage.esmanager.goods.model;
 
 import com.deepspc.stage.esmanager.goods.entity.GoodsAttachment;
 import com.deepspc.stage.esmanager.goods.entity.GoodsPropertyInfo;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 public class GoodsData implements Serializable {
     private static final long serialVersionUID = 1126270421309422032L;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long goodsId;
 
     private String goodsName;

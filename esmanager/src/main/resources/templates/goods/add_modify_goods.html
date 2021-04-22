@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<form class="layui-form">
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <input id="goodsId" name="goodsId" type="hidden" th:value="${GoodsData?.goodsId}"/>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">商品名称<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="goodsName" name="goodsName" th:value="${GoodsData?.goodsName}" placeholder="商品名称" type="text" class="layui-input" lay-verify="required" required autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">SKU</label>
+            <div class="layui-input-block">
+              <input id="sku" name="sku" th:value="${GoodsData?.sku}" type="text" class="layui-input" readonly/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">商品类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select name="goodsType" id="goodsType" th:value="${GoodsData?.goodsType}" lay-verify="required" class="layui-input" lay-search>
+                <option value="">--请选择--</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">类目<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select name="categoryCode" id="categoryCode" th:value="${GoodsData?.categoryCode}" lay-filter="categoryFilter" lay-verify="required" class="layui-input" lay-search>
+                <option value="">--请选择--</option>
+                <option value="26">箱包</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">条形码</label>
+            <div class="layui-input-block">
+              <img th:src="@{${GoodsData?.barCode}}" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 商品属性 -->
+      <div class="layui-card-header">属性信息</div>
+      <div class="layui-card-body">
+        <div id="propertiesBlock" class="layui-form-item layui-row"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/goods/add_modify_goods.js}"></script>
+</div>

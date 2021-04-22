@@ -21,10 +21,10 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'propertyId', hide: true, sort: false, title: 'id'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
       {field: 'propertyName', sort: false, title: '属性名称'},
       {field: 'categoryName', sort: false, title: '所属类目'},
-      {field: 'multipleChoice', sort: false, title: '是否多选'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+      {field: 'multipleChoice', sort: false, title: '是否多选'}
     ]];
   };
 

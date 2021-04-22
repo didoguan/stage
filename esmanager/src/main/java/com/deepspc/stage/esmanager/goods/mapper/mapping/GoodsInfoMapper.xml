@@ -118,4 +118,17 @@
     WHERE
       goods_id = #{goodsId}
   </select>
+
+  <delete id="deleteGoods">
+    DELETE a, b, c
+    FROM
+    ec_goods_info a
+    LEFT JOIN ec_goods_property_info b ON a.goods_id = b.goods_id
+    LEFT JOIN ec_goods_attachment c ON a.goods_id = c.goods_id
+    WHERE
+    a.goods_id IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 </mapper>

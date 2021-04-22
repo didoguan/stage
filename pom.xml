@@ -33,6 +33,7 @@
     <jjwt.version>0.9.1</jjwt.version>
     <ehcache.version>2.10.6</ehcache.version>
     <joda-time.version>2.10.6</joda-time.version>
+    <barcode4j.version>2.0</barcode4j.version>
   </properties>
 
   <dependencyManagement>
@@ -135,6 +136,12 @@
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
         <version>${joda-time.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sf.barcode4j</groupId>
+        <artifactId>barcode4j-light</artifactId>
+        <version>${barcode4j.version}</version>
       </dependency>
 
     </dependencies>

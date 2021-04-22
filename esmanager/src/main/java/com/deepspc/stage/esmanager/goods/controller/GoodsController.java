@@ -1,6 +1,5 @@
 package com.deepspc.stage.esmanager.goods.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
@@ -51,7 +50,7 @@ public class GoodsController extends BaseController {
             goodsData = goodsInfoService.getGoodsDetail(goodsId);
         }
         model.addAttribute("GoodsData", goodsData);
-        return "goods/add_modify";
+        return "goods/add_modify_goods";
     }
 
     @GetMapping("/addModifyPropertiesPage")
@@ -62,6 +61,14 @@ public class GoodsController extends BaseController {
         }
         model.addAttribute("GoodsProperty", goodsProperty);
         return "goods/add_modify_properties";
+    }
+
+    @RequestMapping("/loadCategoryProperties")
+    @ResponseBody
+    public ResponseData loadCategoryProperties(String categoryCode) {
+        //获取属性
+        List<GoodsProperty> goodsProperties = goodsPropertyService.getCategoryProperty(categoryCode);
+        return ResponseData.success(goodsProperties);
     }
 
     @RequestMapping("/loadGoods")
@@ -80,10 +87,24 @@ public class GoodsController extends BaseController {
         return layuiPage(list);
     }
 
+    @RequestMapping("/saveUpdateGoods")
+    @ResponseBody
+    public ResponseData saveUpdateGoods(@RequestBody GoodsData goodsData) {
+        goodsInfoService.saveUpdateGoodsData(goodsData);
+        return ResponseData.success();
+    }
+
     @RequestMapping("/saveUpdateProperties")
     @ResponseBody
     public ResponseData saveUpdateProperties(@RequestBody GoodsProperty goodsProperty) {
         goodsPropertyService.saveProperties(goodsProperty);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/deleteGoods")
+    @ResponseBody
+    public ResponseData deleteGoods(@RequestBody List<Long> goodsIds) {
+        goodsInfoService.deleteGoods(goodsIds);
         return ResponseData.success();
     }
 

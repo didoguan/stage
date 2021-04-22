@@ -16,5 +16,7 @@ public interface Const {
 
     String menuPermission = "menu";
 
+    String attachmentUri = "/attachment";
+
     String defaultPassword = "111111";
 }

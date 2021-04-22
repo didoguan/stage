@@ -14,4 +14,6 @@ public interface GoodsPropertyMapper extends BaseMapper<GoodsProperty> {
     GoodsProperty getGoodsPropertyDetail(@Param("propertyId") Long propertyId);
 
     void deleteProperties(@Param("propertyIds") List<Long> propertyIds);
+
+    List<GoodsProperty> getCategoryProperty(@Param("categoryCode") String categoryCode);
 }

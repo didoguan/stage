@@ -9,4 +9,6 @@ import java.util.List;
 public interface GoodsPropertyInfoMapper extends BaseMapper<GoodsPropertyInfo> {
 
     List<GoodsPropertyInfo> getPropertiesByGoods(@Param("goodsId") Long goodsId);
+
+    void insertBatch(@Param("list") List<GoodsPropertyInfo> list);
 }

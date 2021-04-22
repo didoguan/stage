@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org">
 <head th:replace="common/common :: public_res(~{::title},~{},~{})">
   <title></title>
 </head>
@@ -42,5 +42,14 @@
   <script type="text/javascript" th:src="@{/js/goods/goods.js}"></script>
   <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+  </script>
+  <script type="text/html" id="goods_pic">
+    {{# layui.each(d.pics, function(index, item) { }}
+      <div id="goodspic_{{d.LAY_TABLE_INDEX}}">
+      {{# if(item.fileType == '02') { }}
+        <img id="{{item.goodsAttachmentId}}" src="{{item.filePath}}" width="50px" height="50px"/>
+      {{#} }}
+      </div>
+    {{#}) }}
   </script>
 </div>

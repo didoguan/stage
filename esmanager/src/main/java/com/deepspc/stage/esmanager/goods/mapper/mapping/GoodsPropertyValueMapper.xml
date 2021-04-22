@@ -21,7 +21,7 @@
     INSERT INTO ec_goods_property_value(property_value_id, property_id, property_value_name, category_code, category_name, sort)
     VALUES
     <foreach collection="list" item="property" separator =",">
-      (#{property.propertyValueId}, #{property.propertyId}, #{property.propertyValueName}, #{property.categoryName}, #{property.categoryCode}, #{property.sort})
+      (#{property.propertyValueId}, #{property.propertyId}, #{property.propertyValueName}, #{property.categoryCode}, #{property.categoryName}, #{property.sort})
     </foreach>
   </insert>
 </mapper>

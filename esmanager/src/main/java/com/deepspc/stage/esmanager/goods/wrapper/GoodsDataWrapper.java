@@ -24,6 +24,9 @@ public class GoodsDataWrapper extends BaseWrapper<GoodsData> {
 
     public GoodsDataWrapper(Page<GoodsData> list) {
         super(list);
+        if (null == list || list.getRecords() == null || list.getRecords().isEmpty()) {
+            return;
+        }
         this.dictService = ApplicationContextUtil.getBean(IDictService.class);
         List<String> codes = new ArrayList<>(1);
         codes.add("goods_type");

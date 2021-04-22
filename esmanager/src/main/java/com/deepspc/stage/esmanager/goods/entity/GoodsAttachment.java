@@ -28,6 +28,8 @@ public class GoodsAttachment implements Serializable {
 
     private String fileCategory;
 
+    private String fileType;
+
     private Integer fileSize;
 
     private String filePath;
@@ -154,5 +156,13 @@ public class GoodsAttachment implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

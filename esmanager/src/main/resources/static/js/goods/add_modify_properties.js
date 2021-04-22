@@ -9,6 +9,25 @@ layui.use(['layer', 'form', 'admin', 'table'], function () {
     tableId: "valueTable"    //表格id
   };
 
+  //表单验证
+  form.verify({
+    //输入长度
+    lenLimit: function (value, item) {
+      let min = item.getAttribute('len-min');
+      if (min) {
+        if(value.length < min){
+          return '不能小于'+min+'个字符长度';
+        }
+      }
+      let max = item.getAttribute('len-max');
+      if (max) {
+        if(value.length > max){
+          return '不能超过'+max+'个字符长度';
+        }
+      }
+    }
+  });
+
   /**
    * 初始化表格的列
    */
