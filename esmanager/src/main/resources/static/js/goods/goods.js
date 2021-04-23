@@ -7,7 +7,6 @@ layui.use(['layer', 'table', 'func'], function () {
   let Goods = {
     tableId: "goodsTable",    //表格id
     condition: {
-      sku: "",
       goodsType: ""
     }
   };
@@ -16,17 +15,30 @@ layui.use(['layer', 'table', 'func'], function () {
    * 初始化表格的列
    */
   Goods.initColumn = function () {
+    /*
     return [[
       {type: 'checkbox'},
       {field: 'goodsId', hide: true, sort: false, title: 'id'},
       {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
       {field: 'categoryName', sort: false, title: '类目'},
-      {field: 'sku', sort: false, title: 'SKU', minWidth: 178},
       {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
       {field: 'goodsPic', sort: false, title: '颜色', templet: '#goods_pic', minWidth: 150},
       {field: 'barCode', sort: false, title: '条形码', templet: function (d) {
           return "<div class='barcode_"+d.goodsId+"'><img id='"+d.goodsId+"' src='"+d.barCode+"' layer-src='"+d.barCode+"' onclick='showImg(this)'></div>";
         }, minWidth: 150},
+      {field: 'goodsType', sort: false, title: '类型'},
+      {field: 'brandName', sort: false, title: '品牌'},
+      {field: 'creatorName', sort: false, title: '创建人'},
+      {field: 'createDate', sort: false, title: '创建时间'},
+      {field: 'updatorName', sort: false, title: '修改人'},
+      {field: 'updateDate', sort: false, title: '修改时间'}
+    ]];*/
+    return [[
+      {type: 'checkbox'},
+      {field: 'goodsId', hide: true, sort: false, title: 'id'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
+      {field: 'categoryName', sort: false, title: '类目'},
+      {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
       {field: 'goodsType', sort: false, title: '类型'},
       {field: 'brandName', sort: false, title: '品牌'},
       {field: 'creatorName', sort: false, title: '创建人'},
@@ -76,7 +88,6 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   Goods.search = function () {
     let queryData = {};
-    queryData['sku'] = $("#sku").val();
     queryData['goodsType'] = $("#goodsType").val();
     table.reload(Goods.tableId, {
       where: queryData, page: {curr: 1}
@@ -88,8 +99,8 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   Goods.openAddPage = function () {
     func.open({
-      height: 620,
-      width: 600,
+      height: 650,
+      width: 700,
       title: '添加商品',
       content: ctxPath + '/goods/addModifyGoodsPage',
       tableId: Goods.tableId
@@ -103,8 +114,8 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   Goods.onEditPage = function (data) {
     func.open({
-      height: 620,
-      width: 600,
+      height: 650,
+      width: 700,
       title: '修改商品',
       content: ctxPath + "/goods/addModifyGoodsPage?goodsId=" + data.goodsId,
       tableId: Goods.tableId

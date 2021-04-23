@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
   <meta charset="UTF-8">
   <title></title>
+  <style>
+    .layui-table, .layui-table-view {margin: 0;}
+  </style>
 </head>
 <form class="layui-form">
   <div class="layui-fluid" style="padding-bottom: 75px;">
@@ -18,12 +21,6 @@
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
-            <label class="layui-form-label">SKU</label>
-            <div class="layui-input-block">
-              <input id="sku" name="sku" th:value="${GoodsData?.sku}" type="text" class="layui-input" readonly/>
-            </div>
-          </div>
-          <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">商品类型<span style="color: red;">*</span></label>
             <div class="layui-input-block">
               <select name="goodsType" id="goodsType" th:value="${GoodsData?.goodsType}" lay-verify="required" class="layui-input" lay-search>
@@ -36,17 +33,23 @@
             <div class="layui-input-block">
               <select name="categoryCode" id="categoryCode" th:value="${GoodsData?.categoryCode}" lay-filter="categoryFilter" lay-verify="required" class="layui-input" lay-search>
                 <option value="">--请选择--</option>
-                <option value="26">箱包</option>
+                <option th:selected="${GoodsData?.categoryCode == '26'}" value="26">箱包</option>
               </select>
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
-            <label class="layui-form-label">条形码</label>
+            <label class="layui-form-label">颜色</label>
             <div class="layui-input-block">
-              <img th:src="@{${GoodsData?.barCode}}" />
+              <button type="button" class="layui-btn" id="uploadColor">上传图片</button>
             </div>
           </div>
+          <div class="layui-inline layui-col-md12"id="colorList"></div>
         </div>
+        <th:block th:if="${GoodsData != null}">
+        <div style="margin-left: 30px;">
+          <table class="layui-table" id="skuTable" lay-filter="skuTable"></table>
+        </div>
+        </th:block>
       </div>
       <!-- 商品属性 -->
       <div class="layui-card-header">属性信息</div>
@@ -59,7 +62,14 @@
     <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
     <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
   </div>
+  <button id="submitFile" style="display: none;"></button>
 </form>
 <div th:replace="common/form :: form_js(~{::script})">
+  <script th:inline="javascript" type="text/javascript">
+    let skuValues = [[${GoodsData?.pics}]];
+  </script>
   <script type="text/javascript" th:src="@{/js/goods/add_modify_goods.js}"></script>
+  <script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+  </script>
 </div>

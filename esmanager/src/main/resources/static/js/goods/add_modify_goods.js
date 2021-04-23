@@ -1,10 +1,61 @@
-layui.use(['layer', 'form', 'admin'], function () {
+layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
   let $ = layui.jquery;
   let form = layui.form;
   let admin = layui.admin;
   let layer = layui.layer;
+  let upload = layui.upload;
+  let table = layui.table;
 
-  let Goods = {};
+  let Goods = {
+    skuTableId : "skuTable"
+  };
+
+  Goods.initSkuColumn = function () {
+    return [[
+      {field: 'goodsSkuId', hide: true, sort: false, title: '主键标识'},
+      {field: 'sku', sort: false, title: 'SKU', width: 120},
+      {field: 'colorPicPath', sort: false, title: '颜色', width: 120},
+      {field: 'barcodePicPath', sort: false, title: '条形码', width: 200},
+      {align: 'center', toolbar: '#tableBar', title: '操作'}
+    ]];
+  };
+
+  //初始化SKU表格
+  table.render({
+    elem: '#' + Goods.skuTableId,
+    data: skuValues || [],
+    sortType: 'server',
+    height: 200,
+    limit: Number.MAX_VALUE,
+    cols: Goods.initSkuColumn(),
+    done: function (res, curr, count) {
+
+    }
+  });
+
+  //删除SKU信息
+  onDelItem = function (obj) {
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: ctxPath + "/goods/deleteGoodsSku",
+      data: {"goodsSkuId" : obj.goodsSkuId},
+      success : function(result) {
+        table.reload();
+      },
+      error : function(e){
+        console.error("删除商品SKU失败");
+      }
+    });
+  };
+
+  //工具条事件
+  table.on('tool(' + Goods.skuTableId + ')', function (obj) {
+    let layEvent = obj.event;
+    if (layEvent === 'delete') {
+      onDelItem(obj);
+    }
+  });
 
   Goods.initGoodsProperty = function (selVal) {
     $.ajax({
@@ -41,6 +92,22 @@ layui.use(['layer', 'form', 'admin'], function () {
         console.error("初始化商品属性失败");
       }
     });
+  }
+
+  //解码
+  Goods.decode = function (text) {
+    let rv = window.atob(text);
+    rv = escape(rv);
+    rv = decodeURIComponent(rv);
+    return rv;
+  }
+
+  //编码
+  Goods.encode = function (text) {
+    let rv = encodeURIComponent(text);
+    rv = unescape(rv);
+    rv = window.btoa(rv);
+    return rv;
   }
 
   //初始化商品类型下拉
@@ -81,11 +148,54 @@ layui.use(['layer', 'form', 'admin'], function () {
     Goods.initGoodsProperty(selVal);
   });
 
+  let uploadFiles = {};
+
+  //颜色多图片上传
+  let colorUpload = upload.render({
+    elem: '#uploadColor',
+    url: ctxPath + '/goods/uploadGoodsColor',
+    acceptMime: 'image/*',
+    accept: 'images',
+    field: 'files',
+    method: 'POST',
+    auto: false,
+    bindAction: '#submitFile',
+    multiple: true,
+    choose: function(obj){//预览本地文件
+      uploadFiles = obj.pushFile();
+      obj.preview(function(index, file, result){
+        html = '<div style="display: inline-block;width: 80px;text-align: center;"><img id="" src="'+ result +'" idx="'+ index +'" style="width: 80px; height: 80px;">';
+        html += '<i class="layui-icon layui-icon-delete" style="cursor: pointer;" onclick="deleteColorFile(this)"></i></div>';
+        $('#colorList').append(html);
+      });
+    }
+  });
+  
+  //图片删除事件
+  window.deleteColorFile = function (obj) {
+    let imgId = $(obj).prev().attr("id");
+    if (imgId) {
+      
+    } else {
+      //临时上传的文件
+      let idx = $(obj).prev().attr("idx");
+      delete uploadFiles[idx];
+      $(obj).parent().remove();
+    }
+  }
+
+  Goods.resetColorUpload = function (goodsId) {
+    colorUpload.reload({
+      data: {goodsId: goodsId}
+    });
+    $("#submitFile").click();
+  }
+
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {
     //获取radio,checkbox选中的值
-    let allCheckbox = $("input[type='checkbox'][checked]");
-    let allRadio = $("input[type='radio'][checked]");
+    let allCheckbox = $("input[type='checkbox']:checked");
+    let allRadio = $("input[type='radio']:checked");
     let properties = [];
     $.each(allCheckbox, function (index, item) {
       let checkboxName = $(this).attr("name");
@@ -128,6 +238,8 @@ layui.use(['layer', 'form', 'admin'], function () {
       data: JSON.stringify(data.field),
       success : function(result) {
         layer.msg("提交成功！", {icon: 1});
+        //触发图片上传事件
+        Goods.resetColorUpload(result.data);
         //传给上个页面，刷新table用
         admin.putTempData('formOk', true);
         //关掉对话框

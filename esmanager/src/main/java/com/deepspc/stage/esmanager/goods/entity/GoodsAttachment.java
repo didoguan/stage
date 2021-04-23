@@ -30,7 +30,7 @@ public class GoodsAttachment implements Serializable {
 
     private String fileType;
 
-    private Integer fileSize;
+    private Long fileSize;
 
     private String filePath;
 
@@ -94,11 +94,11 @@ public class GoodsAttachment implements Serializable {
         this.fileCategory = fileCategory;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

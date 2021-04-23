@@ -22,10 +22,6 @@ public class GoodsInfo implements Serializable {
 
     private String goodsName;
 
-    private String sku;
-
-    private String barCode;
-
     private String goodsType;
 
     private String categoryName;
@@ -70,22 +66,6 @@ public class GoodsInfo implements Serializable {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     public String getGoodsType() {

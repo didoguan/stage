@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GoodsInfoMapper extends BaseMapper<GoodsInfo> {
 
-    Page<GoodsData> loadGoods(@Param("page") Page page, @Param("sku") String sku, @Param("goodsType") String goodsType);
+    Page<GoodsInfo> loadGoods(@Param("page") Page page, @Param("goodsType") String goodsType);
 
     GoodsData getGoodsDetail(@Param("goodsId") Long goodsId);
 

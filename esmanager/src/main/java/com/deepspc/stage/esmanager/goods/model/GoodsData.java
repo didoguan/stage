@@ -1,7 +1,5 @@
 package com.deepspc.stage.esmanager.goods.model;
 
-import com.deepspc.stage.esmanager.goods.entity.GoodsAttachment;
-import com.deepspc.stage.esmanager.goods.entity.GoodsPropertyInfo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -21,10 +19,6 @@ public class GoodsData implements Serializable {
 
     private String goodsName;
 
-    private String sku;
-
-    private String barCode;
-
     private String goodsType;
 
     private String categoryName;
@@ -43,7 +37,7 @@ public class GoodsData implements Serializable {
 
     private String updateDate;
 
-    private List<GoodsAttachment> pics;
+    private List<GoodsSkuData> pics;
 
     private List<GoodsPropertyDetail> goodsProperties;
 
@@ -65,28 +59,12 @@ public class GoodsData implements Serializable {
         this.goodsName = goodsName;
     }
 
-    public List<GoodsAttachment> getPics() {
+    public List<GoodsSkuData> getPics() {
         return pics;
     }
 
-    public void setPics(List<GoodsAttachment> pics) {
+    public void setPics(List<GoodsSkuData> pics) {
         this.pics = pics;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     public String getGoodsType() {

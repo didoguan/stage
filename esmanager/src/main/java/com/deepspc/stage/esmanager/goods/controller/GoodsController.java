@@ -2,16 +2,19 @@ package com.deepspc.stage.esmanager.goods.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
+import com.deepspc.stage.esmanager.goods.entity.GoodsInfo;
 import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
 import com.deepspc.stage.esmanager.goods.model.GoodsData;
 import com.deepspc.stage.esmanager.goods.service.IGoodsInfoService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsPropertyService;
+import com.deepspc.stage.esmanager.goods.service.IGoodsSkuService;
 import com.deepspc.stage.esmanager.goods.wrapper.GoodsDataWrapper;
 import com.deepspc.stage.esmanager.goods.wrapper.GoodsPropertyWrapper;
 import com.deepspc.stage.sys.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,9 +31,12 @@ public class GoodsController extends BaseController {
 
     private final IGoodsPropertyService goodsPropertyService;
 
-    public GoodsController(IGoodsInfoService goodsInfoService, IGoodsPropertyService goodsPropertyService) {
+    private final IGoodsSkuService goodsSkuService;
+
+    public GoodsController(IGoodsInfoService goodsInfoService, IGoodsPropertyService goodsPropertyService, IGoodsSkuService goodsSkuService) {
         this.goodsInfoService = goodsInfoService;
         this.goodsPropertyService = goodsPropertyService;
+        this.goodsSkuService = goodsSkuService;
     }
 
     @GetMapping("")
@@ -73,8 +79,8 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("/loadGoods")
     @ResponseBody
-    public Object loadGoods(@RequestParam(required = false) String sku, @RequestParam(required = false) String goodsType) {
-        Page<GoodsData> list = goodsInfoService.loadGoods(sku, goodsType);
+    public Object loadGoods(@RequestParam(required = false) String goodsType) {
+        Page<GoodsInfo> list = goodsInfoService.loadGoods(goodsType);
         new GoodsDataWrapper(list).wrap();
         return layuiPage(list);
     }
@@ -90,7 +96,14 @@ public class GoodsController extends BaseController {
     @RequestMapping("/saveUpdateGoods")
     @ResponseBody
     public ResponseData saveUpdateGoods(@RequestBody GoodsData goodsData) {
-        goodsInfoService.saveUpdateGoodsData(goodsData);
+        Long goodsId = goodsInfoService.saveUpdateGoodsData(goodsData);
+        return ResponseData.success(goodsId.toString());
+    }
+
+    @RequestMapping("/uploadGoodsColor")
+    @ResponseBody
+    public ResponseData uploadGoodsColorPics(MultipartFile files, Long goodsId) {
+        goodsInfoService.uploadGoodsColorPics(files, goodsId);
         return ResponseData.success();
     }
 
@@ -112,6 +125,13 @@ public class GoodsController extends BaseController {
     @ResponseBody
     public ResponseData deleteGoodsProperties(@RequestBody List<Long> propertyIds) {
         goodsPropertyService.deleteProperties(propertyIds);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/deleteGoodsSku")
+    @ResponseBody
+    public ResponseData deleteGoodsSku(Long goodsSkuId) {
+        goodsSkuService.deleteGoodsSku(goodsSkuId);
         return ResponseData.success();
     }
 }

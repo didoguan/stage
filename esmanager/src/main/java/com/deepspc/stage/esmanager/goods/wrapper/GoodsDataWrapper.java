@@ -2,7 +2,7 @@ package com.deepspc.stage.esmanager.goods.wrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.utils.ApplicationContextUtil;
-import com.deepspc.stage.esmanager.goods.model.GoodsData;
+import com.deepspc.stage.esmanager.goods.entity.GoodsInfo;
 import com.deepspc.stage.sys.common.BaseWrapper;
 import com.deepspc.stage.sys.system.entity.Dict;
 import com.deepspc.stage.sys.system.service.IDictService;
@@ -16,13 +16,13 @@ import java.util.Map;
  * @author gzw
  * @date 2021/4/16 17:18
  */
-public class GoodsDataWrapper extends BaseWrapper<GoodsData> {
+public class GoodsDataWrapper extends BaseWrapper<GoodsInfo> {
 
     private IDictService dictService;
 
     private Map<String, Object> typeMap;
 
-    public GoodsDataWrapper(Page<GoodsData> list) {
+    public GoodsDataWrapper(Page<GoodsInfo> list) {
         super(list);
         if (null == list || list.getRecords() == null || list.getRecords().isEmpty()) {
             return;
@@ -44,9 +44,9 @@ public class GoodsDataWrapper extends BaseWrapper<GoodsData> {
     }
 
     @Override
-    protected void wrapTheMap(GoodsData goodsData) {
+    protected void wrapTheMap(GoodsInfo goodsInfo) {
         if (null != typeMap) {
-            goodsData.setGoodsType(typeMap.get(goodsData.getGoodsType()).toString());
+            goodsInfo.setGoodsType(typeMap.get(goodsInfo.getGoodsType()).toString());
         }
     }
 }

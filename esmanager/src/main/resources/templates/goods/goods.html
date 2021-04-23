@@ -15,9 +15,6 @@
           <div class="layui-form toolbar">
             <div class="layui-form-item">
               <div class="layui-inline">
-                <input id="sku" name="sku" class="layui-input" type="text" autocomplete="off" placeholder="SKU"/>
-              </div>
-              <div class="layui-inline">
                 <select name="goodsType" id="goodsType" lay-search>
                   <option value="">--类型--</option>
                   <option value="01">常规产品</option>
@@ -45,7 +42,7 @@
   </script>
   <script type="text/html" id="goods_pic">
     {{# layui.each(d.pics, function(index, item) { }}
-      <div id="goodspic_{{d.LAY_TABLE_INDEX}}">
+      <div id="goodspic_{{d.goodsId}}">
       {{# if(item.fileType == '02') { }}
         <img id="{{item.goodsAttachmentId}}" src="{{item.filePath}}" width="50px" height="50px"/>
       {{#} }}

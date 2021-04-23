@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.goods.mapper.GoodsSkuMapper">
+
+  <resultMap id="BaseGoodsSkuMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsSku">
+    <id column="goods_sku_id" property="goodsSkuId" />
+    <result column="goods_id" property="goodsId" />
+    <result column="sku" property="sku" />
+    <result column="color_pic_id" property="colorPicId" />
+    <result column="barcode_pic_id" property="barcodePicId" />
+  </resultMap>
+
+
+</mapper>
