@@ -8,7 +8,7 @@ import com.deepspc.stage.esmanager.goods.model.GoodsData;
 import com.deepspc.stage.esmanager.goods.service.IGoodsInfoService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsPropertyService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsSkuService;
-import com.deepspc.stage.esmanager.goods.wrapper.GoodsDataWrapper;
+import com.deepspc.stage.esmanager.goods.wrapper.GoodsInfoWrapper;
 import com.deepspc.stage.esmanager.goods.wrapper.GoodsPropertyWrapper;
 import com.deepspc.stage.sys.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -81,7 +81,7 @@ public class GoodsController extends BaseController {
     @ResponseBody
     public Object loadGoods(@RequestParam(required = false) String goodsType) {
         Page<GoodsInfo> list = goodsInfoService.loadGoods(goodsType);
-        new GoodsDataWrapper(list).wrap();
+        new GoodsInfoWrapper(list).wrap();
         return layuiPage(list);
     }
 
