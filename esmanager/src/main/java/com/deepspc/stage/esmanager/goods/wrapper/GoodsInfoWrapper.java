@@ -16,13 +16,13 @@ import java.util.Map;
  * @author gzw
  * @date 2021/4/16 17:18
  */
-public class GoodsDataWrapper extends BaseWrapper<GoodsInfo> {
+public class GoodsInfoWrapper extends BaseWrapper<GoodsInfo> {
 
     private IDictService dictService;
 
     private Map<String, Object> typeMap;
 
-    public GoodsDataWrapper(Page<GoodsInfo> list) {
+    public GoodsInfoWrapper(Page<GoodsInfo> list) {
         super(list);
         if (null == list || list.getRecords() == null || list.getRecords().isEmpty()) {
             return;
