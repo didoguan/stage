@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.exception.CoreExceptionCode;
 import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.core.utils.BarCodeUtils;
-import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.esmanager.goods.entity.GoodsAttachment;
 import com.deepspc.stage.esmanager.goods.entity.GoodsInfo;
 import com.deepspc.stage.esmanager.goods.entity.GoodsPropertyInfo;
 import com.deepspc.stage.esmanager.goods.entity.GoodsSku;
-import com.deepspc.stage.esmanager.goods.mapper.GoodsAttachmentMapper;
 import com.deepspc.stage.esmanager.goods.mapper.GoodsInfoMapper;
 import com.deepspc.stage.esmanager.goods.mapper.GoodsPropertyInfoMapper;
 import com.deepspc.stage.esmanager.goods.mapper.GoodsSkuMapper;
@@ -60,39 +58,7 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
 
     @Override
     public GoodsData getGoodsDetail(Long goodsId) {
-        GoodsData goodsData = this.baseMapper.getGoodsDetail(goodsId);
-        if (null != goodsData) {
-            //加载商品属性
-            List<GoodsPropertyInfo> propertyInfoList = goodsPropertyInfoMapper.getPropertiesByGoods(goodsId);
-            if (null != propertyInfoList && !propertyInfoList.isEmpty()) {
-                //商品的所有属性
-                List<GoodsPropertyDetail> propertyDetails = new ArrayList<>();
-                goodsData.setGoodsProperties(propertyDetails);
-
-                Map<Long, GoodsPropertyDetail> propertyMap = new HashMap<>();
-                for (GoodsPropertyInfo goodsPropertyInfo : propertyInfoList) {
-                    Long propertyId = goodsPropertyInfo.getPropertyId();
-                    GoodsPropertyDetail property = propertyMap.get(propertyId);
-                    if (null == property) {
-                        property = new GoodsPropertyDetail();
-                        propertyDetails.add(property);
-                        //设置属性
-                        property.setGoodsId(goodsId);
-                        property.setPropertyId(propertyId);
-                        //创建属性值列表
-                        List<Long> propertyValue = new ArrayList<>();
-                        propertyValue.add(goodsPropertyInfo.getPropertyValueId());
-                        property.setPropertyValues(propertyValue);
-
-                        propertyMap.put(propertyId, property);
-                    }
-                    //装配属性的具体值
-                    List<Long> propertyValue = property.getPropertyValues();
-                    propertyValue.add(goodsPropertyInfo.getPropertyValueId());
-                }
-            }
-        }
-        return goodsData;
+        return this.baseMapper.getGoodsDetail(goodsId);
     }
 
     @Override
@@ -117,12 +83,13 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
         List<GoodsPropertyInfo> values = new ArrayList<>();
         if (null != details && !details.isEmpty()) {
             for (GoodsPropertyDetail detail : details) {
-                for (Long propertyValue : detail.getPropertyValues()) {
-                    GoodsPropertyInfo value = new GoodsPropertyInfo();
-                    value.setGoodsId(goodsInfo.getGoodsId());
-                    value.setPropertyId(detail.getPropertyId());
-                    value.setPropertyValueId(propertyValue);
-                    values.add(value);
+                List<Map<String, String>> propertyValues = detail.getPropertyValues();
+                for (Map<String, String> value : propertyValues) {
+                    GoodsPropertyInfo info = new GoodsPropertyInfo();
+                    info.setGoodsId(goodsInfo.getGoodsId());
+                    info.setPropertyId(detail.getPropertyId());
+                    info.setPropertyValueId(Long.valueOf(value.get("propertyValueId")));
+                    values.add(info);
                 }
             }
             goodsPropertyInfoMapper.insertBatch(values);
@@ -176,7 +143,7 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
         String barcodePathName = "/goods/barcode/" + colorId + ".png";
         String barcodeFilePath = sysPropertiesConfig.getAttachmentPath() + barcodePathName;
         try {
-            BarCodeUtils.barcode39Pic(goodsId + "", barcodeFilePath);
+            BarCodeUtils.barcode39Pic(colorId + "", barcodeFilePath);
         } catch (IOException e) {
             e.printStackTrace();
             throw new StageException(CoreExceptionCode.GOODS_BARCODE_EXCEPTION.getCode(),

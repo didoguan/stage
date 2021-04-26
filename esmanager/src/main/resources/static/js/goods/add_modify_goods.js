@@ -13,9 +13,13 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
   Goods.initSkuColumn = function () {
     return [[
       {field: 'goodsSkuId', hide: true, sort: false, title: '主键标识'},
-      {field: 'sku', sort: false, title: 'SKU', width: 120},
-      {field: 'colorPicPath', sort: false, title: '颜色', width: 120},
-      {field: 'barcodePicPath', sort: false, title: '条形码', width: 200},
+      {field: 'sku', sort: false, title: 'SKU', width: 180},
+      {field: 'colorPicPath', sort: false, title: '颜色', templet: function (d) {
+          return "<div class='color_"+d.goodsSkuId+"'><img id='"+d.goodsSkuId+"' src='"+d.colorPicPath+"' layer-src='"+d.colorPicPath+"' onclick='showImg(this)'></div>";
+        }, minWidth: 150},
+      {field: 'barcodePicPath', sort: false, title: '条形码', templet: function (d) {
+        return "<div class='barcode_"+d.goodsSkuId+"'><img id='"+d.goodsSkuId+"' src='"+d.barcodePicPath+"' layer-src='"+d.barcodePicPath+"' onclick='showImg(this)'></div>";
+      }, minWidth: 150},
       {align: 'center', toolbar: '#tableBar', title: '操作'}
     ]];
   };
@@ -33,19 +37,66 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
     }
   });
 
+  window.showImg = function (obj) {
+    layer.photos({
+      photos: "."+$(obj).parent().attr("class"),
+      anim: 5,
+      shade: 0.1
+    });
+    $(document).on("mousewheel DOMMouseScroll", ".layui-layer-phimg img", function (e) {
+      let delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || // chrome & ie
+          (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1)); // firefox
+      let imagep = $(".layui-layer-phimg").parent().parent();
+      let image = $(".layui-layer-phimg").parent();
+      let h = image.height();
+      let w = image.width();
+      if (delta > 0) {
+
+        h = h * 1.05;
+        w = w * 1.05;
+
+      } else if (delta < 0) {
+        if (h > 100) {
+          h = h * 0.95;
+          w = w * 0.95;
+        }
+      }
+      imagep.css("top", (window.innerHeight - h) / 2);
+      imagep.css("left", (window.innerWidth - w) / 2);
+      image.height(h);
+      image.width(w);
+      imagep.height(h);
+      imagep.width(w);
+    });
+  }
+
   //删除SKU信息
   onDelItem = function (obj) {
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      url: ctxPath + "/goods/deleteGoodsSku",
-      data: {"goodsSkuId" : obj.goodsSkuId},
-      success : function(result) {
-        table.reload();
-      },
-      error : function(e){
-        console.error("删除商品SKU失败");
-      }
+    layer.confirm('是否删除？',{
+      icon:7,title:'提示'
+    },function(index){
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: ctxPath + "/goods/deleteGoodsSku",
+        data: {"goodsSkuId" : obj.goodsSkuId},
+        success : function(result) {
+          let deleteSkuId = result.data;
+          if (deleteSkuId) {
+            for (let i = skuValues.length - 1; i >= 0; i--) {
+              if (skuValues[i].goodsSkuId === deleteSkuId) {
+                skuValues.splice(i, 1);
+              }
+            }
+          }
+          layer.msg("删除成功！", {icon: 1});
+          table.reload(Goods.skuTableId);
+        },
+        error : function(e){
+          console.error("删除商品SKU失败");
+        }
+      });
+      layer.close(index);
     });
   };
 
@@ -53,7 +104,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
   table.on('tool(' + Goods.skuTableId + ')', function (obj) {
     let layEvent = obj.event;
     if (layEvent === 'delete') {
-      onDelItem(obj);
+      onDelItem(obj.data);
     }
   });
 
@@ -62,22 +113,23 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
       type: "POST",
       dataType: "json",
       url: ctxPath + "/goods/loadCategoryProperties",
-      data: {"categoryCode" : selVal},
+      data: {"categoryCode" : selVal, "goodsId" : $("#goodsId").val()},
       success : function(result) {
         let data = result.data;
         if (data) {
           let str = "";
           $.each(data, function (index, item) {
-            let propertyValues = item.values;
+            //每个属性的具体值
+            let propertyValues = item.propertyValues;
             let multi = item.multipleChoice;
             str += "<div class=\"layui-inline layui-col-md12\">";
             str += "<label class=\"layui-form-label\">" + item.propertyName + "：</label>";
             str += "<div class=\"layui-input-block\">";
             for (let i = 0; i < propertyValues.length; i++) {
               if ("N" === multi) {
-                str += "<input name=\"" + item.propertyId + "\" type=\"radio\" value=\""+ propertyValues[i].propertyValueId +"\" title=\"" + propertyValues[i].propertyValueName + "\">";
+                str += "<input name=\"" + item.propertyId + "\" type=\"radio\" value=\""+ propertyValues[i].propertyValueId +"\" title=\"" + propertyValues[i].propertyValueName + "\""+propertyValues[i].checked+">";
               } else if ("Y" === multi) {
-                str += "<input name=\"" + item.propertyId + "\" type=\"checkbox\" value=\""+ propertyValues[i].propertyValueId +"\" title=\"" + propertyValues[i].propertyValueName + "\">";
+                str += "<input name=\"" + item.propertyId + "\" type=\"checkbox\" value=\""+ propertyValues[i].propertyValueId +"\" title=\"" + propertyValues[i].propertyValueName + "\""+propertyValues[i].checked+">";
               }
             }
             str += "</div>";
@@ -201,13 +253,13 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
       let checkboxName = $(this).attr("name");
       let propertyLen = properties.length;
       if (0 == propertyLen) {
-        properties.push({"propertyId":checkboxName, "propertyValues":[$(this).val()]});
+        properties.push({"propertyId":checkboxName, "propertyValues":[{"propertyValueId":$(this).val()}]});
       } else {
         for (let i = 0; i < propertyLen; i++) {
           if (properties[i].propertyId = checkboxName) {
             properties[i].propertyValues.push($(this).val());
           } else {
-            properties.push({"propertyId":checkboxName, "propertyValues":[$(this).val()]});
+            properties.push({"propertyId":checkboxName, "propertyValues":[{"propertyValueId":$(this).val()}]});
           }
         }
       }
@@ -216,13 +268,13 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
       let radioName = $(this).attr("name");
       let propertyLen = properties.length;
       if (0 == propertyLen) {
-        properties.push({"propertyId":radioName, "propertyValues":[$(this).val()]});
+        properties.push({"propertyId":radioName, "propertyValues":[{"propertyValueId":$(this).val()}]});
       } else {
         for (let i = 0; i < propertyLen; i++) {
           if (properties[i].propertyId = radioName) {
             properties[i].propertyValues.push($(this).val());
           } else {
-            properties.push({"propertyId":radioName, "propertyValues":[$(this).val()]});
+            properties.push({"propertyId":radioName, "propertyValues":[{"propertyValueId":$(this).val()}]});
           }
         }
       }

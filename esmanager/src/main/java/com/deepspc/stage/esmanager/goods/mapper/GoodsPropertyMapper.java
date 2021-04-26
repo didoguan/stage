@@ -6,6 +6,7 @@ import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GoodsPropertyMapper extends BaseMapper<GoodsProperty> {
 
@@ -15,5 +16,5 @@ public interface GoodsPropertyMapper extends BaseMapper<GoodsProperty> {
 
     void deleteProperties(@Param("propertyIds") List<Long> propertyIds);
 
-    List<GoodsProperty> getCategoryProperty(@Param("categoryCode") String categoryCode);
+    List<Map<String, Object>> getCategoryProperty(@Param("categoryCode") String categoryCode, @Param("goodsId") Long goodsId);
 }

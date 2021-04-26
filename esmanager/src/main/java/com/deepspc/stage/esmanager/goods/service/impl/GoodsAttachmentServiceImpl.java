@@ -31,6 +31,13 @@ public class GoodsAttachmentServiceImpl extends BaseOrmService<GoodsAttachmentMa
             //先删上传的图片
             QueryWrapper<GoodsAttachment> attachmentQueryWrapper = new QueryWrapper<GoodsAttachment>();
             attachmentQueryWrapper.in("goods_id", goodsIds);
+            deleteGoodsAttachment(attachmentQueryWrapper);
+        }
+    }
+
+    @Override
+    public void deleteGoodsAttachment(QueryWrapper<GoodsAttachment> attachmentQueryWrapper) {
+        if (null != attachmentQueryWrapper) {
             List<GoodsAttachment> attachments = this.baseMapper.selectList(attachmentQueryWrapper);
             if (null != attachments && !attachments.isEmpty()) {
                 for (GoodsAttachment attachment : attachments) {
@@ -44,6 +51,7 @@ public class GoodsAttachmentServiceImpl extends BaseOrmService<GoodsAttachmentMa
                     }
                 }
             }
+            this.remove(attachmentQueryWrapper);
         }
     }
 }

@@ -61,19 +61,19 @@
 
   <select id="getPropertyValues" resultType="com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue">
     SELECT
-        property_value_id "propertyValueId",
-        property_id "propertyId",
-        property_value_name "propertyValueName",
-        category_code "categoryCode",
-        category_name "categoryName",
-        sort
+      property_value_id "propertyValueId",
+      property_id "propertyId",
+      property_value_name "propertyValueName",
+      category_code "categoryCode",
+      category_name "categoryName",
+      sort
     FROM
-        ec_goods_property_value
+      ec_goods_property_value
     WHERE
-        property_id = #{propertyId}
+      property_id = #{propertyId}
     ORDER BY
-        property_id,
-        sort ASC
+      property_id,
+      sort ASC
   </select>
 
   <delete id="deleteProperties">
@@ -88,13 +88,41 @@
     </foreach>
   </delete>
 
-  <select id="getCategoryProperty" resultMap="GoodsPropertyDetailMap">
+  <select id="getCategoryProperty" resultType="map">
     SELECT
-    <include refid="default_goods_property_column"/>
+      p.*,
+      CASE WHEN i.goods_id IS NOT NULL THEN
+      "checked" ELSE NULL END "checked"
     FROM
-      ec_goods_property
-    WHERE
-      category_code = #{categoryCode}
+    (
+      SELECT
+        a.property_id "propertyId",
+        b.property_value_id "propertyValueId",
+        a.property_name "propertyName",
+        a.category_name "categoryName",
+        a.category_code "categoryCode",
+        a.multiple_choice "multipleChoice",
+        b.property_value_name "propertyValueName"
+      FROM
+        ec_goods_property a,
+        ec_goods_property_value b
+      WHERE
+        a.property_id = b.property_id
+        AND a.category_code = #{categoryCode}
+      ORDER BY
+        a.sort,
+        b.sort
+    ) p
+    LEFT JOIN ec_goods_property_info i ON p.propertyId = i.property_id
+    AND p.propertyValueId
+    = i.property_value_id
+    <if test="goodsId != null">
+      AND i.goods_id = #{goodsId}
+    </if>
+    <if test="goodsId == null">
+      AND i.goods_id is null
+    </if>
+
   </select>
 
 </mapper>

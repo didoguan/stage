@@ -5,6 +5,7 @@ import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.esmanager.goods.entity.GoodsInfo;
 import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
 import com.deepspc.stage.esmanager.goods.model.GoodsData;
+import com.deepspc.stage.esmanager.goods.model.GoodsPropertyDetail;
 import com.deepspc.stage.esmanager.goods.service.IGoodsInfoService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsPropertyService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsSkuService;
@@ -71,9 +72,9 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("/loadCategoryProperties")
     @ResponseBody
-    public ResponseData loadCategoryProperties(String categoryCode) {
+    public ResponseData loadCategoryProperties(String categoryCode, Long goodsId) {
         //获取属性
-        List<GoodsProperty> goodsProperties = goodsPropertyService.getCategoryProperty(categoryCode);
+        List<GoodsPropertyDetail> goodsProperties = goodsPropertyService.getCategoryProperty(categoryCode, goodsId);
         return ResponseData.success(goodsProperties);
     }
 
@@ -132,6 +133,6 @@ public class GoodsController extends BaseController {
     @ResponseBody
     public ResponseData deleteGoodsSku(Long goodsSkuId) {
         goodsSkuService.deleteGoodsSku(goodsSkuId);
-        return ResponseData.success();
+        return ResponseData.success(goodsSkuId.toString());
     }
 }

@@ -15,24 +15,6 @@ layui.use(['layer', 'table', 'func'], function () {
    * 初始化表格的列
    */
   Goods.initColumn = function () {
-    /*
-    return [[
-      {type: 'checkbox'},
-      {field: 'goodsId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
-      {field: 'categoryName', sort: false, title: '类目'},
-      {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
-      {field: 'goodsPic', sort: false, title: '颜色', templet: '#goods_pic', minWidth: 150},
-      {field: 'barCode', sort: false, title: '条形码', templet: function (d) {
-          return "<div class='barcode_"+d.goodsId+"'><img id='"+d.goodsId+"' src='"+d.barCode+"' layer-src='"+d.barCode+"' onclick='showImg(this)'></div>";
-        }, minWidth: 150},
-      {field: 'goodsType', sort: false, title: '类型'},
-      {field: 'brandName', sort: false, title: '品牌'},
-      {field: 'creatorName', sort: false, title: '创建人'},
-      {field: 'createDate', sort: false, title: '创建时间'},
-      {field: 'updatorName', sort: false, title: '修改人'},
-      {field: 'updateDate', sort: false, title: '修改时间'}
-    ]];*/
     return [[
       {type: 'checkbox'},
       {field: 'goodsId', hide: true, sort: false, title: 'id'},
@@ -47,41 +29,6 @@ layui.use(['layer', 'table', 'func'], function () {
       {field: 'updateDate', sort: false, title: '修改时间'}
     ]];
   };
-
-  window.showImg = function (obj) {
-    layer.photos({
-      photos: "."+$(obj).parent().attr("class"),
-      anim: 5,
-      shade: 0.1
-    });
-    $(document).on("mousewheel DOMMouseScroll", ".layui-layer-phimg img", function (e) {
-      let delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || // chrome & ie
-          (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1)); // firefox
-      let imagep = $(".layui-layer-phimg").parent().parent();
-      let image = $(".layui-layer-phimg").parent();
-      let h = image.height();
-      let w = image.width();
-      if (delta > 0) {
-
-        h = h * 1.05;
-        w = w * 1.05;
-
-      } else if (delta < 0) {
-        if (h > 100) {
-          h = h * 0.95;
-          w = w * 0.95;
-        }
-      }
-      imagep.css("top", (window.innerHeight - h) / 2);
-      imagep.css("left", (window.innerWidth - w) / 2);
-      image.height(h);
-      image.width(w);
-      imagep.height(h);
-      imagep.width(w);
-    });
-  }
-
-
 
   /**
    * 点击查询按钮
@@ -99,8 +46,8 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   Goods.openAddPage = function () {
     func.open({
-      height: 650,
-      width: 700,
+      height: 700,
+      width: 800,
       title: '添加商品',
       content: ctxPath + '/goods/addModifyGoodsPage',
       tableId: Goods.tableId
@@ -114,8 +61,8 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   Goods.onEditPage = function (data) {
     func.open({
-      height: 650,
-      width: 700,
+      height: 700,
+      width: 800,
       title: '修改商品',
       content: ctxPath + "/goods/addModifyGoodsPage?goodsId=" + data.goodsId,
       tableId: Goods.tableId
