@@ -28,4 +28,10 @@ public interface IUserService extends IShiroUserService {
      * @param user 用户信息
      */
     void saveUpdateUser(User user);
+
+    /**
+     * 根据部门名称获取部门下的用户
+     * @param deptName 部门名称
+     */
+    List<User> getUsersByDeptName(String deptName);
 }

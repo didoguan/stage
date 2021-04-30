@@ -7,10 +7,13 @@ import com.deepspc.stage.esmanager.goods.model.GoodsData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GoodsInfoMapper extends BaseMapper<GoodsInfo> {
 
     Page<GoodsInfo> loadGoods(@Param("page") Page page, @Param("goodsType") String goodsType);
+
+    Page<Map<String, Object>> loadSelectGoods(@Param("page") Page page, @Param("goodsType") String goodsType, @Param("goodsName") String goodsName);
 
     GoodsData getGoodsDetail(@Param("goodsId") Long goodsId);
 

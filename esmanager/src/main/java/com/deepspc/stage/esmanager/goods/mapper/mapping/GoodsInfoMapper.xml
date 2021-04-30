@@ -63,6 +63,34 @@
     ORDER BY create_date DESC
   </select>
 
+  <select id="loadSelectGoods" resultType="map">
+    SELECT
+      a.goods_id "goodsId",
+      a.goods_name "goodsName",
+      a.category_code "categoryCode",
+      a.category_name "categoryName",
+      sd.name "goodsType",
+      b.sku,
+      c.file_path "colorPath",
+      d.file_path "barcodePath"
+    FROM
+      ec_goods_info a
+      LEFT JOIN ec_goods_sku b ON a.goods_id = b.goods_id
+      LEFT JOIN ec_goods_attachment c ON a.goods_id = c.goods_id
+      AND b.color_pic_id = c.goods_attachment_id
+      LEFT JOIN ec_goods_attachment d ON a.goods_id = d.goods_id
+      AND b.barcode_pic_id = d.goods_attachment_id
+      LEFT JOIN sys_dict sd ON sd.parent_code = 'goods_type'
+      AND sd.code = a.goods_type
+    WHERE 1 = 1
+    <if test="goodsType != null and goodsType != ''">
+      AND a.goods_type = #{goodsType}
+    </if>
+    <if test="goodsName != null and goodsName != ''">
+      AND a.goods_name like CONCAT('%',#{goodsType},'%')
+    </if>
+  </select>
+
   <select id="getGoodsPic" resultType="com.deepspc.stage.esmanager.goods.model.GoodsSkuData">
     SELECT
         a.goods_sku_id "goodsSkuId",

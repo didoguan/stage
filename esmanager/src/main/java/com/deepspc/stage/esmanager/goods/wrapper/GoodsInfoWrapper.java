@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class GoodsInfoWrapper extends BaseWrapper<GoodsInfo> {
 
-    private IDictService dictService;
-
     private Map<String, Object> typeMap;
 
     public GoodsInfoWrapper(Page<GoodsInfo> list) {
@@ -27,14 +25,14 @@ public class GoodsInfoWrapper extends BaseWrapper<GoodsInfo> {
         if (null == list || list.getRecords() == null || list.getRecords().isEmpty()) {
             return;
         }
-        this.dictService = ApplicationContextUtil.getBean(IDictService.class);
+        IDictService dictService = ApplicationContextUtil.getBean(IDictService.class);
         List<String> codes = new ArrayList<>(1);
         codes.add("goods_type");
-        Map<String, Dict> dicts = this.dictService.getDictAndChildren(codes);
+        Map<String, Dict> dicts = dictService.getDictAndChildren(codes);
         if (null != dicts && !dicts.isEmpty()) {
             Dict type = dicts.get("goods_type");
             List<Dict> childrenList = type.getChildren();
-            if (null != type && null != childrenList) {
+            if (null != childrenList && !childrenList.isEmpty()) {
                 typeMap = new HashMap<>();
                 for (Dict dict : childrenList) {
                     typeMap.put(dict.getCode(), dict.getName());

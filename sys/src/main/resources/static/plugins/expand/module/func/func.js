@@ -75,7 +75,7 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
             }
 
             param.skin = 'layui-layer-admin';
-            param.offset = '35px';
+            param.offset = param.offset || '35px';
             param.type = 2;
 
             admin.putTempData('formOk', false);

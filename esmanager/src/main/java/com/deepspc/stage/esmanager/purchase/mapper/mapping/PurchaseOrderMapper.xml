@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderMapper">
+
+  <resultMap id="BasePurchaseOrderMap" type="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder">
+    <id column="purchase_order_id" property="purchaseOrderId" />
+    <result column="purchase_order_no" property="purchaseOrderNo" />
+    <result column="supplier_id" property="supplierId" />
+    <result column="supplier_name" property="supplierName" />
+    <result column="purchase_quantity" property="purchaseQuantity" />
+    <result column="arrive_total_quantity" property="arriveTotalQuantity" />
+    <result column="total_amount" property="totalAmount" />
+    <result column="pay_way" property="payWay" />
+    <result column="pay_account" property="payAccount" />
+    <result column="order_status" property="orderStatus" />
+    <result column="purchaser_id" property="purchaserId" />
+    <result column="purchaser_name" property="purchaserName" />
+    <result column="purchase_date" property="purchaseDate" />
+    <result column="expect_arrive_date" property="expectArriveDate" />
+    <result column="actual_arrive_date" property="actualArriveDate" />
+    <result column="express_way" property="expressWay" />
+    <result column="express_comp" property="expressComp" />
+    <result column="remark" property="remark" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <resultMap id="PurchaseOrderDetailMap" type="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder">
+    <id column="purchase_order_id" property="purchaseOrderId" />
+    <result column="purchase_order_no" property="purchaseOrderNo" />
+    <result column="supplier_id" property="supplierId" />
+    <result column="supplier_name" property="supplierName" />
+    <result column="purchase_quantity" property="purchaseQuantity" />
+    <result column="arrive_total_quantity" property="arriveTotalQuantity" />
+    <result column="total_amount" property="totalAmount" />
+    <result column="pay_way" property="payWay" />
+    <result column="pay_account" property="payAccount" />
+    <result column="order_status" property="orderStatus" />
+    <result column="purchaser_id" property="purchaserId" />
+    <result column="purchaser_name" property="purchaserName" />
+    <result column="purchase_date" property="purchaseDate" />
+    <result column="expect_arrive_date" property="expectArriveDate" />
+    <result column="actual_arrive_date" property="actualArriveDate" />
+    <result column="express_way" property="expressWay" />
+    <result column="express_comp" property="expressComp" />
+    <result column="remark" property="remark" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+    <!-- fetchType="eager" 急加载，查询主表时加载子表-->
+    <collection property="details" column="purchase_order_id" fetchType="eager" select="getPurchaseOrderDetail" ofType="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail"/>
+  </resultMap>
+
+  <sql id="default_purchase_order_column">
+    purchase_order_id,
+    purchase_order_no,
+    supplier_id,
+    supplier_name,
+    purchase_quantity,
+    arrive_total_quantity,
+    total_amount,
+    pay_way,
+    pay_account,
+    order_status,
+    purchaser_id,
+    purchaser_name,
+    purchase_date,
+    expect_arrive_date,
+    actual_arrive_date,
+    express_way,
+    express_comp,
+    remark,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
+  </sql>
+
+  <select id="loadPurchaseOrders" resultMap="BasePurchaseOrderMap">
+    SELECT
+    <include refid="default_purchase_order_column"/>
+    FROM
+      ec_purchase_order
+    WHERE
+    <if test="checkAll">
+      1 = 1
+    </if>
+    <if test="!checkAll">
+      creator_id = #{userId}
+    </if>
+    <if test="purchaseOrderNo != null and purchaseOrderNo != ''">
+      AND purchase_order_no like CONCAT('%',#{purchaseOrderNo},'%')
+    </if>
+    <if test="goodsName != null and goodsName != ''">
+      AND goods_name like CONCAT('%',#{goodsName},'%')
+    </if>
+    <if test="purchaserName != null and purchaserName != ''">
+      AND purchaser_name like CONCAT('%',#{purchaserName},'%')
+    </if>
+    ORDER BY create_date DESC
+  </select>
+
+  <select id="getPurchaseOrderInfo" resultMap="PurchaseOrderDetailMap">
+    SELECT
+    <include refid="default_purchase_order_column"/>
+    FROM
+      ec_purchase_order
+    WHERE
+      purchase_order_id = #{purchaseOrderId}
+  </select>
+
+  <select id="getPurchaseOrderDetail" resultType="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail">
+    SELECT
+        order_detail_id,
+        purchase_order_id,
+        sku,
+        detail_quantity,
+        single_price,
+        arrive_quantity,
+        remark
+    FROM
+        ec_purchase_order_detail
+    WHERE
+        purchase_order_id = #{purchaseOrderId}
+  </select>
+
+</mapper>

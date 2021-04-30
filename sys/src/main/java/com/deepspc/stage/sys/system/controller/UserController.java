@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author gzw
  * @date 2020/11/25 16:25
@@ -64,6 +66,13 @@ public class UserController extends BaseController {
         Page<User> list = userService.getUsers(userName, deptId);
         new UserWrapper(list).wrap();
         return layuiPage(list);
+    }
+
+    @RequestMapping("/getUsersByDeptName")
+    @ResponseBody
+    public ResponseData getUsersByDeptName(String deptName) {
+        List<User> users = userService.getUsersByDeptName(deptName);
+        return ResponseData.success(users);
     }
 
     @PostMapping("/deleteUser")

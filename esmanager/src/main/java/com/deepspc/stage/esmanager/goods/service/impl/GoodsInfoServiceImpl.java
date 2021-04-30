@@ -57,6 +57,12 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
     }
 
     @Override
+    public Page<Map<String, Object>> loadSelectGoods(String goodsType, String goodsName) {
+        Page page = defaultPage();
+        return this.baseMapper.loadSelectGoods(page, goodsType, goodsName);
+    }
+
+    @Override
     public GoodsData getGoodsDetail(Long goodsId) {
         return this.baseMapper.getGoodsDetail(goodsId);
     }

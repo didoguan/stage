@@ -27,5 +27,5 @@ stage:
 mybatis-plus:
   typeAliasesPackage: com.deepspc.stage.**.entity
   mapper-locations: classpath*:com/deepspc/stage/**/mapping/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

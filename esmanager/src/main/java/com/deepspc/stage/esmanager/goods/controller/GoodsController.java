@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品管理
@@ -48,6 +49,11 @@ public class GoodsController extends BaseController {
     @GetMapping("/properties")
     public String propertiesPage() {
         return "goods/properties";
+    }
+
+    @GetMapping("/goodsSelectPage")
+    public String goodsSelectPage() {
+        return "goods/select_goods";
     }
 
     @GetMapping("/addModifyGoodsPage")
@@ -91,6 +97,13 @@ public class GoodsController extends BaseController {
     public Object loadGoodsProperty(@RequestParam(required = false) String propertyName, @RequestParam(required = false) String categoryName) {
         Page<GoodsProperty> list = goodsPropertyService.loadGoodsProperty(propertyName, categoryName);
         new GoodsPropertyWrapper(list).wrap();
+        return layuiPage(list);
+    }
+
+    @RequestMapping("/loadSelectGoods")
+    @ResponseBody
+    public Object loadSelectGoods(@RequestParam(required = false) String goodsType, @RequestParam(required = false) String goodsName) {
+        Page<Map<String, Object>> list = goodsInfoService.loadSelectGoods(goodsType, goodsName);
         return layuiPage(list);
     }
 

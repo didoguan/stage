@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/common :: public_res(~{::title},~{},~{})">
   <title></title>
 </head>
 <div class="layui-body-header">
-  <span class="layui-body-header-title">商品管理</span>
+  <span class="layui-body-header-title">采购订单</span>
 </div>
 
 <div class="layui-fluid">
@@ -15,12 +15,13 @@
           <div class="layui-form toolbar">
             <div class="layui-form-item">
               <div class="layui-inline">
-                <select name="goodsType" id="goodsType" lay-search>
-                  <option value="">--类型--</option>
-                  <option value="01">常规产品</option>
-                  <option value="02">季节产品</option>
-                  <option value="00">淘汰产品</option>
-                </select>
+                <input id="purchaseOrderNo" name="purchaseOrderNo" class="layui-input" type="text" autocomplete="off" placeholder="采购单号"/>
+              </div>
+              <div class="layui-inline">
+                <input id="goodsName" name="goodsName" class="layui-input" type="text" autocomplete="off" placeholder="商品名称"/>
+              </div>
+              <div class="layui-inline">
+                <input id="purchaserName" name="purchaserName" class="layui-input" type="text" autocomplete="off" placeholder="采购员"/>
               </div>
               <div class="layui-inline">
                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
@@ -29,15 +30,16 @@
               </div>
             </div>
           </div>
-          <table class="layui-table" id="goodsTable" lay-filter="goodsTable"></table>
+          <table class="layui-table" id="orderTable" lay-filter="orderTable"></table>
         </div>
       </div>
     </div>
   </div>
 </div>
 <div th:replace="common/common :: public_js(~{::script})">
-  <script type="text/javascript" th:src="@{/js/goods/goods.js}"></script>
+  <script type="text/javascript" th:src="@{/js/purchase/purchase_order.js}"></script>
   <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="info">明细</a>
   </script>
 </div>

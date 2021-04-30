@@ -74,6 +74,23 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
     }
 
     @Override
+    public List<User> getUsersByDeptName(String deptName) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("dept_name", deptName);
+        queryWrapper.eq("user_status", "01");
+        List<User> users = this.baseMapper.selectList(queryWrapper);
+        if (null != users && !users.isEmpty()) {
+            for (User user : users) {
+                user.setPassword(null);
+                user.setAccount(null);
+                user.setSalt(null);
+                user.setIdNo(null);
+            }
+        }
+        return users;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveUpdateUser(User user) {
         Long userId = user.getUserId();
