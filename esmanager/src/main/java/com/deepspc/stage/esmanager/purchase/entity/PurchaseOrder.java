@@ -37,6 +37,8 @@ public class PurchaseOrder implements Serializable {
 
     private String payAccount;
 
+    private Date payDate;
+
     private String orderStatus;
 
     private Long purchaserId;
@@ -270,6 +272,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setExpressComp(String expressComp) {
         this.expressComp = expressComp;
+    }
+
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 
     public List<PurchaseOrderDetail> getDetails() {

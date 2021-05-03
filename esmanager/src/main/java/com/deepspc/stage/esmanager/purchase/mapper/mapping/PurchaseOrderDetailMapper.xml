@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderDetailMapper">
+
+  <resultMap id="BasePurchaseOrderMap" type="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail">
+    <id column="order_detail_id" property="orderDetailId" />
+    <result column="purchase_order_id" property="purchaseOrderId" />
+    <result column="sku" property="sku" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="goods_unit" property="goodsUnit" />
+    <result column="detail_quantity" property="detailQuantity" />
+    <result column="single_price" property="singlePrice" />
+    <result column="arrive_quantity" property="arriveQuantity" />
+    <result column="remark" property="remark" />
+  </resultMap>
+
+
+  <sql id="default_purchase_order_column">
+    order_detail_id,
+    purchase_order_id,
+    sku,
+    category_name,
+    category_code,
+    goods_unit,
+    detail_quantity,
+    single_price,
+    arrive_quantity,
+    remark
+  </sql>
+
+  <insert id="insertBatch">
+    INSERT INTO ec_purchase_order_detail(order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, remark)
+    VALUES
+    <foreach collection="list" item="item" separator =",">
+      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.remark})
+    </foreach>
+  </insert>
+
+</mapper>

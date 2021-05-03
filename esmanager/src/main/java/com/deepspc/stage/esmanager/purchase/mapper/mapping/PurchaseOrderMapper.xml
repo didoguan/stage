@@ -12,6 +12,7 @@
     <result column="total_amount" property="totalAmount" />
     <result column="pay_way" property="payWay" />
     <result column="pay_account" property="payAccount" />
+    <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
     <result column="purchaser_id" property="purchaserId" />
     <result column="purchaser_name" property="purchaserName" />
@@ -37,6 +38,7 @@
     <result column="total_amount" property="totalAmount" />
     <result column="pay_way" property="payWay" />
     <result column="pay_account" property="payAccount" />
+    <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
     <result column="purchaser_id" property="purchaserId" />
     <result column="purchaser_name" property="purchaserName" />
@@ -64,6 +66,7 @@
     total_amount,
     pay_way,
     pay_account,
+    pay_date,
     order_status,
     purchaser_id,
     purchaser_name,
@@ -105,7 +108,7 @@
     ORDER BY create_date DESC
   </select>
 
-  <select id="getPurchaseOrderInfo" resultMap="PurchaseOrderDetailMap">
+  <select id="loadDetail" resultMap="PurchaseOrderDetailMap">
     SELECT
     <include refid="default_purchase_order_column"/>
     FROM
@@ -116,17 +119,36 @@
 
   <select id="getPurchaseOrderDetail" resultType="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail">
     SELECT
-        order_detail_id,
-        purchase_order_id,
-        sku,
-        detail_quantity,
-        single_price,
-        arrive_quantity,
-        remark
+        a.order_detail_id,
+        a.sku,
+        a.category_name,
+        a.category_code,
+        a.goods_unit,
+        a.detail_quantity,
+        a.single_price,
+        a.arrive_quantity,
+        a.remark,
+        c.file_path "colorPath",
+        d.file_path "barcodePath"
     FROM
-        ec_purchase_order_detail
+        ec_purchase_order_detail a
+        LEFT JOIN ec_goods_sku b ON a.sku = b.sku
+        LEFT JOIN ec_goods_attachment c ON b.color_pic_id = c.goods_attachment_id
+        LEFT JOIN ec_goods_attachment d ON b.barcode_pic_id = d.goods_attachment_id
     WHERE
-        purchase_order_id = #{purchaseOrderId}
+        a.purchase_order_id = #{purchaseOrderId}
   </select>
+
+  <delete id="deletePurchaseOrders">
+    DELETE a, b
+    FROM
+    ec_purchase_order a
+    LEFT JOIN ec_purchase_order_detail b ON a.purchase_order_id = b.purchase_order_id
+    WHERE
+    a.purchase_order_id IN
+    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 
 </mapper>

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface PurchaseOrderMapper extends BaseMapper<PurchaseOrder> {
 
     Page<PurchaseOrder> loadPurchaseOrders(@Param("page") Page page,
@@ -13,4 +15,8 @@ public interface PurchaseOrderMapper extends BaseMapper<PurchaseOrder> {
                                            @Param("purchaseOrderNo") String purchaseOrderNo,
                                            @Param("goodsName") String goodsName,
                                            @Param("purchaserName") String purchaserName);
+
+    PurchaseOrder loadDetail(@Param("purchaseOrderId") Long purchaseOrderId);
+
+    void deletePurchaseOrders(@Param("ids") List<Long> ids);
 }

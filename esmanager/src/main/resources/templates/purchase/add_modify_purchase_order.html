@@ -60,6 +60,12 @@
     </div>
   </div>
   <div class="layui-form-item">
+    <label class="layui-form-label">支付日期</label>
+    <div class="layui-input-inline">
+      <input name="payDate" id="payDate" th:value="${#dates.format(PurchaseOrder?.payDate,'yyyy-MM-dd')}" type="text" class="layui-input date-icon" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
     <div class="layui-input-inline">
       <textarea name="remark" id="remark" th:text="${PurchaseOrder?.remark}" class="layui-textarea" style="width: 520px;"></textarea>

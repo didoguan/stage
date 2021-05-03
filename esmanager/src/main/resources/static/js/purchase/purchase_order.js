@@ -20,23 +20,24 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'purchaseOrderId', hide: true, sort: false, title: 'id'},
-      {field: 'purchaseOrderNo', sort: false, title: '采购单号'},
+      {field: 'purchaseOrderNo', sort: false, title: '采购单号', width: 150},
       {field: 'supplierName', sort: false, title: '供应商名称'},
       {field: 'purchaseQuantity', sort: false, title: '采购数量'},
       {field: 'totalAmount', sort: false, title: '总价'},
       {field: 'purchaserName', sort: false, title: '采购员'},
-      {field: 'purchaseDate', sort: false, title: '采购日期'},
-      {field: 'expectArriveDate', sort: false, title: '预计到货日期'},
-      {field: 'actualArriveDate', sort: false, title: '实际到货日期'},
+      {field: 'purchaseDate', sort: false, title: '采购日期', width: 120},
+      {field: 'expectArriveDate', sort: false, title: '预计到货日期', width: 120},
+      {field: 'actualArriveDate', sort: false, title: '实际到货日期', width: 120},
       {field: 'arriveTotalQuantity', sort: false, title: '到货数量'},
       {field: 'payWay', sort: false, title: '支付方式'},
+      {field: 'payDate', sort: false, title: '支付日期', width: 120},
       {field: 'payAccount', sort: false, title: '支付账号'},
       {field: 'orderStatus', sort: false, title: '订单状态'},
       {field: 'creatorName', sort: false, title: '创建人'},
-      {field: 'createDate', sort: false, title: '创建日期'},
+      {field: 'createDate', sort: false, title: '创建日期', width: 120},
       {field: 'updatorName', sort: false, title: '修改人'},
-      {field: 'updateDate', sort: false, title: '修改日期'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+      {field: 'updateDate', sort: false, title: '修改日期', width: 120},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 80}
     ]];
   };
 
@@ -58,7 +59,7 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   PurchaseOrder.openAddPage = function () {
     func.open({
-      height: 720,
+      height: 760,
       width: 800,
       title: '添加采购单',
       content: ctxPath + '/purchase/addModifyPurchaseOrderPage',
@@ -73,7 +74,7 @@ layui.use(['layer', 'table', 'func'], function () {
    */
   PurchaseOrder.onEditPage = function (data) {
     func.open({
-      height: 720,
+      height: 760,
       width: 800,
       title: '修改采购单',
       content: ctxPath + "/purchase/addModifyPurchaseOrderPage?purchaseOrderId=" + data.purchaseOrderId,
@@ -89,14 +90,14 @@ layui.use(['layer', 'table', 'func'], function () {
   PurchaseOrder.onDeleteData = function () {
     let checkedData = table.checkStatus(PurchaseOrder.tableId).data;
     if (checkedData.length === 0) {
-      layer.msg("请选择要删除的记录", {icon: 7});
+      layer.msg("请选择要删除的订单", {icon: 7});
       return false;
     }
     let ids = [];
     for (let i = 0; i < checkedData.length; i++){
-      ids[i] = checkedData[i].goodsId;
+      ids[i] = checkedData[i].purchaseOrderId;
     }
-    layer.confirm('是否删除选择的采购订单？',{
+    layer.confirm('是否删除选择的订单？',{
       icon:7,title:'提示'
     },function(index){
       $.ajax({
@@ -116,6 +117,38 @@ layui.use(['layer', 'table', 'func'], function () {
       layer.close(index);
     });
   };
+
+  //作废订单
+  PurchaseOrder.onDisableData = function () {
+    let checkedData = table.checkStatus(PurchaseOrder.tableId).data;
+    if (checkedData.length === 0) {
+      layer.msg("请选择要作废的订单", {icon: 7});
+      return false;
+    }
+    let ids = [];
+    for (let i = 0; i < checkedData.length; i++){
+      ids[i] = checkedData[i].purchaseOrderId;
+    }
+    layer.confirm('是否作废选择的订单？',{
+      icon:7,title:'提示'
+    },function(index){
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        url: ctxPath + "/purchase/disablePurchaseOrder",
+        data: JSON.stringify(ids),
+        success : function(result) {
+          layer.msg("操作成功！", {icon: 1});
+          table.reload(PurchaseOrder.tableId);
+        },
+        error : function(e){
+          layer.msg("操作失败！", {icon: 2});
+        }
+      });
+      layer.close(index);
+    });
+  }
 
   // 渲染表格
   let tableResult = table.render({
@@ -142,6 +175,11 @@ layui.use(['layer', 'table', 'func'], function () {
   // 删除按钮点击事件
   $('#btnDel').click(function () {
     PurchaseOrder.onDeleteData();
+  });
+
+  // 作废按钮点击事件
+  $('#btnDis').click(function () {
+    PurchaseOrder.onDisableData();
   });
 
   // 工具条点击事件

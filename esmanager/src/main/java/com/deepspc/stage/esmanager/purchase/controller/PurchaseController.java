@@ -58,7 +58,7 @@ public class PurchaseController extends BaseController {
     public String addModifyPurchaseOrderPage(@RequestParam(required = false) Long purchaseOrderId, Model model) {
         PurchaseOrder purchaseOrder = null;
         if (null != purchaseOrderId) {
-            purchaseOrder = purchaseOrderService.getById(purchaseOrderId);
+            purchaseOrder = purchaseOrderService.loadDetail(purchaseOrderId);
         } else {
             ShiroUser user = ShiroKit.getShiroUser();
             purchaseOrder = new PurchaseOrder();
@@ -146,7 +146,21 @@ public class PurchaseController extends BaseController {
     @RequestMapping("/saveUpdatePurchaseOrder")
     @ResponseBody
     public ResponseData saveUpdatePurchaseOrder(@RequestBody PurchaseOrder purchaseOrder) {
+        purchaseOrderService.saveUpdatePurchaseOrder(purchaseOrder);
+        return ResponseData.success();
+    }
 
+    @RequestMapping("/deletePurchaseOrder")
+    @ResponseBody
+    public ResponseData deletePurchaseOrder(@RequestBody List<Long> ids) {
+        purchaseOrderService.deletePurchaseOrders(ids);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/disablePurchaseOrder")
+    @ResponseBody
+    public ResponseData disablePurchaseOrder(@RequestBody List<Long> ids) {
+        purchaseOrderService.disablePurchaseOrders(ids);
         return ResponseData.success();
     }
 }

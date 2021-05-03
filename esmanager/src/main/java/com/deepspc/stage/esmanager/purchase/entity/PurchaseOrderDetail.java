@@ -1,6 +1,7 @@
 package com.deepspc.stage.esmanager.purchase.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,6 +26,16 @@ public class PurchaseOrderDetail implements Serializable {
     private Long purchaseOrderId;
 
     private String sku;
+
+    private String categoryName;
+
+    private String categoryCode;
+
+    @TableField(exist = false)
+    private String colorPath;
+
+    @TableField(exist = false)
+    private String barcodePath;
 
     private String goodsUnit;
 
@@ -102,5 +113,37 @@ public class PurchaseOrderDetail implements Serializable {
 
     public void setGoodsUnit(String goodsUnit) {
         this.goodsUnit = goodsUnit;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
+
+    public String getColorPath() {
+        return colorPath;
+    }
+
+    public void setColorPath(String colorPath) {
+        this.colorPath = colorPath;
+    }
+
+    public String getBarcodePath() {
+        return barcodePath;
+    }
+
+    public void setBarcodePath(String barcodePath) {
+        this.barcodePath = barcodePath;
     }
 }

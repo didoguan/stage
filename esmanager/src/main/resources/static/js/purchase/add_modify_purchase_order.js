@@ -24,6 +24,10 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     elem: '#actualArriveDate',
     trigger: 'click'
   });
+  laydate.render({
+    elem: '#payDate',
+    trigger: 'click'
+  });
 
   //初始化下拉
   let dictCodes = ["pay_way","pay_account"];
@@ -49,7 +53,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         });
         selected = false;
         let payAccount = data["pay_account"].children;
-        let payAccountVal = $("#pay_account").attr("value");
+        let payAccountVal = $("#payAccount").attr("value");
         $.each(payAccount, function (index, item) {
           if (item.code === payAccountVal) {
             selected = true;
@@ -58,6 +62,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
           }
           $("#payAccount").append(new Option(item.name, item.code, false, selected));
         });
+        form.render('select');
       }
     },
     error : function(e){}
@@ -81,6 +86,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
           }
           $("#supplierId").append(new Option(item.supplierName, item.supplierId, false, selected));
         });
+        form.render('select');
       }
     },
     error : function(e){}
@@ -105,6 +111,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
           }
           $("#purchaserId").append(new Option(item.userName, item.userId, false, selected));
         });
+        form.render('select');
       }
     },
     error : function(e){}
@@ -115,16 +122,22 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
    */
   PurchaseOrder.initColumn = function () {
     return [[
-      {align: 'center', toolbar: '#tableBar', title: '操作'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 80},
       {field: 'orderDetailId', hide: true, sort: false, title: '主键标识'},
+      {field: 'categoryCode', hide: true, sort: false, title: '类目编码'},
       {field: 'sku', sort: false, title: 'SKU', width: 180},
-      {field: 'colorPath', sort: false, title: '颜色', minWidth: 60},
-      {field: 'barcodePath', sort: false, title: '条形码', minWidth: 60},
+      {field: 'categoryName', sort: false, title: '类目', width: 100},
+      {field: 'colorPath', sort: false, title: '颜色', templet: function (d) {
+          return "<div class='color_"+d.orderDetailId+"'><img id='"+d.goodsSkuId+"' src='"+d.colorPath+"' layer-src='"+d.colorPath+"' onclick='showOrderImg(this)'></div>";
+        }, minWidth: 150},
+      {field: 'barcodePath', sort: false, title: '条形码', templet: function (d) {
+          return "<div class='barcode_"+d.orderDetailId+"'><img id='"+d.goodsSkuId+"' src='"+d.barcodePath+"' layer-src='"+d.barcodePath+"' onclick='showOrderImg(this)'></div>";
+        }, minWidth: 150},
       {field: 'goodsUnit', sort: false, title: '单位', edit: 'text'},
-      {field: 'detailQuantity', sort: false, title: '数量', edit: 'text'},
-      {field: 'singlePrice', sort: false, title: '单价', edit: 'text'},
-      {field: 'arriveQuantity', sort: false, title: '到货数量', edit: 'text'},
-      {field: 'remark', sort: false, title: '备注', edit: 'text'}
+      {field: 'detailQuantity', sort: false, title: '采购数量', width: 95, edit: 'text'},
+      {field: 'singlePrice', sort: false, title: '单价', width: 80, edit: 'text'},
+      {field: 'arriveQuantity', sort: false, title: '到货数量', width: 95, edit: 'text'},
+      {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
 
     ]];
   };
@@ -164,17 +177,52 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       yes: function(index){
         let data = admin.getTempData("selectGoods");
         if (data) {
+          let tableDatas = table.cache[PurchaseOrder.detailTableId];
           $.each(data, function (i, item) {
-            itemData.push({"orderDetailId": "", "sku": item.sku, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "remark": ""});
+            tableDatas.push({"orderDetailId": "", "sku": item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "remark": ""});
           });
           table.reload(PurchaseOrder.detailTableId, {
-            data: itemData
+            data: tableDatas
           });
         }
         parent.layer.close(index);
       }
     });
   };
+
+  window.showOrderImg = function (obj) {
+    layer.photos({
+      photos: "."+$(obj).parent().attr("class"),
+      anim: 5,
+      shade: 0.1
+    });
+    $(document).on("mousewheel DOMMouseScroll", ".layui-layer-phimg img", function (e) {
+      let delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || // chrome & ie
+          (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1)); // firefox
+      let imagep = $(".layui-layer-phimg").parent().parent();
+      let image = $(".layui-layer-phimg").parent();
+      let h = image.height();
+      let w = image.width();
+      if (delta > 0) {
+
+        h = h * 1.05;
+        w = w * 1.05;
+
+      } else if (delta < 0) {
+        if (h > 100) {
+          h = h * 0.95;
+          w = w * 0.95;
+        }
+      }
+      imagep.css("top", (window.innerHeight - h) / 2);
+      imagep.css("left", (window.innerWidth - w) / 2);
+      image.height(h);
+      image.width(w);
+      imagep.height(h);
+      imagep.width(w);
+    });
+  }
+
   $('#btnAdd').click(function () {
     PurchaseOrder.openAddPage();
   });
@@ -199,7 +247,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         delete tableDatas[i].LAY_TABLE_INDEX;
         let detailQuantity = n.test(tableDatas[i].detailQuantity);
         if (!detailQuantity) {
-          checkStr = "数量只能是数字";
+          checkStr = "采购数量只能是数字";
         }
         let singlePrice = n.test(tableDatas[i].singlePrice);
         if (!singlePrice) {
@@ -208,6 +256,9 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         let arriveQuantity = n.test(tableDatas[i].arriveQuantity);
         if (!arriveQuantity) {
           checkStr = "到货数量只能是数字";
+        }
+        if (detailQuantity < arriveQuantity) {
+          checkStr = "到货数量不能大于采购数量";
         }
       }
     }
