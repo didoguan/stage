@@ -269,6 +269,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     data.field.details = tableDatas;
     data.field.supplierName = $("#supplierId").find("option:selected").text();
     data.field.purchaserName = $("#purchaserId").find("option:selected").text();
+    //禁用按钮
+    $(".layui-btn").attr("disabled", "disabled");
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -277,6 +279,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       data: JSON.stringify(data.field),
       success : function(result) {
         layer.msg("提交成功！", {icon: 1});
+        //恢复按钮
+        $(".layui-btn").removeAttr("disabled");
         //传给上个页面，刷新table用
         admin.putTempData('formOk', true);
         //关掉对话框
@@ -284,6 +288,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       },
       error : function(e){
         layer.msg("提交失败！", {icon: 2});
+        //恢复按钮
+        $(".layui-btn").removeAttr("disabled");
       }
     });
     //添加 return false 可成功跳转页面

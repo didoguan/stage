@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail;
 import com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderDetailMapper;
@@ -69,14 +70,14 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             } else {
                 purchaseOrder.setPurchaseOrderNo("PO" + dateStr + "-0001");
             }
+            this.baseMapper.insert(purchaseOrder);
         }
-        this.saveOrUpdate(purchaseOrder);
 
         BigDecimal purchaseQuantity = BigDecimal.ZERO;
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal arriveTotalQuantity = BigDecimal.ZERO;
         List<PurchaseOrderDetail> detailList = purchaseOrder.getDetails();
-        String orderStatus = null;
+        String orderStatus;
         if (null != detailList && !detailList.isEmpty()) {
             //先删除明细信息
             QueryWrapper<PurchaseOrderDetail> queryWrapper = new QueryWrapper<>();
@@ -115,13 +116,15 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
         } else {
             orderStatus = null;
         }
-        UpdateWrapper<PurchaseOrder> orderUpdateWrapper = new UpdateWrapper<>();
-        orderUpdateWrapper.set("order_status", orderStatus);
-        orderUpdateWrapper.set("purchase_quantity", purchaseQuantity);
-        orderUpdateWrapper.set("arrive_total_quantity", arriveTotalQuantity);
-        orderUpdateWrapper.set("total_amount", totalAmount);
-        orderUpdateWrapper.eq("purchase_order_id", purchaseOrder.getPurchaseOrderId());
-        this.update(orderUpdateWrapper);
+        //更新采购商品信息
+        purchaseOrder.setOrderStatus(orderStatus);
+        purchaseOrder.setPurchaseQuantity(purchaseQuantity);
+        purchaseOrder.setArriveTotalQuantity(arriveTotalQuantity);
+        purchaseOrder.setTotalAmount(totalAmount);
+        int updates = this.baseMapper.updateById(purchaseOrder);
+        if (0 == updates) {
+            throw new StageException("采购订单更新失败，版本号不一致");
+        }
     }
 
     @Override

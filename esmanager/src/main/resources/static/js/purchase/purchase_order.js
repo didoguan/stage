@@ -33,6 +33,7 @@ layui.use(['layer', 'table', 'func'], function () {
       {field: 'payDate', sort: false, title: '支付日期', width: 120},
       {field: 'payAccount', sort: false, title: '支付账号'},
       {field: 'orderStatus', sort: false, title: '订单状态'},
+      {field: 'remark', sort: false, title: '备注', width: 200},
       {field: 'creatorName', sort: false, title: '创建人'},
       {field: 'createDate', sort: false, title: '创建日期', width: 120},
       {field: 'updatorName', sort: false, title: '修改人'},

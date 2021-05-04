@@ -26,6 +26,7 @@
     <result column="create_date" property="createDate" />
     <result column="updator_name" property="updatorName" />
     <result column="update_date" property="updateDate" />
+    <result column="version" property="version" />
   </resultMap>
 
   <resultMap id="PurchaseOrderDetailMap" type="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder">
@@ -52,6 +53,7 @@
     <result column="create_date" property="createDate" />
     <result column="updator_name" property="updatorName" />
     <result column="update_date" property="updateDate" />
+    <result column="version" property="version" />
     <!-- fetchType="eager" 急加载，查询主表时加载子表-->
     <collection property="details" column="purchase_order_id" fetchType="eager" select="getPurchaseOrderDetail" ofType="com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail"/>
   </resultMap>
@@ -81,7 +83,8 @@
     create_date,
     updator_id,
     updator_name,
-    update_date
+    update_date,
+    version
   </sql>
 
   <select id="loadPurchaseOrders" resultMap="BasePurchaseOrderMap">

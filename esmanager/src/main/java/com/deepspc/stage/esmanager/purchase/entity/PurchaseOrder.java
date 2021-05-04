@@ -75,6 +75,9 @@ public class PurchaseOrder implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
     private Date updateDate;
 
+    @Version
+    private Integer version;
+
     @TableField(exist = false)
     private List<PurchaseOrderDetail> details;
 
@@ -280,6 +283,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setPayDate(Date payDate) {
         this.payDate = payDate;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public List<PurchaseOrderDetail> getDetails() {
