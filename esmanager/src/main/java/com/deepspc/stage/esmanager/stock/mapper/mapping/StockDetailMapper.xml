@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.stock.mapper.StockDetailMapper">
+
+  <resultMap id="BaseStockMap" type="com.deepspc.stage.esmanager.stock.entity.StockDetail">
+    <id column="stock_detail_id" property="stockDetailId" />
+    <result column="order_no" property="orderNo" />
+    <result column="sku" property="sku" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_code" property="categoryCode" />
+    <result column="operation_type" property="operationType" />
+    <result column="goods_unit" property="goodsUnit" />
+    <result column="stock_quantity" property="stockQuantity" />
+    <result column="transit_quantity" property="transitQuantity" />
+    <result column="single_price" property="singlePrice" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+  </resultMap>
+
+  <sql id="default_stock_column">
+    stock_detail_id,
+    order_no,
+    sku,
+    category_name,
+    category_code,
+    operation_type,
+    goods_unit,
+    stock_quantity,
+    transit_quantity,
+    single_price,
+    creator_id,
+    creator_name,
+    create_date
+  </sql>
+
+  <select id="loadStockDetails" resultMap="BaseStockMap">
+    SELECT
+    <include refid="default_stock_column"/>
+    FROM
+      ec_stock_detail
+    WHERE
+      1 = 1
+    <if test="orderNo != null and orderNo != ''">
+      AND order_no like CONCAT('%',#{orderNo},'%')
+    </if>
+    <if test="categoryCode != null and categoryCode != ''">
+      AND category_code = #{categoryCode}
+    </if>
+    <if test="operationType != null and operationType != ''">
+      AND operation_type = #{operationType}
+    </if>
+    ORDER BY
+      create_date DESC
+  </select>
+
+  <select id="loadStockSummary" resultMap="BaseStockMap">
+    SELECT
+      order_no,
+      sku,
+      category_name,
+      operation_type,
+      goods_unit,
+      sum( stock_quantity ) stock_quantity,
+      sum( transit_quantity ) transit_quantity,
+      single_price,
+    <if test="summaryType == 'Y'.toString()">
+      date_format(create_date, '%Y') create_date
+    </if>
+    <if test="summaryType == 'M'.toString()">
+      date_format(create_date, '%Y-%m') create_date
+    </if>
+    FROM
+      ec_stock_detail
+    WHERE
+      create_date &gt;= str_to_date( #{startDate}, '%Y-%m-%d %H:%i:%s' )
+      AND create_date &lt;= str_to_date( #{endDate}, '%Y-%m-%d %H:%i:%s' )
+    GROUP BY
+      order_no,
+      sku,
+      category_name,
+      operation_type,
+      goods_unit,
+      single_price,
+    <if test="summaryType == 'Y'.toString()">
+      date_format(create_date, '%Y')
+    </if>
+    <if test="summaryType == 'M'.toString()">
+      date_format(create_date, '%Y-%m')
+    </if>
+  </select>
+
+</mapper>

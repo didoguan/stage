@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{},~{})">
+  <title></title>
+</head>
+<div class="layui-body-header">
+  <span class="layui-body-header-title">库存汇总</span>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <div class="layui-form toolbar">
+            <div class="layui-form-item">
+              <label class="layui-form-label">汇总年份</label>
+              <div class="layui-input-inline">
+                <select name="summaryYear" id="summaryYear" lay-search>
+                  <option th:each="year:${years}" th:value="${year}" th:text="${year}"></option>
+                </select>
+              </div>
+              <label class="layui-form-label">汇总方式</label>
+              <div class="layui-input-inline">
+                <select name="summaryType" id="summaryType" lay-filter="displaySummaryDate" lay-search>
+                  <option value="Y">按年</option>
+                  <option value="M">按月</option>
+                </select>
+              </div>
+              <div id="summaryDate" style="display: none;">
+                <label class="layui-form-label">汇总时间</label>
+                <div class="layui-input-inline">
+                  <input id="startDate" name="startDate" type="text" autocomplete="off" class="layui-input"/>
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="layui-input-inline">
+                  <input id="endDate" name="endDate" type="text" autocomplete="off" class="layui-input"/>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
+              </div>
+            </div>
+          </div>
+          <table class="layui-table" id="summaryTable" lay-filter="summaryTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="common/common :: public_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/stock/stock_summary.js}"></script>
+</div>

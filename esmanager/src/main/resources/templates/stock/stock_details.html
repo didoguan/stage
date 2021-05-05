@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{},~{})">
+  <title></title>
+</head>
+<div class="layui-body-header">
+  <span class="layui-body-header-title">库存明细</span>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <div class="layui-form toolbar">
+            <div class="layui-form-item">
+              <label class="layui-form-label">订单号</label>
+              <div class="layui-input-inline">
+                <input id="orderNo" name="orderNo" class="layui-input" type="text" autocomplete="off"/>
+              </div>
+              <label class="layui-form-label">类目</label>
+              <div class="layui-input-inline">
+                <select name="categoryCode" id="categoryCode" lay-search>
+                  <option value="">--请选择--</option>
+                  <option value="26">箱包</option>
+                </select>
+              </div>
+              <label class="layui-form-label">类型</label>
+              <div class="layui-input-inline">
+                <select name="operationType" id="operationType" lay-search>
+                  <option value="">--请选择--</option>
+                </select>
+              </div>
+              <div class="layui-inline">
+                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
+              </div>
+            </div>
+          </div>
+          <table class="layui-table" id="stockTable" lay-filter="stockTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="common/common :: public_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/stock/stock_detail.js}"></script>
+</div>
