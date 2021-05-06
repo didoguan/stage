@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.finance.mapper.TradeAccountMapper">
+
+  <resultMap id="BaseTradeAccountMap" type="com.deepspc.stage.esmanager.finance.entity.TradeAccount">
+    <id column="account_id" property="accountId" />
+    <result column="account" property="account" />
+    <result column="account_type" property="accountType" />
+    <result column="account_status" property="accountStatus" />
+    <result column="public_private" property="publicPrivate" />
+    <result column="bank_name" property="bankName" />
+    <result column="remark" property="remark" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <sql id="default_tradeAccount_column">
+    account_id,
+    account,
+    account_type,
+    account_status,
+    public_private,
+    bank_name,
+    remark,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
+  </sql>
+
+  <select id="loadTradeAccounts" resultMap="BaseTradeAccountMap">
+    SELECT
+    <include refid="default_tradeAccount_column"/>
+    FROM
+      ec_trade_account
+    WHERE
+      1 = 1
+    <if test="accountType != null and accountType != ''">
+      AND account_type = #{accountType}
+    </if>
+    <if test="accountStatus != null and accountStatus != ''">
+      AND account_status = #{accountStatus}
+    </if>
+    <if test="publicPrivate != null and publicPrivate != ''">
+      AND public_private = #{publicPrivate}
+    </if>
+  </select>
+
+  <select id="loadSelectTradeAccounts" resultMap="BaseTradeAccountMap">
+    SELECT
+    <include refid="default_tradeAccount_column"/>
+    FROM
+      ec_trade_account
+    WHERE
+      account_status = '01'
+    <if test="account != null and account != ''">
+      AND account like CONCAT('%',#{account},'%')
+    </if>
+    <if test="publicPrivate != null and publicPrivate != ''">
+      AND public_private = #{publicPrivate}
+    </if>
+  </select>
+
+  <delete id="deleteTradeAccounts">
+    DELETE
+    FROM
+      ec_trade_account
+    WHERE
+      account_id IN
+    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+</mapper>

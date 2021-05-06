@@ -29,45 +29,6 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     trigger: 'click'
   });
 
-  //初始化下拉
-  let dictCodes = ["pay_way","pay_account"];
-  $.ajax({
-    type: "POST",
-    dataType: "json",
-    contentType: "application/json;charset=utf-8",
-    url: ctxPath + "/dict/getDictByCode",
-    data: JSON.stringify(dictCodes),
-    success : function(result) {
-      let data = result.data;
-      if (data) {
-        let payWay = data["pay_way"].children;
-        let payWayVal = $("#payWay").attr("value");
-        let selected = false;
-        $.each(payWay, function (index, item) {
-          if (item.code === payWayVal) {
-            selected = true;
-          } else {
-            selected = false;
-          }
-          $("#payWay").append(new Option(item.name, item.code, false, selected));
-        });
-        selected = false;
-        let payAccount = data["pay_account"].children;
-        let payAccountVal = $("#payAccount").attr("value");
-        $.each(payAccount, function (index, item) {
-          if (item.code === payAccountVal) {
-            selected = true;
-          } else {
-            selected = false;
-          }
-          $("#payAccount").append(new Option(item.name, item.code, false, selected));
-        });
-        form.render('select');
-      }
-    },
-    error : function(e){}
-  });
-
   //初始化供应商
   $.ajax({
     type: "POST",
@@ -164,6 +125,25 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     $('.layui-table-main')[0].scrollTop = $('.layui-table-main')[0].scrollHeight;
   };
 
+  //添加交易账号
+  PurchaseOrder.openTradeAccountPage = function () {
+    func.open({
+      height: 500,
+      width: 700,
+      offset: '100px',
+      title: '添加账号',
+      btn: ['确定','取消'],
+      content: ctxPath + '/finance/selectTradeAccountPage',
+      yes: function(index){
+        let data = admin.getTempData("selectAccounts");
+        if (data) {
+          $("#payAccount").val(data);
+        }
+        parent.layer.close(index);
+      }
+    });
+  }
+
   //添加商品
   PurchaseOrder.openAddPage = function () {
     func.open({
@@ -225,6 +205,10 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
 
   $('#btnAdd').click(function () {
     PurchaseOrder.openAddPage();
+  });
+
+  $("#payAccount").click(function(){
+    PurchaseOrder.openTradeAccountPage();
   });
 
   //工具条事件

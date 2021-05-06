@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<form class="layui-form">
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <input id="accountId" name="accountId" type="hidden" th:value="${TradeAccount?.accountId}"/>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">账号类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select id="accountType" name="accountType" th:value="${TradeAccount?.accountType}" lay-verify="required" lay-search>
+                <option value="">--请选择--</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">账号状态<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select id="accountStatus" name="accountStatus" lay-verify="required" lay-search>
+                <option value="">--请选择--</option>
+                <option th:selected="${TradeAccount?.accountStatus == '01'}" value="01">正常</option>
+                <option th:selected="${TradeAccount?.accountStatus == '02'}" value="02">停用</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">公私账<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select id="publicPrivate" name="publicPrivate" lay-verify="required" lay-search>
+                <option value="">--请选择--</option>
+                <option th:selected="${TradeAccount?.publicPrivate == 'public'}" value="public">公账</option>
+                <option th:selected="${TradeAccount?.publicPrivate == 'private'}" value="private">私账</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">开户银行<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="bankName" name="bankName" th:value="${TradeAccount?.bankName}" placeholder="请输入开户银行" lay-verify="required" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">账号<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="account" name="account" th:value="${TradeAccount?.account}" placeholder="请输入账号" lay-verify="required" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+              <textarea name="remark" id="remark" th:text="${TradeAccount?.remark}" class="layui-textarea" style="width: 400px;"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/finance/add_modify_tradeAccount.js}"></script>
+</div>

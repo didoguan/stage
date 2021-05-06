@@ -33,8 +33,6 @@ public class PurchaseOrder implements Serializable {
 
     private BigDecimal totalAmount;
 
-    private String payWay;
-
     private String payAccount;
 
     private Date payDate;
@@ -227,14 +225,6 @@ public class PurchaseOrder implements Serializable {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
-    }
-
-    public String getPayWay() {
-        return payWay;
-    }
-
-    public void setPayWay(String payWay) {
-        this.payWay = payWay;
     }
 
     public String getPayAccount() {

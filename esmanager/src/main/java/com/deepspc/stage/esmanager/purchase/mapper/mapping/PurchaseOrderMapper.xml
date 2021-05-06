@@ -10,7 +10,6 @@
     <result column="purchase_quantity" property="purchaseQuantity" />
     <result column="arrive_total_quantity" property="arriveTotalQuantity" />
     <result column="total_amount" property="totalAmount" />
-    <result column="pay_way" property="payWay" />
     <result column="pay_account" property="payAccount" />
     <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
@@ -37,7 +36,6 @@
     <result column="purchase_quantity" property="purchaseQuantity" />
     <result column="arrive_total_quantity" property="arriveTotalQuantity" />
     <result column="total_amount" property="totalAmount" />
-    <result column="pay_way" property="payWay" />
     <result column="pay_account" property="payAccount" />
     <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
@@ -66,7 +64,6 @@
     purchase_quantity,
     arrive_total_quantity,
     total_amount,
-    pay_way,
     pay_account,
     pay_date,
     order_status,

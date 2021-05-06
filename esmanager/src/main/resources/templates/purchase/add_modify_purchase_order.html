@@ -46,23 +46,13 @@
     </div>
   </div>
   <div class="layui-form-item">
-    <label class="layui-form-label">支付方式<span style="color: red;">*</span></label>
-    <div class="layui-input-inline">
-      <select id="payWay" name="payWay" th:value="${PurchaseOrder?.payWay}" lay-verify="required" lay-search>
-        <option value="">--请选择--</option>
-      </select>
-    </div>
-    <label class="layui-form-label">支付账号<span style="color: red;">*</span></label>
-    <div class="layui-input-inline">
-      <select id="payAccount" name="payAccount" th:value="${PurchaseOrder?.payAccount}" lay-verify="required" lay-search>
-        <option value="">--请选择--</option>
-      </select>
-    </div>
-  </div>
-  <div class="layui-form-item">
     <label class="layui-form-label">支付日期</label>
     <div class="layui-input-inline">
       <input name="payDate" id="payDate" th:value="${#dates.format(PurchaseOrder?.payDate,'yyyy-MM-dd')}" type="text" class="layui-input date-icon" autocomplete="off"/>
+    </div>
+    <label class="layui-form-label">支付账号<span style="color: red;">*</span></label>
+    <div class="layui-input-inline">
+      <input id="payAccount" name="payAccount" th:value="${PurchaseOrder?.payAccount}" type="text" class="layui-input" autocomplete="off" readonly/>
     </div>
   </div>
   <div class="layui-form-item">
