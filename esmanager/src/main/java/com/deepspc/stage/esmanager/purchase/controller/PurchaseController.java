@@ -5,6 +5,7 @@ import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
 import com.deepspc.stage.esmanager.purchase.entity.SupplierInfo;
+import com.deepspc.stage.esmanager.purchase.model.PurchaseOrderSave;
 import com.deepspc.stage.esmanager.purchase.service.IPurchaseOrderService;
 import com.deepspc.stage.esmanager.purchase.service.ISupplierInfoService;
 import com.deepspc.stage.esmanager.purchase.wrapper.PurchaseOrderWrapper;
@@ -145,8 +146,8 @@ public class PurchaseController extends BaseController {
 
     @RequestMapping("/saveUpdatePurchaseOrder")
     @ResponseBody
-    public ResponseData saveUpdatePurchaseOrder(@RequestBody PurchaseOrder purchaseOrder) {
-        purchaseOrderService.saveUpdatePurchaseOrder(purchaseOrder);
+    public ResponseData saveUpdatePurchaseOrder(@RequestBody PurchaseOrderSave purchaseOrderSave) {
+        purchaseOrderService.saveUpdatePurchaseOrder(purchaseOrderSave);
         return ResponseData.success();
     }
 
@@ -163,4 +164,5 @@ public class PurchaseController extends BaseController {
         purchaseOrderService.disablePurchaseOrders(ids);
         return ResponseData.success();
     }
+
 }

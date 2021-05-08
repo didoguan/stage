@@ -10,8 +10,7 @@
     <result column="category_code" property="categoryCode" />
     <result column="operation_type" property="operationType" />
     <result column="goods_unit" property="goodsUnit" />
-    <result column="stock_quantity" property="stockQuantity" />
-    <result column="transit_quantity" property="transitQuantity" />
+    <result column="quantity" property="quantity" />
     <result column="single_price" property="singlePrice" />
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
@@ -26,8 +25,7 @@
     category_code,
     operation_type,
     goods_unit,
-    stock_quantity,
-    transit_quantity,
+    quantity,
     single_price,
     creator_id,
     creator_name,
@@ -61,8 +59,7 @@
       category_name,
       operation_type,
       goods_unit,
-      sum( stock_quantity ) stock_quantity,
-      sum( transit_quantity ) transit_quantity,
+      sum( quantity ) quantity,
       single_price,
     <if test="summaryType == 'Y'.toString()">
       date_format(create_date, '%Y') create_date
@@ -89,5 +86,13 @@
       date_format(create_date, '%Y-%m')
     </if>
   </select>
+
+  <insert id="insertBatch">
+    INSERT INTO ec_stock_detail(stock_detail_id, order_no, sku, category_name, category_code, operation_type, goods_unit, quantity, single_price, creator_id, creator_name, create_date)
+    VALUES
+    <foreach collection="list" item="item" separator =",">
+      (#{item.stockDetailId}, #{item.orderNo}, #{item.sku}, #{item.categoryName}, #{item.categoryCode},  #{item.operationType}, #{item.goodsUnit}, #{item.quantity}, #{item.singlePrice}, #{item.creatorId}, #{item.creatorName}, #{item.createDate})
+    </foreach>
+  </insert>
 
 </mapper>

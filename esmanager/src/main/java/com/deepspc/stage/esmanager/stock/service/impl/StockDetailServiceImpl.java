@@ -7,6 +7,8 @@ import com.deepspc.stage.esmanager.stock.service.IStockDetailService;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author gzw
  * @date 2021/5/4 16:02
@@ -24,5 +26,12 @@ public class StockDetailServiceImpl extends BaseOrmService<StockDetailMapper, St
     public Page<StockDetail> loadStockSummary(String summaryType, String startDate, String endDate) {
         Page page = defaultPage();
         return this.baseMapper.loadStockSummary(page, summaryType, startDate, endDate);
+    }
+
+    @Override
+    public void insertBatch(List<StockDetail> list) {
+        if (null != list && !list.isEmpty()) {
+            this.baseMapper.insertBatch(list);
+        }
     }
 }

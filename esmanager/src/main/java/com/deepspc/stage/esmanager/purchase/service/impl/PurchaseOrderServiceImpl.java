@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail;
 import com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderDetailMapper;
 import com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderMapper;
+import com.deepspc.stage.esmanager.purchase.model.PurchaseOrderSave;
 import com.deepspc.stage.esmanager.purchase.service.IPurchaseOrderService;
+import com.deepspc.stage.esmanager.stock.entity.StockDetail;
+import com.deepspc.stage.esmanager.stock.mapper.StockDetailMapper;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
@@ -32,6 +36,9 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
     @Resource
     private PurchaseOrderDetailMapper purchaseOrderDetailMapper;
 
+    @Resource
+    private StockDetailMapper stockDetailMapper;
+
     @Override
     public Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String goodsName, String purchaserName) {
         boolean checkAll = true;
@@ -47,7 +54,8 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveUpdatePurchaseOrder(PurchaseOrder purchaseOrder) {
+    public void saveUpdatePurchaseOrder(PurchaseOrderSave purchaseOrderSave) {
+        PurchaseOrder purchaseOrder = purchaseOrderSave.getPurchaseOrder();
         if (null == purchaseOrder.getPurchaseOrderId()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Date date = new Date();
@@ -86,6 +94,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             for (PurchaseOrderDetail detail : detailList) {
                 if (null == detail.getOrderDetailId()) {
                     detail.setOrderDetailId(IdWorker.getId());
+                    detail.setStockEntry(StageCoreEnum.NO.getCode());
                 }
                 detail.setPurchaseOrderId(purchaseOrder.getPurchaseOrderId());
                 if (null == detail.getDetailQuantity()) {
@@ -125,6 +134,11 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
         if (0 == updates) {
             throw new StageException("采购订单更新失败，版本号不一致");
         }
+        //处理商品入库
+        List<StockDetail> stockDetails = purchaseOrderSave.getStockDetails();
+        if (null != stockDetails && !stockDetails.isEmpty()) {
+            stockDetailMapper.insertBatch(stockDetails);
+        }
     }
 
     @Override
@@ -143,5 +157,6 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             this.update(updateWrapper);
         }
     }
+
 }
 

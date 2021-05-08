@@ -45,6 +45,8 @@ public class PurchaseOrderDetail implements Serializable {
 
     private BigDecimal arriveQuantity;
 
+    private String stockEntry;
+
     private String remark;
 
     public PurchaseOrderDetail() {
@@ -145,5 +147,13 @@ public class PurchaseOrderDetail implements Serializable {
 
     public void setBarcodePath(String barcodePath) {
         this.barcodePath = barcodePath;
+    }
+
+    public String getStockEntry() {
+        return stockEntry;
+    }
+
+    public void setStockEntry(String stockEntry) {
+        this.stockEntry = stockEntry;
     }
 }

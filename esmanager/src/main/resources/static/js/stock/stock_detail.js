@@ -43,8 +43,7 @@ layui.use(['form', 'table'], function () {
       {field: 'categoryName', sort: false, title: '类目'},
       {field: 'operationType', sort: false, title: '类型'},
       {field: 'goodsUnit', sort: false, title: '单位'},
-      {field: 'stockQuantity', sort: false, title: '在仓数量', width: 120},
-      {field: 'transitQuantity', sort: false, title: '在途数量', width: 120},
+      {field: 'quantity', sort: false, title: '数量', width: 120},
       {field: 'singlePrice', sort: false, title: '单价'},
       {field: 'creatorName', sort: false, title: '创建人'},
       {field: 'createDate', sort: false, title: '创建日期', width: 120}

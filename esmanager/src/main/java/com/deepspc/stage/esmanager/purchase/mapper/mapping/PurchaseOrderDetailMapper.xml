@@ -12,6 +12,7 @@
     <result column="detail_quantity" property="detailQuantity" />
     <result column="single_price" property="singlePrice" />
     <result column="arrive_quantity" property="arriveQuantity" />
+    <result column="stock_entry" property="stockEntry" />
     <result column="remark" property="remark" />
   </resultMap>
 
@@ -26,14 +27,15 @@
     detail_quantity,
     single_price,
     arrive_quantity,
+    stock_entry,
     remark
   </sql>
 
   <insert id="insertBatch">
-    INSERT INTO ec_purchase_order_detail(order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, remark)
+    INSERT INTO ec_purchase_order_detail(order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, stock_entry, remark)
     VALUES
     <foreach collection="list" item="item" separator =",">
-      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.remark})
+      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.remark})
     </foreach>
   </insert>
 

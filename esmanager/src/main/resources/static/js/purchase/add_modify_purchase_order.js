@@ -98,11 +98,19 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       {field: 'detailQuantity', sort: false, title: '采购数量', width: 95, edit: 'text'},
       {field: 'singlePrice', sort: false, title: '单价', width: 80, edit: 'text'},
       {field: 'arriveQuantity', sort: false, title: '到货数量', width: 95, edit: 'text'},
+      {field: 'stockEntry', sort: false, title: '是否已入库', width: 110},
       {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
 
     ]];
   };
 
+  //处理原有的商品明细
+  let filterorderDetails = {};
+  if (orderDetails && orderDetails.length > 0) {
+    $.each(orderDetails, function (index, item) {
+      filterorderDetails[item.sku] = {"detailQuantity":item.detailQuantity, "arriveQuantity":item.arriveQuantity};
+    });
+  }
   let itemData = orderDetails || [];
 
   //初始化子项表格
@@ -142,7 +150,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         parent.layer.close(index);
       }
     });
-  }
+  };
 
   //添加商品
   PurchaseOrder.openAddPage = function () {
@@ -168,6 +176,11 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         parent.layer.close(index);
       }
     });
+  };
+
+  //打印条码
+  PurchaseOrder.printBarcode = function () {
+
   };
 
   window.showOrderImg = function (obj) {
@@ -201,7 +214,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       imagep.height(h);
       imagep.width(w);
     });
-  }
+  };
 
   $('#btnAdd').click(function () {
     PurchaseOrder.openAddPage();
@@ -209,6 +222,10 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
 
   $("#payAccount").click(function(){
     PurchaseOrder.openTradeAccountPage();
+  });
+
+  $("#btnPrint").click(function(){
+    PurchaseOrder.printBarcode();
   });
 
   //工具条事件
@@ -219,52 +236,73 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     }
   });
 
+  let saving = false;
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {
     let n = /^(-$|-\d*|-\d*\.|-\d*\.\d*|0|\d*|\d*\.|\d*\.\d*)$/;
     let checkStr = "";
+    let entrys = [];
     let tableDatas = table.cache[PurchaseOrder.detailTableId];
     for (let i = tableDatas.length - 1; i >= 0; i--) {
-      if (!tableDatas[i].sku) {
+      let sku = tableDatas[i].sku;
+      if (!sku) {
         tableDatas.splice(i, 1);
       } else {
         delete tableDatas[i].LAY_TABLE_INDEX;
-        let detailQuantity = n.test(tableDatas[i].detailQuantity);
-        if (!detailQuantity) {
+        let data = filterorderDetails[sku];
+        let detailQuantity = tableDatas[i].detailQuantity;
+        let detailQuantityNumber = n.test(detailQuantity);
+        if (!detailQuantityNumber) {
           checkStr = "采购数量只能是数字";
         }
         let singlePrice = n.test(tableDatas[i].singlePrice);
         if (!singlePrice) {
           checkStr = "单价只能是数字";
         }
-        let arriveQuantity = n.test(tableDatas[i].arriveQuantity);
-        if (!arriveQuantity) {
+        let arriveQuantity = tableDatas[i].arriveQuantity;
+        let arriveQuantityNumber = n.test(arriveQuantity);
+        if (!arriveQuantityNumber) {
           checkStr = "到货数量只能是数字";
         }
-        if (detailQuantity < arriveQuantity) {
+        if (data && arriveQuantity < data.arriveQuantity) {
+          checkStr = "到货数量不能小于上次填写的数量";
+        }
+        if (detailQuantity < tableDatas[i].arriveQuantity) {
           checkStr = "到货数量不能大于采购数量";
+        }
+        if (checkStr !== "") {
+          layer.msg(checkStr, {icon: 2});
+          return false;
+        }
+        //处理要入库的商品
+        //到货数量大于0且大于原来值
+        if (tableDatas[i].arriveQuantity > 0) {
+          entrys.push({
+            "orderNo": $("#purchaseOrderNo").val(),
+            "sku": sku,
+            "categoryCode": tableDatas[i].categoryCode,
+            "categoryName": tableDatas[i].categoryName,
+            "operationType": "02",
+            "goodsUnit": tableDatas[i].goodsUnit,
+            "quantity": arriveQuantity - data.arriveQuantity,
+            "singlePrice": tableDatas[i].singlePrice
+          });
+          tableDatas[i].stockEntry = "Y";
         }
       }
     }
-    if (checkStr != "") {
-      layer.msg(checkStr, {icon: 2});
-      return false;
-    }
+
     data.field.details = tableDatas;
     data.field.supplierName = $("#supplierId").find("option:selected").text();
     data.field.purchaserName = $("#purchaserId").find("option:selected").text();
-    //禁用按钮
-    $(".layui-btn").attr("disabled", "disabled");
     $.ajax({
       type: "POST",
       dataType: "json",
       contentType: "application/json;charset=utf-8",
       url: ctxPath + "/purchase/saveUpdatePurchaseOrder",
-      data: JSON.stringify(data.field),
+      data: JSON.stringify({"purchaseOrder":data.field, "stockDetails": entrys}),
       success : function(result) {
         layer.msg("提交成功！", {icon: 1});
-        //恢复按钮
-        $(".layui-btn").removeAttr("disabled");
         //传给上个页面，刷新table用
         admin.putTempData('formOk', true);
         //关掉对话框
@@ -272,8 +310,6 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       },
       error : function(e){
         layer.msg("提交失败！", {icon: 2});
-        //恢复按钮
-        $(".layui-btn").removeAttr("disabled");
       }
     });
     //添加 return false 可成功跳转页面

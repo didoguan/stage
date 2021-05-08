@@ -33,9 +33,7 @@ public class StockDetail implements Serializable {
 
     private String goodsUnit;
 
-    private BigDecimal stockQuantity;
-
-    private BigDecimal transitQuantity;
+    private BigDecimal quantity;
 
     private BigDecimal singlePrice;
 
@@ -108,20 +106,12 @@ public class StockDetail implements Serializable {
         this.goodsUnit = goodsUnit;
     }
 
-    public BigDecimal getStockQuantity() {
-        return stockQuantity;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
 
-    public void setStockQuantity(BigDecimal stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public BigDecimal getTransitQuantity() {
-        return transitQuantity;
-    }
-
-    public void setTransitQuantity(BigDecimal transitQuantity) {
-        this.transitQuantity = transitQuantity;
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getSinglePrice() {

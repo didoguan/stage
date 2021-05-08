@@ -127,6 +127,7 @@
         a.detail_quantity,
         a.single_price,
         a.arrive_quantity,
+        case a.stock_entry when 'N' then '否' when 'Y' then '是' else null end stock_entry,
         a.remark,
         c.file_path "colorPath",
         d.file_path "barcodePath"
@@ -140,10 +141,11 @@
   </select>
 
   <delete id="deletePurchaseOrders">
-    DELETE a, b
+    DELETE a, b, c
     FROM
     ec_purchase_order a
     LEFT JOIN ec_purchase_order_detail b ON a.purchase_order_id = b.purchase_order_id
+    LEFT JOIN ec_stock_detail c ON a.purchase_order_no = c.order_no and c.sku = b.sku
     WHERE
     a.purchase_order_id IN
     <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
