@@ -127,7 +127,7 @@
         a.detail_quantity,
         a.single_price,
         a.arrive_quantity,
-        case a.stock_entry when 'N' then '否' when 'Y' then '是' else null end stock_entry,
+        a.stock_entry,
         a.remark,
         c.file_path "colorPath",
         d.file_path "barcodePath"

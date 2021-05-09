@@ -78,10 +78,11 @@ public class LoginController extends BaseController {
                 ShiroKit.checkLogin(loginParam.getAccount(), loginParam.getPassword());
                 ShiroUser shiroUser = ShiroKit.getShiroUser();
                 String userId = shiroUser.getUserId().toString();
-                //先判断用户是否已经登录，同一用户只能登录一次
+                //先判断用户是否已经登录，失效已经登录的用户
                 String existsToken = EhCacheUtil.get(Const.tempUserToken, userId);
                 if (StrUtil.isNotBlank(existsToken)) {
-                    return ResponseData.error(SysExceptionCode.USER_EXISTS.getCode(), SysExceptionCode.USER_EXISTS.getMessage());
+                    //return ResponseData.error(SysExceptionCode.USER_EXISTS.getCode(), SysExceptionCode.USER_EXISTS.getMessage());
+                    EhCacheUtil.remove(Const.tempUserToken, userId);
                 }
                 //生成token
                 String token = JwtUtil.instanceToken(Const.own, userId,null, sysPropertiesConfig.getTokenLive());

@@ -86,11 +86,11 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
         BigDecimal arriveTotalQuantity = BigDecimal.ZERO;
         List<PurchaseOrderDetail> detailList = purchaseOrder.getDetails();
         String orderStatus;
+        //先删除明细信息
+        QueryWrapper<PurchaseOrderDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("purchase_order_id", purchaseOrder.getPurchaseOrderId());
+        purchaseOrderDetailMapper.delete(queryWrapper);
         if (null != detailList && !detailList.isEmpty()) {
-            //先删除明细信息
-            QueryWrapper<PurchaseOrderDetail> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("purchase_order_id", purchaseOrder.getPurchaseOrderId());
-            purchaseOrderDetailMapper.delete(queryWrapper);
             for (PurchaseOrderDetail detail : detailList) {
                 if (null == detail.getOrderDetailId()) {
                     detail.setOrderDetailId(IdWorker.getId());

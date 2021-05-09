@@ -98,7 +98,13 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       {field: 'detailQuantity', sort: false, title: '采购数量', width: 95, edit: 'text'},
       {field: 'singlePrice', sort: false, title: '单价', width: 80, edit: 'text'},
       {field: 'arriveQuantity', sort: false, title: '到货数量', width: 95, edit: 'text'},
-      {field: 'stockEntry', sort: false, title: '是否已入库', width: 110},
+      {field: 'stockEntry', sort: false, title: '是否已入库', width: 110, templet: function (d) {
+          if ('N' === d.stockEntry) {
+            return '否';
+          } else if ('Y' === d.stockEntry) {
+            return '是';
+          }
+        }},
       {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
 
     ]];
@@ -276,7 +282,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         }
         //处理要入库的商品
         //到货数量大于0且大于原来值
-        if (tableDatas[i].arriveQuantity > 0) {
+        if (arriveQuantity > 0 && arriveQuantity > data.arriveQuantity) {
           entrys.push({
             "orderNo": $("#purchaseOrderNo").val(),
             "sku": sku,

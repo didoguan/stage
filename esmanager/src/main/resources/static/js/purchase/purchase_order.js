@@ -20,15 +20,16 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'purchaseOrderId', hide: true, sort: false, title: 'id'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 80},
       {field: 'purchaseOrderNo', sort: false, title: '采购单号', width: 150},
       {field: 'supplierName', sort: false, title: '供应商名称'},
       {field: 'purchaseQuantity', sort: false, title: '采购数量'},
+      {field: 'arriveTotalQuantity', sort: false, title: '到货数量'},
       {field: 'totalAmount', sort: false, title: '总价'},
       {field: 'purchaserName', sort: false, title: '采购员'},
       {field: 'purchaseDate', sort: false, title: '采购日期', width: 120},
       {field: 'expectArriveDate', sort: false, title: '预计到货日期', width: 120},
       {field: 'actualArriveDate', sort: false, title: '实际到货日期', width: 120},
-      {field: 'arriveTotalQuantity', sort: false, title: '到货数量'},
       {field: 'payDate', sort: false, title: '支付日期', width: 120},
       {field: 'payAccount', sort: false, title: '支付账号', width: 165},
       {field: 'orderStatus', sort: false, title: '订单状态'},
@@ -36,8 +37,7 @@ layui.use(['layer', 'table', 'func'], function () {
       {field: 'creatorName', sort: false, title: '创建人'},
       {field: 'createDate', sort: false, title: '创建日期', width: 120},
       {field: 'updatorName', sort: false, title: '修改人'},
-      {field: 'updateDate', sort: false, title: '修改日期', width: 120},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 80}
+      {field: 'updateDate', sort: false, title: '修改日期', width: 120}
     ]];
   };
 
