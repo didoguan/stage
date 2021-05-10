@@ -39,4 +39,30 @@
     </foreach>
   </insert>
 
+  <insert id="insertUpdateOrderDetail">
+    INSERT INTO ec_purchase_order_detail ( order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, stock_entry, remark )
+    VALUES
+    <foreach collection="list" index="index" item="item" separator=",">
+      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.remark})
+    </foreach>
+	ON DUPLICATE KEY UPDATE
+      goods_unit = VALUES( goods_unit ),
+      detail_quantity = VALUES( detail_quantity ),
+      single_price = VALUES( single_price ),
+      arrive_quantity = VALUES( arrive_quantity ),
+      stock_entry = VALUES( stock_entry ),
+      remark = VALUES( remark)
+  </insert>
+
+  <delete id="deletePurchaseOrderDetail">
+    DELETE a, c
+    FROM
+      ec_purchase_order_detail a
+      LEFT JOIN ec_purchase_order b ON a.purchase_order_id = b.purchase_order_id
+      LEFT JOIN ec_stock_detail c ON a.sku = c.sku
+      AND b.purchase_order_no = c.order_no
+    WHERE
+      a.order_detail_id = #{orderDetailId}
+  </delete>
+
 </mapper>

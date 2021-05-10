@@ -19,4 +19,6 @@ public interface IPurchaseOrderService extends IService<PurchaseOrder> {
 
     void disablePurchaseOrders(List<Long> ids);
 
+    void deletePurchaseOrderDetail(Long orderDetailId);
+
 }

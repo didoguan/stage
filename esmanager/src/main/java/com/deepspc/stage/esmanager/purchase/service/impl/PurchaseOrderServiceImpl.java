@@ -86,10 +86,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
         BigDecimal arriveTotalQuantity = BigDecimal.ZERO;
         List<PurchaseOrderDetail> detailList = purchaseOrder.getDetails();
         String orderStatus;
-        //先删除明细信息
-        QueryWrapper<PurchaseOrderDetail> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("purchase_order_id", purchaseOrder.getPurchaseOrderId());
-        purchaseOrderDetailMapper.delete(queryWrapper);
+        //处理明细信息
         if (null != detailList && !detailList.isEmpty()) {
             for (PurchaseOrderDetail detail : detailList) {
                 if (null == detail.getOrderDetailId()) {
@@ -110,8 +107,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
                 arriveTotalQuantity = arriveTotalQuantity.add(detail.getArriveQuantity());
                 totalAmount = totalAmount.add(detail.getSinglePrice());
             }
-            //重新插入明细信息
-            purchaseOrderDetailMapper.insertBatch(detailList);
+            purchaseOrderDetailMapper.insertUpdateOrderDetail(detailList);
         }
         //1:arriveTotalQuantity 大于 比较值，-1:arriveTotalQuantity 小于比较值
         if (null == purchaseOrder.getPayDate()) {
@@ -122,6 +118,9 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             orderStatus = "03";//收货中
         } else if (purchaseQuantity.compareTo(arriveTotalQuantity) == 0) {
             orderStatus = "04";//已收货
+            if (null == purchaseOrder.getActualArriveDate()) {
+                purchaseOrder.setActualArriveDate(new Date());
+            }
         } else {
             orderStatus = null;
         }
@@ -155,6 +154,13 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             updateWrapper.set("order_status", "00");
             updateWrapper.in("purchase_order_id", ids);
             this.update(updateWrapper);
+        }
+    }
+
+    @Override
+    public void deletePurchaseOrderDetail(Long orderDetailId) {
+        if (null != orderDetailId) {
+            this.purchaseOrderDetailMapper.deletePurchaseOrderDetail(orderDetailId);
         }
     }
 

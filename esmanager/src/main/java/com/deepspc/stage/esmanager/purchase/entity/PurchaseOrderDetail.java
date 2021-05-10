@@ -27,6 +27,9 @@ public class PurchaseOrderDetail implements Serializable {
 
     private String sku;
 
+    @TableField(exist = false)
+    private String goodsName;
+
     private String categoryName;
 
     private String categoryCode;
@@ -75,6 +78,14 @@ public class PurchaseOrderDetail implements Serializable {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     public BigDecimal getDetailQuantity() {

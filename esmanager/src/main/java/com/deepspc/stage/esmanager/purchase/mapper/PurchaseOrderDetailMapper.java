@@ -10,4 +10,7 @@ public interface PurchaseOrderDetailMapper extends BaseMapper<PurchaseOrderDetai
 
     void insertBatch(@Param("list") List<PurchaseOrderDetail> list);
 
+    void insertUpdateOrderDetail(@Param("list") List<PurchaseOrderDetail> list);
+
+    void deletePurchaseOrderDetail(@Param("orderDetailId") Long orderDetailId);
 }

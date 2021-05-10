@@ -57,7 +57,7 @@ public class PurchaseController extends BaseController {
 
     @GetMapping("/addModifyPurchaseOrderPage")
     public String addModifyPurchaseOrderPage(@RequestParam(required = false) Long purchaseOrderId, Model model) {
-        PurchaseOrder purchaseOrder = null;
+        PurchaseOrder purchaseOrder;
         if (null != purchaseOrderId) {
             purchaseOrder = purchaseOrderService.loadDetail(purchaseOrderId);
         } else {
@@ -155,6 +155,13 @@ public class PurchaseController extends BaseController {
     @ResponseBody
     public ResponseData deletePurchaseOrder(@RequestBody List<Long> ids) {
         purchaseOrderService.deletePurchaseOrders(ids);
+        return ResponseData.success();
+    }
+
+    @RequestMapping("/deletePurchaseOrderDetail")
+    @ResponseBody
+    public ResponseData deletePurchaseOrderDetail(Long orderDetailId) {
+        purchaseOrderService.deletePurchaseOrderDetail(orderDetailId);
         return ResponseData.success();
     }
 

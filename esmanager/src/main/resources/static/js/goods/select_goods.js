@@ -99,7 +99,7 @@ layui.use(['table', 'admin'], function () {
       let selects = Goods.backData[sku];
       if (checked && !selects) {
         //选中并且不存在时
-        Goods.backData[sku] = {"sku":sku, "categoryCode":row.categoryCode, "categoryName":row.categoryName, "colorPath":row.colorPath, "barcodePath":row.barcodePath};
+        Goods.backData[sku] = {"goodsName": row.goodsName, "sku":sku, "categoryCode":row.categoryCode, "categoryName":row.categoryName, "colorPath":row.colorPath, "barcodePath":row.barcodePath};
       } else if (!checked && selects) {
         delete Goods.backData[sku];
       }
@@ -107,7 +107,7 @@ layui.use(['table', 'admin'], function () {
       if (checked) {
         let checkedData = table.checkStatus(Goods.tableId).data;
         $.each(checkedData, function (index, item) {
-          Goods.backData[item.sku] = {"sku":item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath};
+          Goods.backData[item.sku] = {"goodsName": row.goodsName, "sku":item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath};
         })
       } else {
         Goods.backData = {};

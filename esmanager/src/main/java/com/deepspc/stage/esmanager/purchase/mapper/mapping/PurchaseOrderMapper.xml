@@ -121,6 +121,7 @@
     SELECT
         a.order_detail_id,
         a.sku,
+        gi.goods_name,
         a.category_name,
         a.category_code,
         a.goods_unit,
@@ -134,6 +135,7 @@
     FROM
         ec_purchase_order_detail a
         LEFT JOIN ec_goods_sku b ON a.sku = b.sku
+        LEFT JOIN ec_goods_info gi on gi.goods_id = b.goods_id
         LEFT JOIN ec_goods_attachment c ON b.color_pic_id = c.goods_attachment_id
         LEFT JOIN ec_goods_attachment d ON b.barcode_pic_id = d.goods_attachment_id
     WHERE

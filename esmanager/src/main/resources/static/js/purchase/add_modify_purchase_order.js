@@ -87,6 +87,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
       {field: 'orderDetailId', hide: true, sort: false, title: '主键标识'},
       {field: 'categoryCode', hide: true, sort: false, title: '类目编码'},
       {field: 'sku', sort: false, title: 'SKU', width: 180},
+      {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
       {field: 'categoryName', sort: false, title: '类目', width: 100},
       {field: 'colorPath', sort: false, title: '颜色', templet: function (d) {
           return "<div class='color_"+d.orderDetailId+"'><img id='"+d.goodsSkuId+"' src='"+d.colorPath+"' layer-src='"+d.colorPath+"' onclick='showOrderImg(this)'></div>";
@@ -103,6 +104,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
             return '否';
           } else if ('Y' === d.stockEntry) {
             return '是';
+          } else {
+            return '';
           }
         }},
       {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
@@ -129,14 +132,31 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
     cols: PurchaseOrder.initColumn()
   });
 
-  onDelItem = function (obj) {
-    let tableDatas = table.cache[PurchaseOrder.detailTableId];
-    let rowIndex = $(obj.tr).attr('data-index');
-    tableDatas.splice(rowIndex, 1);
-    table.reload(PurchaseOrder.detailTableId, {
-      data: tableDatas
+  PurchaseOrder.onDelItem = function (obj) {
+    let data = obj.data;
+    layer.confirm('是否删除当前明细？',{
+      icon:7,title:'提示'
+    },function(index) {
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: ctxPath + "/purchase/deletePurchaseOrderDetail",
+        data: {"orderDetailId": data.orderDetailId},
+        success: function (result) {
+          let tableDatas = table.cache[PurchaseOrder.detailTableId];
+          let rowIndex = $(obj.tr).attr('data-index');
+          tableDatas.splice(rowIndex, 1);
+          table.reload(PurchaseOrder.detailTableId, {
+            data: tableDatas
+          });
+          $('.layui-table-main')[0].scrollTop = $('.layui-table-main')[0].scrollHeight;
+          layer.msg("删除成功！", {icon: 1});
+        },
+        error: function (e) {
+          layer.msg("删除失败！", {icon: 2});
+        }
+      });
     });
-    $('.layui-table-main')[0].scrollTop = $('.layui-table-main')[0].scrollHeight;
   };
 
   //添加交易账号
@@ -172,8 +192,18 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         let data = admin.getTempData("selectGoods");
         if (data) {
           let tableDatas = table.cache[PurchaseOrder.detailTableId];
+          let exists = false;
           $.each(data, function (i, item) {
-            tableDatas.push({"orderDetailId": "", "sku": item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "remark": ""});
+            for (let i = 0; i < tableDatas.length; i++) {
+              if (tableDatas[i].sku === item.sku) {
+                exists = true;
+                break;
+              }
+            }
+            if (!exists) {
+              tableDatas.push({"orderDetailId": "", "goodsName": item.goodsName, "sku": item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "remark": ""});
+            }
+            exists = false;
           });
           table.reload(PurchaseOrder.detailTableId, {
             data: tableDatas
@@ -238,7 +268,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
   table.on('tool(' + PurchaseOrder.detailTableId + ')', function (obj) {
     let layEvent = obj.event;
     if (layEvent === 'delete') {
-      onDelItem(obj);
+      PurchaseOrder.onDelItem(obj);
     }
   });
 
@@ -261,6 +291,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         if (!detailQuantityNumber) {
           checkStr = "采购数量只能是数字";
         }
+        detailQuantity = parseInt(detailQuantity);
         let singlePrice = n.test(tableDatas[i].singlePrice);
         if (!singlePrice) {
           checkStr = "单价只能是数字";
@@ -270,10 +301,11 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         if (!arriveQuantityNumber) {
           checkStr = "到货数量只能是数字";
         }
-        if (data && arriveQuantity < data.arriveQuantity) {
+        arriveQuantity = parseInt(arriveQuantity);
+        if (data && arriveQuantity < parseInt(data.arriveQuantity)) {
           checkStr = "到货数量不能小于上次填写的数量";
         }
-        if (detailQuantity < tableDatas[i].arriveQuantity) {
+        if (arriveQuantity > detailQuantity) {
           checkStr = "到货数量不能大于采购数量";
         }
         if (checkStr !== "") {
@@ -282,7 +314,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         }
         //处理要入库的商品
         //到货数量大于0且大于原来值
-        if (arriveQuantity > 0 && arriveQuantity > data.arriveQuantity) {
+        if (arriveQuantity > 0 && arriveQuantity > parseInt(data.arriveQuantity)) {
           entrys.push({
             "orderNo": $("#purchaseOrderNo").val(),
             "sku": sku,
@@ -297,6 +329,11 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         }
       }
     }
+    //如果是保存中的则直接返回
+    if (saving) {
+      return false;
+    }
+    saving = true;
 
     data.field.details = tableDatas;
     data.field.supplierName = $("#supplierId").find("option:selected").text();
@@ -315,6 +352,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         admin.closeThisDialog();
       },
       error : function(e){
+        saving = false;
         layer.msg("提交失败！", {icon: 2});
       }
     });
