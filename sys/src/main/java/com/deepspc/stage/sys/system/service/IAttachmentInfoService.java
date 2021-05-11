@@ -5,6 +5,8 @@ import com.deepspc.stage.sys.system.entity.AttachmentInfo;
 import com.deepspc.stage.sys.system.model.UploadResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface IAttachmentInfoService extends IService<AttachmentInfo> {
 
     /**
@@ -21,4 +23,10 @@ public interface IAttachmentInfoService extends IService<AttachmentInfo> {
      * @return UploadResult
      */
     UploadResult uploadFile(MultipartFile file, String filePath, String relateId);
+
+    /**
+     * 删除多个附件
+     * @param attachmentIds 要删除的附件集
+     */
+    void deleteBatchAttachment(List<Long> attachmentIds);
 }

@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author gzw
@@ -51,7 +52,7 @@ public class AttachmentInfoServiceImpl extends ServiceImpl<AttachmentInfoMapper,
         String fileSuffix = originalFileName.substring(lastIndexOf + 1);
         attachmentInfo.setFileType(fileSuffix);
         //文件大小
-        int kb = new BigDecimal(file.getSize()).divide(BigDecimal.valueOf(1024))
+        long kb = new BigDecimal(file.getSize()).divide(BigDecimal.valueOf(1024))
                                 .setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
         attachmentInfo.setFileSize(kb);
         attachmentInfo.setFilePath(filePath);
@@ -90,5 +91,12 @@ public class AttachmentInfoServiceImpl extends ServiceImpl<AttachmentInfoMapper,
         uploadResult.setFileType(fileSuffix);
         uploadResult.setFilePath(filePath);
         return uploadResult;
+    }
+
+    @Override
+    public void deleteBatchAttachment(List<Long> attachmentIds) {
+        if (null != attachmentIds && !attachmentIds.isEmpty()) {
+            this.baseMapper.deleteBatchAttachment(attachmentIds);
+        }
     }
 }

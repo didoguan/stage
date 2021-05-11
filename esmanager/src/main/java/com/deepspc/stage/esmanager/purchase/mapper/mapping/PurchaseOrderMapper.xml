@@ -129,6 +129,7 @@
         a.single_price,
         a.arrive_quantity,
         a.stock_entry,
+        a.location_no,
         a.remark,
         c.file_path "colorPath",
         d.file_path "barcodePath"
@@ -143,11 +144,12 @@
   </select>
 
   <delete id="deletePurchaseOrders">
-    DELETE a, b, c
+    DELETE a, b, c, d
     FROM
     ec_purchase_order a
     LEFT JOIN ec_purchase_order_detail b ON a.purchase_order_id = b.purchase_order_id
     LEFT JOIN ec_stock_detail c ON a.purchase_order_no = c.order_no and c.sku = b.sku
+    LEFT JOIN ec_cost_center d ON a.purchase_order_no = d.order_no
     WHERE
     a.purchase_order_id IN
     <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">

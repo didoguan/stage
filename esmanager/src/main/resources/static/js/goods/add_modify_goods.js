@@ -68,7 +68,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
       imagep.height(h);
       imagep.width(w);
     });
-  }
+  };
 
   //删除SKU信息
   onDelItem = function (obj) {
@@ -234,14 +234,14 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
       delete uploadFiles[idx];
       $(obj).parent().remove();
     }
-  }
+  };
 
   Goods.resetColorUpload = function (goodsId) {
     colorUpload.reload({
       data: {goodsId: goodsId}
     });
     $("#submitFile").click();
-  }
+  };
 
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {

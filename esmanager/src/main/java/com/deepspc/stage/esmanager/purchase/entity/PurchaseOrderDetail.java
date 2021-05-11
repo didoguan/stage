@@ -50,6 +50,8 @@ public class PurchaseOrderDetail implements Serializable {
 
     private String stockEntry;
 
+    private String locationNo;
+
     private String remark;
 
     public PurchaseOrderDetail() {
@@ -166,5 +168,13 @@ public class PurchaseOrderDetail implements Serializable {
 
     public void setStockEntry(String stockEntry) {
         this.stockEntry = stockEntry;
+    }
+
+    public String getLocationNo() {
+        return locationNo;
+    }
+
+    public void setLocationNo(String locationNo) {
+        this.locationNo = locationNo;
     }
 }

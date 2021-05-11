@@ -1,8 +1,8 @@
 package com.deepspc.stage.sys.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +17,7 @@ public class AttachmentInfo implements Serializable {
     private static final long serialVersionUID = 2068601733648391231L;
 
     @TableId(value = "attachment_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long attachmentId;
     /**
      * 业务关联标识
@@ -36,14 +37,17 @@ public class AttachmentInfo implements Serializable {
      */
     private String fileCatalog;
 
-    private Integer fileSize;
+    private Long fileSize;
 
     private String filePath;
 
+    @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
+    @TableField(fill = FieldFill.INSERT)
     private String creatorName;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createDate;
 
     public AttachmentInfo() {
@@ -98,11 +102,11 @@ public class AttachmentInfo implements Serializable {
         this.fileCatalog = fileCatalog;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

@@ -5,6 +5,7 @@
   <resultMap id="BaseStockMap" type="com.deepspc.stage.esmanager.stock.entity.StockDetail">
     <id column="stock_detail_id" property="stockDetailId" />
     <result column="order_no" property="orderNo" />
+    <result column="relate_id" property="relateId" />
     <result column="sku" property="sku" />
     <result column="category_name" property="categoryName" />
     <result column="category_code" property="categoryCode" />
@@ -20,6 +21,7 @@
   <sql id="default_stock_column">
     stock_detail_id,
     order_no,
+    relate_id,
     sku,
     category_name,
     category_code,
@@ -88,10 +90,10 @@
   </select>
 
   <insert id="insertBatch">
-    INSERT INTO ec_stock_detail(stock_detail_id, order_no, sku, category_name, category_code, operation_type, goods_unit, quantity, single_price, creator_id, creator_name, create_date)
+    INSERT INTO ec_stock_detail(stock_detail_id, order_no, relate_id, sku, category_name, category_code, operation_type, goods_unit, quantity, single_price, creator_id, creator_name, create_date)
     VALUES
     <foreach collection="list" item="item" separator =",">
-      (#{item.stockDetailId}, #{item.orderNo}, #{item.sku}, #{item.categoryName}, #{item.categoryCode},  #{item.operationType}, #{item.goodsUnit}, #{item.quantity}, #{item.singlePrice}, #{item.creatorId}, #{item.creatorName}, #{item.createDate})
+      (#{item.stockDetailId}, #{item.orderNo}, #{item.relateId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode},  #{item.operationType}, #{item.goodsUnit}, #{item.quantity}, #{item.singlePrice}, #{item.creatorId}, #{item.creatorName}, #{item.createDate})
     </foreach>
   </insert>
 

@@ -108,6 +108,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
             return '';
           }
         }},
+      {field: 'locationNo', sort: false, title: '货位号', width: 100, edit: 'text'},
       {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
 
     ]];
@@ -201,7 +202,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
               }
             }
             if (!exists) {
-              tableDatas.push({"orderDetailId": "", "goodsName": item.goodsName, "sku": item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "remark": ""});
+              tableDatas.push({"orderDetailId": "", "goodsName": item.goodsName, "sku": item.sku, "categoryCode":item.categoryCode, "categoryName":item.categoryName, "colorPath":item.colorPath, "barcodePath":item.barcodePath, "goodsUnit": "", "detailQuantity": "", "singlePrice": "", "arriveQuantity": "", "locationNo":"", "remark": ""});
             }
             exists = false;
           });
@@ -314,15 +315,22 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         }
         //处理要入库的商品
         //到货数量大于0且大于原来值
-        if (arriveQuantity > 0 && arriveQuantity > parseInt(data.arriveQuantity)) {
+        if ((arriveQuantity > 0 && !data) || (arriveQuantity > 0 && arriveQuantity > parseInt(data.arriveQuantity))) {
+          let quantity = 0;
+          if (data) {
+            quantity = arriveQuantity - data.arriveQuantity;
+          } else {
+            quantity = arriveQuantity;
+          }
           entrys.push({
             "orderNo": $("#purchaseOrderNo").val(),
+            "relateId": $("#purchaseOrderId").val(),
             "sku": sku,
             "categoryCode": tableDatas[i].categoryCode,
             "categoryName": tableDatas[i].categoryName,
             "operationType": "02",
             "goodsUnit": tableDatas[i].goodsUnit,
-            "quantity": arriveQuantity - data.arriveQuantity,
+            "quantity": quantity,
             "singlePrice": tableDatas[i].singlePrice
           });
           tableDatas[i].stockEntry = "Y";

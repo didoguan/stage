@@ -10,6 +10,7 @@ import com.deepspc.stage.sys.constant.Const;
 import com.deepspc.stage.sys.exception.SysExceptionCode;
 import com.deepspc.stage.sys.system.entity.User;
 import com.deepspc.stage.sys.system.model.ModifyPassword;
+import com.deepspc.stage.sys.system.service.IAttachmentInfoService;
 import com.deepspc.stage.sys.system.service.ISystemService;
 import com.deepspc.stage.sys.system.service.impl.UserServiceImpl;
 import com.deepspc.stage.shiro.common.ShiroKit;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author gzw
@@ -35,11 +37,13 @@ public class SystemController extends BaseController {
 
     private final ISystemService systemService;
     private final UserServiceImpl userService;
+    private final IAttachmentInfoService attachmentInfoService;
 
     @Autowired
-    public SystemController(ISystemService systemService, UserServiceImpl userService) {
+    public SystemController(ISystemService systemService, UserServiceImpl userService, IAttachmentInfoService attachmentInfoService) {
         this.systemService = systemService;
         this.userService = userService;
+        this.attachmentInfoService = attachmentInfoService;
     }
 
     /**
@@ -150,5 +154,12 @@ public class SystemController extends BaseController {
                     SysExceptionCode.ENCODING_EXCEPTION.getMessage());
         }
         return "common/tree_select";
+    }
+
+    @PostMapping("/deleteAttachmentInfo")
+    @ResponseBody
+    public ResponseData deleteAttachmentInfo(@RequestBody List<Long> attachmentIds) {
+        attachmentInfoService.deleteBatchAttachment(attachmentIds);
+        return ResponseData.success();
     }
 }

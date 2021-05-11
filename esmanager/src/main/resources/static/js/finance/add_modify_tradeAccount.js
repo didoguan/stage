@@ -32,10 +32,13 @@ layui.use(['layer', 'form', 'admin', 'func'], function () {
     error : function(e){}
   });
 
+  let saving = false;
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {
-    //禁用按钮
-    $(".layui-btn").attr("disabled", "disabled");
+    if (saving) {
+      return false;
+    }
+    saving = true;
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -43,8 +46,6 @@ layui.use(['layer', 'form', 'admin', 'func'], function () {
       data: data.field,
       success : function(result) {
         layer.msg("提交成功！", {icon: 1});
-        //恢复按钮
-        $(".layui-btn").removeAttr("disabled");
         //传给上个页面，刷新table用
         admin.putTempData('formOk', true);
         //关掉对话框
@@ -52,8 +53,7 @@ layui.use(['layer', 'form', 'admin', 'func'], function () {
       },
       error : function(e){
         layer.msg("提交失败！", {icon: 2});
-        //恢复按钮
-        $(".layui-btn").removeAttr("disabled");
+        saving = false;
       }
     });
     //添加 return false 可成功跳转页面

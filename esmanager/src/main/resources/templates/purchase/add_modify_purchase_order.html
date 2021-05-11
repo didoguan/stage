@@ -46,13 +46,13 @@
     </div>
   </div>
   <div class="layui-form-item">
-    <label class="layui-form-label">支付日期</label>
+    <label class="layui-form-label">支付日期<span style="color: red;">*</span></label>
     <div class="layui-input-inline">
-      <input name="payDate" id="payDate" th:value="${#dates.format(PurchaseOrder?.payDate,'yyyy-MM-dd')}" type="text" class="layui-input date-icon" autocomplete="off"/>
+      <input name="payDate" id="payDate" th:value="${#dates.format(PurchaseOrder?.payDate,'yyyy-MM-dd')}" type="text" class="layui-input date-icon" lay-verify="required" autocomplete="off"/>
     </div>
     <label class="layui-form-label">支付账号<span style="color: red;">*</span></label>
     <div class="layui-input-inline">
-      <input id="payAccount" name="payAccount" th:value="${PurchaseOrder?.payAccount}" type="text" class="layui-input" autocomplete="off" readonly/>
+      <input id="payAccount" name="payAccount" th:value="${PurchaseOrder?.payAccount}" type="text" class="layui-input" lay-verify="required" autocomplete="off" readonly/>
     </div>
   </div>
   <div class="layui-form-item">
@@ -63,12 +63,12 @@
   </div>
 
   <div class="layui-form-item" style="margin: 10px 30px 0 30px;">
-    <a id="btnAdd" class="layui-btn layui-btn-normal layui-btn-xs">添加商品</a>
+    <a id="btnAdd" class="layui-btn layui-btn-normal layui-btn-xs" th:if="${PurchaseOrder?.orderStatus} == '01'">添加商品</a>
     <a id="btnPrint" class="layui-btn layui-btn-normal layui-btn-xs">打印条码</a>
     <table class="layui-table" id="detailTable" lay-filter="detailTable" style="display: none;"></table>
   </div>
   <div class="form-group-bottom text-center">
-    <button class="layui-btn" lay-filter="btnSubmit" lay-submit th:if="${PurchaseOrder?.orderStatus} != '00'">&emsp;保存&emsp;</button>
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit th:if="${PurchaseOrder?.orderStatus != '00' && PurchaseOrder?.orderStatus != '04'}">&emsp;保存&emsp;</button>
     <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
   </div>
 </form>
@@ -78,6 +78,8 @@
     let orderDetails = [[${PurchaseOrder?.details}]];
   </script>
   <script type="text/html" id="tableBar">
+    {{#if(d.orderStatus === '01'){}}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    {{#}}}
   </script>
 </div>

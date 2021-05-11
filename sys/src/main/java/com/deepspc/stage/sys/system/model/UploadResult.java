@@ -15,7 +15,7 @@ public class UploadResult implements Serializable {
 
     private String newFileName;
 
-    private Integer fileSize;
+    private Long fileSize;
 
     private String filePath;
 
@@ -49,11 +49,11 @@ public class UploadResult implements Serializable {
         this.newFileName = newFileName;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

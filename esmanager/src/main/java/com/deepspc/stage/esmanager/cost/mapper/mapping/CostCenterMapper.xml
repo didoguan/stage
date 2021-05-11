@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.esmanager.cost.mapper.CostCenterMapper">
+
+  <resultMap id="BaseCostCenterMap" type="com.deepspc.stage.esmanager.cost.entity.CostCenter">
+    <id column="cost_center_id" property="costCenterId" />
+    <result column="order_no" property="orderNo" />
+    <result column="cost_content" property="costContent" />
+    <result column="cost_type" property="costType" />
+    <result column="cost_amount" property="costAmount" />
+    <result column="cost_date" property="costDate" />
+    <result column="remark" property="remark" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <resultMap id="CostCenterDetailMap" type="com.deepspc.stage.esmanager.cost.entity.CostCenter">
+    <id column="cost_center_id" property="costCenterId" />
+    <result column="order_no" property="orderNo" />
+    <result column="cost_content" property="costContent" />
+    <result column="cost_type" property="costType" />
+    <result column="cost_amount" property="costAmount" />
+    <result column="cost_date" property="costDate" />
+    <result column="remark" property="remark" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+    <!-- fetchType="eager" 急加载，查询主表时加载子表-->
+    <collection property="pics" column="cost_center_id" fetchType="eager" select="getCostDetailPic" ofType="com.deepspc.stage.sys.system.entity.AttachmentInfo"/>
+  </resultMap>
+
+  <sql id="default_costcenter_column">
+    cost_center_id,
+    order_no,
+    cost_content,
+    cost_type,
+    cost_amount,
+    cost_date,
+    remark,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
+  </sql>
+
+  <select id="loadCostCenterDatas" resultMap="CostCenterDetailMap">
+    SELECT
+    <include refid="default_costcenter_column"/>
+    FROM
+      ec_cost_center
+    WHERE
+      1 = 1
+    <if test="costType != null and costType != ''">
+      AND cost_type = #{costType}
+    </if>
+    <if test="costStartDate != null and costStartDate != ''">
+      AND cost_date &gt;= str_to_date( #{costStartDate}, '%Y-%m-%d %H:%i:%s' )
+    </if>
+    <if test="costEndDate != null and costEndDate != ''">
+      AND cost_date &lt;= str_to_date( #{costEndDate}, '%Y-%m-%d %H:%i:%s' )
+    </if>
+  </select>
+
+  <select id="getCostCenterDetail" resultMap="CostCenterDetailMap">
+    SELECT
+    <include refid="default_costcenter_column"/>
+    FROM
+      ec_cost_center
+    WHERE
+      cost_center_id = #{costCenterId}
+  </select>
+
+  <select id="getCostDetailPic" resultType="com.deepspc.stage.sys.system.entity.AttachmentInfo">
+    SELECT
+      attachment_id,
+      original_file_name,
+      file_path
+    FROM
+      sys_attachment
+    WHERE
+      relate_id = #{costCenterId}
+  </select>
+
+  <delete id="deleteCostCenter">
+    DELETE
+    FROM
+    ec_cost_center
+    WHERE
+    cost_center_id IN
+    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+</mapper>

@@ -23,6 +23,9 @@ public class StockDetail implements Serializable {
 
     private String orderNo;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long relateId;
+
     private String sku;
 
     private String categoryName;
@@ -64,6 +67,14 @@ public class StockDetail implements Serializable {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public Long getRelateId() {
+        return relateId;
+    }
+
+    public void setRelateId(Long relateId) {
+        this.relateId = relateId;
     }
 
     public String getSku() {

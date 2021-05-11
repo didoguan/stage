@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .layui-table, .layui-table-view {margin: 0;}
+    .layui-form-label {width: 90px;}
+    .layui-input-block {margin-left: 120px;}
+  </style>
+</head>
+<form class="layui-form">
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <input id="costCenterId" name="costCenterId" type="hidden" th:value="${CostCenter?.costCenterId}"/>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">成本内容<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="costContent" name="costContent" th:value="${CostCenter?.costContent}" placeholder="请输入成本内容" type="text" class="layui-input" lay-verify="required" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">成本类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select name="costType" id="costType" th:value="${CostCenter?.costType}" lay-verify="required" class="layui-input" lay-search>
+                <option value="">--请选择--</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">发生金额(元)<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="costAmount" name="costAmount" th:value="${CostCenter?.costAmount}" placeholder="请输入发生金额" type="text" class="layui-input" lay-verify="required|amount" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">发生日期<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="costDate" name="costDate" th:value="${#dates.format(CostCenter?.costDate,'yyyy-MM-dd')}" placeholder="请输入发生日期" type="text" class="layui-input date-icon" lay-verify="required" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">单据图片</label>
+            <div class="layui-input-block">
+              <button type="button" class="layui-btn" id="uploadPic">上传图片</button>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12"id="picList" style="padding-left: 20px;">
+            <th:block th:each="item:${CostCenter?.pics}">
+              <div style="display: inline-block;width: 80px;text-align: center;" th:classappend="${item.attachmentId}">
+                <img th:id="${item.attachmentId}" th:src="@{${item.filePath}}" idx="" onclick="showCostImg(this)" style="width: 80px; height: 80px;">
+                <i class="layui-icon layui-icon-delete" style="cursor: pointer;" onclick="deleteCostPic(this)"></i>
+              </div>
+            </th:block>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+              <textarea name="remark" id="remark" th:text="${CostCenter?.remark}" class="layui-textarea" style="width: 400px;"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;保存&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+  <button id="submitFile" style="display: none;"></button>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/cost/add_modify_costCenter.js}"></script>
+  <script th:inline="javascript" type="text/javascript">
+    let pics = [[${CostCenter?.pics}]];
+  </script>
+</div>

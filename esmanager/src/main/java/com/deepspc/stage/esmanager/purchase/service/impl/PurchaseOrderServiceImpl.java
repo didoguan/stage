@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.esmanager.cost.entity.CostCenter;
+import com.deepspc.stage.esmanager.cost.mapper.CostCenterMapper;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrderDetail;
 import com.deepspc.stage.esmanager.purchase.mapper.PurchaseOrderDetailMapper;
@@ -35,9 +37,10 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
 
     @Resource
     private PurchaseOrderDetailMapper purchaseOrderDetailMapper;
-
     @Resource
     private StockDetailMapper stockDetailMapper;
+    @Resource
+    private CostCenterMapper costCenterMapper;
 
     @Override
     public Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String goodsName, String purchaserName) {
@@ -56,6 +59,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
     @Transactional(rollbackFor = Exception.class)
     public void saveUpdatePurchaseOrder(PurchaseOrderSave purchaseOrderSave) {
         PurchaseOrder purchaseOrder = purchaseOrderSave.getPurchaseOrder();
+        boolean isSave = false;
         if (null == purchaseOrder.getPurchaseOrderId()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Date date = new Date();
@@ -79,6 +83,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
                 purchaseOrder.setPurchaseOrderNo("PO" + dateStr + "-0001");
             }
             this.baseMapper.insert(purchaseOrder);
+            isSave = true;
         }
 
         BigDecimal purchaseQuantity = BigDecimal.ZERO;
@@ -91,6 +96,8 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
             for (PurchaseOrderDetail detail : detailList) {
                 if (null == detail.getOrderDetailId()) {
                     detail.setOrderDetailId(IdWorker.getId());
+                }
+                if (null == detail.getStockEntry()) {
                     detail.setStockEntry(StageCoreEnum.NO.getCode());
                 }
                 detail.setPurchaseOrderId(purchaseOrder.getPurchaseOrderId());
@@ -105,7 +112,7 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
                 }
                 purchaseQuantity = purchaseQuantity.add(detail.getDetailQuantity());
                 arriveTotalQuantity = arriveTotalQuantity.add(detail.getArriveQuantity());
-                totalAmount = totalAmount.add(detail.getSinglePrice());
+                totalAmount = totalAmount.add(detail.getDetailQuantity().multiply(detail.getSinglePrice()));
             }
             purchaseOrderDetailMapper.insertUpdateOrderDetail(detailList);
         }
@@ -136,7 +143,37 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
         //处理商品入库
         List<StockDetail> stockDetails = purchaseOrderSave.getStockDetails();
         if (null != stockDetails && !stockDetails.isEmpty()) {
+            if (isSave) {
+                for (StockDetail stockDetail : stockDetails) {
+                    stockDetail.setRelateId(purchaseOrder.getPurchaseOrderId());
+                    stockDetail.setOrderNo(purchaseOrder.getPurchaseOrderNo());
+                }
+            }
             stockDetailMapper.insertBatch(stockDetails);
+        }
+        //成本中心添加采购成本
+        saveUpdateOrderCost(isSave, purchaseOrder);
+    }
+
+    public void saveUpdateOrderCost(boolean isSave, PurchaseOrder purchaseOrder) {
+        if (isSave) {
+            CostCenter costCenter = new CostCenter();
+            costCenter.setOrderNo(purchaseOrder.getPurchaseOrderNo());
+            costCenter.setCostContent("商品采购");
+            costCenter.setCostType("08");
+            costCenter.setCostDate(purchaseOrder.getPayDate());
+            costCenter.setCostAmount(purchaseOrder.getTotalAmount());
+            costCenter.setRemark(purchaseOrder.getRemark());
+            costCenterMapper.insert(costCenter);
+        } else {
+            QueryWrapper<CostCenter> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("order_no", purchaseOrder.getPurchaseOrderNo());
+            CostCenter costCenter = costCenterMapper.selectOne(queryWrapper);
+            if (purchaseOrder.getTotalAmount().compareTo(costCenter.getCostAmount()) != 0) {
+                costCenter.setCostAmount(purchaseOrder.getTotalAmount());
+                costCenter.setRemark(purchaseOrder.getRemark());
+                costCenterMapper.updateById(costCenter);
+            }
         }
     }
 

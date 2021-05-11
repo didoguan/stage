@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deepspc.stage.sys.system.mapper.AttachmentInfoMapper">
-  
+
+  <delete id="deleteBatchAttachment">
+    DELETE
+    FROM
+      sys_attachment
+    WHERE
+      attachment_id IN
+    <foreach collection="attachmentIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
 </mapper>
