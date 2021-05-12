@@ -17,6 +17,9 @@ import com.deepspc.stage.esmanager.goods.model.GoodsData;
 import com.deepspc.stage.esmanager.goods.model.GoodsPropertyDetail;
 import com.deepspc.stage.esmanager.goods.service.IGoodsAttachmentService;
 import com.deepspc.stage.esmanager.goods.service.IGoodsInfoService;
+import com.deepspc.stage.shiro.common.ShiroKit;
+import com.deepspc.stage.shiro.model.ShiroRole;
+import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import com.deepspc.stage.sys.common.SysPropertiesConfig;
 import com.deepspc.stage.sys.constant.Const;
@@ -53,7 +56,9 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
     @Override
     public Page<GoodsInfo> loadGoods(String goodsType) {
         Page page = defaultPage();
-        return this.baseMapper.loadGoods(page, goodsType);
+        ShiroUser user = ShiroKit.getShiroUser();
+        boolean checkAll = checkAllPermission(user, "/goods/loadGoods");
+        return this.baseMapper.loadGoods(page, goodsType, checkAll, user.getUserId());
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface Const {
     String attachmentUri = "/attachment";
 
     String defaultPassword = "111111";
+
+    String adminRoleCode = "administrator";
 }

@@ -26,8 +26,10 @@
     <result column="cost_amount" property="costAmount" />
     <result column="cost_date" property="costDate" />
     <result column="remark" property="remark" />
+    <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
     <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
     <result column="updator_name" property="updatorName" />
     <result column="update_date" property="updateDate" />
     <!-- fetchType="eager" 急加载，查询主表时加载子表-->
@@ -55,8 +57,12 @@
     <include refid="default_costcenter_column"/>
     FROM
       ec_cost_center
-    WHERE
-      1 = 1
+    <if test="checkAll">
+      WHERE 1 = 1
+    </if>
+    <if test="!checkAll">
+      WHERE creator_id = #{userId}
+    </if>
     <if test="costType != null and costType != ''">
       AND cost_type = #{costType}
     </if>

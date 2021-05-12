@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.core.utils.StageUtil;
 import com.deepspc.stage.core.utils.StringUtil;
+import com.deepspc.stage.shiro.model.ShiroRight;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import com.deepspc.stage.sys.constant.Const;
 import com.deepspc.stage.sys.exception.SysExceptionCode;
@@ -36,7 +37,25 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
         if (StringUtil.isBlank(user.getAvatar())) {
             user.setAvatar(Const.defaultAvatar);
         }
-        return user.getShiroUser();
+        ShiroUser shiroUser = user.getShiroUser();
+        //设置用户所具有的权限
+        List<Map<String, Object>> allRights = this.baseMapper.getUserPermission(user.getUserId(), null);
+        if (null != allRights && !allRights.isEmpty()) {
+            List<ShiroRight> rights = new ArrayList<>();
+            for (Map<String, Object> map : allRights) {
+                ShiroRight right = new ShiroRight();
+                right.setRoleId(Long.valueOf(map.get("roleId").toString()));
+                right.setRoleCode(map.get("roleCode")!=null?map.get("roleCode").toString():null);
+                right.setRightId(Long.valueOf(map.get("permissionId").toString()));
+                right.setRightType(map.get("permissionType").toString());
+                right.setRightContent(map.get("content")!=null?map.get("content").toString():null);
+                right.setRightUrl(map.get("dataUrl")!=null?map.get("dataUrl").toString():null);
+                right.setResourceUri(map.get("resourceUrl")!=null?map.get("resourceUrl").toString():null);
+                rights.add(right);
+            }
+            shiroUser.setShiroRights(rights);
+        }
+        return shiroUser;
     }
 
     /**

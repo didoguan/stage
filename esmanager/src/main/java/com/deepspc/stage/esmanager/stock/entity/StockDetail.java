@@ -49,6 +49,9 @@ public class StockDetail implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
 
+    @TableField(exist = false)
+    private String summaryDate;
+
     public StockDetail() {
 
     }
@@ -155,5 +158,13 @@ public class StockDetail implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getSummaryDate() {
+        return summaryDate;
+    }
+
+    public void setSummaryDate(String summaryDate) {
+        this.summaryDate = summaryDate;
     }
 }

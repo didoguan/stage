@@ -1,11 +1,19 @@
 package com.deepspc.stage.shiro.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import java.io.Serializable;
+
 /**
  * @author gzw
  * @date 2020/11/24 16:25
  */
-public class ShiroRole {
+public class ShiroRole implements Serializable {
 
+    private static final long serialVersionUID = -4651394078524969342L;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
     private String roleName;

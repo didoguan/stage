@@ -16,6 +16,7 @@
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
     <result column="create_date" property="createDate" />
+    <result column="summary_date" property="summaryDate" />
   </resultMap>
 
   <sql id="default_stock_column">
@@ -64,10 +65,10 @@
       sum( quantity ) quantity,
       single_price,
     <if test="summaryType == 'Y'.toString()">
-      date_format(create_date, '%Y') create_date
+      date_format(create_date, '%Y') summary_date
     </if>
     <if test="summaryType == 'M'.toString()">
-      date_format(create_date, '%Y-%m') create_date
+      date_format(create_date, '%Y-%m') summary_date
     </if>
     FROM
       ec_stock_detail

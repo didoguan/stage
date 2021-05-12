@@ -61,7 +61,7 @@
   </select>
 
   <select id="getUserPermission" resultType="map">
-    <if test="permissType = 'menu'">
+    <if test="permissType == 'menu'.toString()">
     SELECT
       sm.menu_id "id",
       ( CASE WHEN ( sm2.menu_id = 0 OR sm2.menu_id IS NULL ) THEN 0 ELSE sm2.menu_id END ) "parentId",
@@ -80,51 +80,63 @@
         b.user_name "userName",
         b.avatar,
         a.role_id "roleId",
+        a.role_code "roleCode",
         a.permission_id "permissionId",
         a.permission_type "permissionType",
         a.content,
         a.resource_id "resourceId",
+        a.resource_url "resourceUrl",
         a.data_url "dataUrl"
       FROM
         (
         SELECT
           ua.user_id,
           rp.role_id,
+          sr.role_code,
           rp.permission_id,
           ppr.permission_type,
           ppr.content,
           ppr.resource_id,
+          ppr.resource_url,
           ppr.data_url
         FROM
           sys_user_access ua,
+          sys_role sr,
           sys_role_permission rp
           LEFT JOIN (
             SELECT
               p.permission_id,
               pr.resource_id,
+              sme.url resource_url,
               p.permission_type,
               p.content,
               p.data_url
             FROM
               sys_permission p
               LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
+              LEFT JOIN sys_menu sme on sme.menu_id = pr.resource_id
           ) ppr ON rp.permission_id = ppr.permission_id
         WHERE
           ua.access_id = rp.role_id
+          AND ua.access_id = sr.role_id
+          AND sr.role_id = rp.role_id
           AND ua.user_id = #{userId}
         UNION ALL
         SELECT
           ua.user_id,
           NULL role_id,
+          NULL role_code,
           p.permission_id,
           p.permission_type,
           p.content,
           pr.resource_id,
+          sme.url resource_url,
           p.data_url
         FROM
           sys_user_access ua,
           sys_permission p
           LEFT JOIN sys_permission_resource pr ON p.permission_id = pr.permission_id
+          LEFT JOIN sys_menu sme on sme.menu_id = pr.resource_id
         WHERE
           ua.access_id = p.permission_id
           AND ua.user_id = #{userId}
@@ -133,7 +145,7 @@
       WHERE
         b.user_id = a.user_id
         AND b.user_id = #{userId}
-    <if test="permissType = 'menu'">
+    <if test="permissType == 'menu'.toString()">
       ) pm,
       sys_menu sm
       LEFT JOIN sys_menu sm2 ON sm.pcode = sm2.CODE

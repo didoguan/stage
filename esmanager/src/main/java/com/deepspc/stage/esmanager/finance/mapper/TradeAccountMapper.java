@@ -10,6 +10,8 @@ import java.util.List;
 public interface TradeAccountMapper extends BaseMapper<TradeAccount> {
 
     Page<TradeAccount> loadTradeAccounts(@Param("page") Page page,
+                                         @Param("checkAll") boolean checkAll,
+                                         @Param("userId") Long userId,
                                          @Param("accountType") String accountType,
                                          @Param("accountStatus") String accountStatus,
                                          @Param("publicPrivate") String publicPrivate);

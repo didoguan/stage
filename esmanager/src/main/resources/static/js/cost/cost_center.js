@@ -64,7 +64,7 @@ layui.use(['form', 'table', 'layer', 'func', 'laydate'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'costCenterId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 80},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
       {field: 'costContent', sort: false, title: '成本内容', width: 230},
       {field: 'costType', sort: false, title: '成本类型', width: 110},
       {field: 'costAmount', sort: false, title: '发生金额', width: 110},

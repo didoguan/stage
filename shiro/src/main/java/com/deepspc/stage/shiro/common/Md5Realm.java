@@ -1,7 +1,7 @@
 package com.deepspc.stage.shiro.common;
 
 import com.deepspc.stage.core.utils.ApplicationContextUtil;
-import com.deepspc.stage.shiro.model.ShiroRole;
+import com.deepspc.stage.shiro.model.ShiroRight;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.shiro.service.IShiroUserService;
 import org.apache.shiro.authc.*;
@@ -29,12 +29,12 @@ public class Md5Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         ShiroUser user = (ShiroUser) principalCollection.getPrimaryPrincipal();
-        List<ShiroRole> shiroRoles = user.getShiroRoles();
+        List<ShiroRight> shiroRights = user.getShiroRights();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (null != shiroRoles && !shiroRoles.isEmpty()) {
+        if (null != shiroRights && !shiroRights.isEmpty()) {
             Set<String> roleIds = new HashSet<>();
-            for (ShiroRole shiroRole : shiroRoles) {
-                roleIds.add(shiroRole.getRoleId().toString());
+            for (ShiroRight shiroRight : shiroRights) {
+                roleIds.add(shiroRight.getRoleId().toString());
             }
             info.addRoles(roleIds);
         }

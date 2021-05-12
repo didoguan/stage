@@ -10,6 +10,8 @@ import java.util.List;
 public interface CostCenterMapper extends BaseMapper<CostCenter> {
 
     Page<CostCenter> loadCostCenterDatas(@Param("page") Page page,
+                                         @Param("checkAll") boolean checkAll,
+                                         @Param("userId") Long userId,
                                          @Param("costType") String costType,
                                          @Param("costStartDate") String costStartDate,
                                          @Param("costEndDate") String costEndDate);

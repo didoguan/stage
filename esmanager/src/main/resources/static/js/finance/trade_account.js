@@ -42,6 +42,7 @@ layui.use(['form', 'table', 'layer', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'accountId', hide: true, sort: false, title: 'id'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
       {field: 'accountType', sort: false, title: '账号类型', width: 110},
       {field: 'accountStatus', sort: false, title: '账号状态', width: 110},
       {field: 'publicPrivate', sort: false, title: '公私账', width: 110},
@@ -51,8 +52,7 @@ layui.use(['form', 'table', 'layer', 'func'], function () {
       {field: 'createDate', sort: false, title: '创建日期', width: 130},
       {field: 'updatorName', sort: false, title: '修改人', width: 110},
       {field: 'updateDate', sort: false, title: '修改日期', width: 130},
-      {field: 'remark', sort: false, title: '备注'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 80}
+      {field: 'remark', sort: false, title: '备注'}
     ]];
   };
 

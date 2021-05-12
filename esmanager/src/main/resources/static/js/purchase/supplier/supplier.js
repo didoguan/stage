@@ -20,6 +20,7 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'supplierId', hide: true, sort: false, title: 'id'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 100},
       {field: 'supplierName', sort: false, title: '供应商'},
       {field: 'aliUrl', sort: false, title: '阿里网址'},
       {field: 'companyContacts', sort: false, title: '联系人'},
@@ -41,8 +42,7 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
         }
         return str;
         }},
-      {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+      {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'}
     ]];
   };
 
@@ -90,15 +90,25 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
    *
    * @param data 点击按钮时候的行数据
    */
-  Supplier.onDeleteSupplier = function (data) {
-    layer.confirm('是否删除供应商'+data.supplierName+'？',{
+  Supplier.onDeleteSupplier = function () {
+    let checkedData = table.checkStatus(Supplier.tableId).data;
+    if (checkedData.length === 0) {
+      layer.msg("请选择要删除的供应商", {icon: 7});
+      return false;
+    }
+    let ids = [];
+    for (let i = 0; i < checkedData.length; i++){
+      ids[i] = checkedData[i].supplierId;
+    }
+    layer.confirm('是否删除供应商？',{
       icon:7,title:'提示'
     },function(index){
       $.ajax({
         type: "POST",
         dataType: "json",
+        contentType: "application/json;charset=utf-8",
         url: ctxPath + "/purchase/deleteSupplier",
-        data: {"supplierId": data.supplierId},
+        data: JSON.stringify(ids),
         success : function(result) {
           layer.msg("删除成功！", {icon: 1});
           table.reload(Supplier.tableId);
@@ -157,6 +167,11 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     Supplier.openAddSupplier();
   });
 
+  // 删除按钮点击事件
+  $('#btnDel').click(function () {
+    Supplier.onDeleteSupplier();
+  });
+
   //修改状态
   form.on('switch(supplierStatus)', function (obj) {
     let supplierId = obj.elem.value;
@@ -177,8 +192,6 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
 
     if (layEvent === 'edit') {
       Supplier.onEditSupplier(data);
-    } else if (layEvent === 'delete') {
-      Supplier.onDeleteSupplier(data);
     }
   });
 });

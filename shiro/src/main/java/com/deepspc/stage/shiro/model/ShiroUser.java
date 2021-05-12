@@ -1,13 +1,20 @@
 package com.deepspc.stage.shiro.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author gzw
  * @date 2020/11/24 16:23
  */
-public class ShiroUser {
+public class ShiroUser implements Serializable {
 
+    private static final long serialVersionUID = 8317379259888186321L;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     private String userName;
@@ -22,13 +29,14 @@ public class ShiroUser {
     //加密盐
     private String salt;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long deptId;
 
     private String deptName;
 
     private String accessToken;
 
-    private List<ShiroRole> shiroRoles;
+    private List<ShiroRight> shiroRights;
 
     public ShiroUser() {
 
@@ -82,14 +90,6 @@ public class ShiroUser {
         this.salt = salt;
     }
 
-    public List<ShiroRole> getShiroRoles() {
-        return shiroRoles;
-    }
-
-    public void setShiroRoles(List<ShiroRole> shiroRoles) {
-        this.shiroRoles = shiroRoles;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -120,5 +120,13 @@ public class ShiroUser {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public List<ShiroRight> getShiroRights() {
+        return shiroRights;
+    }
+
+    public void setShiroRights(List<ShiroRight> shiroRights) {
+        this.shiroRights = shiroRights;
     }
 }

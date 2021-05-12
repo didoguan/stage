@@ -11,4 +11,6 @@ public interface ISupplierInfoService extends IService<SupplierInfo> {
     Page<SupplierInfo> loadSupplierInfo(String supplierName);
 
     List<SupplierInfo> getAvailableSupplier();
+
+    void deleteSuppliers(List<Long> ids);
 }

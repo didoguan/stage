@@ -20,7 +20,7 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'purchaseOrderId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 80},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 100},
       {field: 'purchaseOrderNo', sort: false, title: '采购单号', width: 150},
       {field: 'supplierName', sort: false, title: '供应商名称'},
       {field: 'purchaseQuantity', sort: false, title: '采购数量'},

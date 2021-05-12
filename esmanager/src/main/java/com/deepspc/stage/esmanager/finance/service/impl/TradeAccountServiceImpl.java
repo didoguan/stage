@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.esmanager.finance.entity.TradeAccount;
 import com.deepspc.stage.esmanager.finance.mapper.TradeAccountMapper;
 import com.deepspc.stage.esmanager.finance.service.ITradeAccountService;
+import com.deepspc.stage.shiro.common.ShiroKit;
+import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,9 @@ public class TradeAccountServiceImpl extends BaseOrmService<TradeAccountMapper, 
     @Override
     public Page<TradeAccount> loadTradeAccounts(String accountType, String accountStatus, String publicPrivate) {
         Page page = defaultPage();
-        return this.baseMapper.loadTradeAccounts(page, accountType, accountStatus, publicPrivate);
+        ShiroUser user = ShiroKit.getShiroUser();
+        boolean checkAll = checkAllPermission(user, "/finance/loadTradeAccounts");
+        return this.baseMapper.loadTradeAccounts(page, checkAll, user.getUserId(), accountType, accountStatus, publicPrivate);
     }
 
     @Override

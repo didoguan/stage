@@ -49,7 +49,7 @@ layui.use(['layer', 'form', 'table', 'laydate'], function () {
       {field: 'stockQuantity', sort: false, title: '在仓数量', width: 120},
       {field: 'transitQuantity', sort: false, title: '在途数量', width: 120},
       {field: 'singlePrice', sort: false, title: '单价'},
-      {field: 'createDate', sort: false, title: '创建日期', width: 120}
+      {field: 'summaryDate', sort: false, title: '创建日期', width: 120}
     ]];
   };
 

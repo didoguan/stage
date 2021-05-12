@@ -21,8 +21,10 @@
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
     <result column="remark" property="remark" />
+    <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
     <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
     <result column="updator_name" property="updatorName" />
     <result column="update_date" property="updateDate" />
     <result column="version" property="version" />
@@ -47,8 +49,10 @@
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
     <result column="remark" property="remark" />
+    <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
     <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
     <result column="updator_name" property="updatorName" />
     <result column="update_date" property="updateDate" />
     <result column="version" property="version" />

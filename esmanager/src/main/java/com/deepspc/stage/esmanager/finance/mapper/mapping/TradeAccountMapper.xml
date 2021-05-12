@@ -39,8 +39,12 @@
     <include refid="default_tradeAccount_column"/>
     FROM
       ec_trade_account
-    WHERE
-      1 = 1
+    <if test="checkAll">
+      WHERE 1 = 1
+    </if>
+    <if test="!checkAll">
+      WHERE creator_id = #{userId}
+    </if>
     <if test="accountType != null and accountType != ''">
       AND account_type = #{accountType}
     </if>

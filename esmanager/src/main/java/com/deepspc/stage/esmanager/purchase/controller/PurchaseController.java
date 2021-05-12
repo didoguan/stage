@@ -107,8 +107,8 @@ public class PurchaseController extends BaseController {
 
     @PostMapping("/deleteSupplier")
     @ResponseBody
-    public ResponseData deleteSupplier(Long supplierId) {
-        supplierInfoService.removeById(supplierId);
+    public ResponseData deleteSupplier(@RequestBody List<Long> ids) {
+        supplierInfoService.deleteSuppliers(ids);
         return ResponseData.success();
     }
 

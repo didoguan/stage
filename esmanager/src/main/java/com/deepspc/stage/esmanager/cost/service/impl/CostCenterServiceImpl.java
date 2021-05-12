@@ -7,6 +7,8 @@ import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.esmanager.cost.entity.CostCenter;
 import com.deepspc.stage.esmanager.cost.mapper.CostCenterMapper;
 import com.deepspc.stage.esmanager.cost.service.ICostCenterService;
+import com.deepspc.stage.shiro.common.ShiroKit;
+import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
 import com.deepspc.stage.sys.common.SysPropertiesConfig;
 import com.deepspc.stage.sys.constant.Const;
@@ -44,7 +46,9 @@ public class CostCenterServiceImpl extends BaseOrmService<CostCenterMapper, Cost
         if (StrUtil.isNotBlank(costEndDate)) {
             costEndDate = costEndDate.trim() + " 23:59:59";
         }
-        return this.baseMapper.loadCostCenterDatas(page, costType, costStartDate, costEndDate);
+        ShiroUser user = ShiroKit.getShiroUser();
+        boolean checkAll = checkAllPermission(user, "/cost/loadCostCenterDatas");
+        return this.baseMapper.loadCostCenterDatas(page, checkAll, user.getUserId(), costType, costStartDate, costEndDate);
     }
 
     @Override

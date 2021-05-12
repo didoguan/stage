@@ -51,10 +51,24 @@
     <include refid="default_supplier_column"/>
     FROM
         ec_supplier_info
-    WHERE
-        1 = 1
+    <if test="checkAll">
+      WHERE 1 = 1
+    </if>
+    <if test="!checkAll">
+      WHERE creator_id = #{userId}
+    </if>
     <if test="supplierName != null and supplierName != ''">
       AND supplier_name like CONCAT('%',#{supplierName},'%')
     </if>
   </select>
+
+  <delete id="deleteSuppliers">
+    DELETE FROM
+      ec_supplier_info a
+    WHERE
+      a.supplier_id IN
+    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 </mapper>

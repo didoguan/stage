@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface GoodsInfoMapper extends BaseMapper<GoodsInfo> {
 
-    Page<GoodsInfo> loadGoods(@Param("page") Page page, @Param("goodsType") String goodsType);
+    Page<GoodsInfo> loadGoods(@Param("page") Page page, @Param("goodsType") String goodsType, @Param("checkAll") boolean checkAll, @Param("userId") Long userId);
 
     Page<Map<String, Object>> loadSelectGoods(@Param("page") Page page, @Param("goodsType") String goodsType, @Param("goodsName") String goodsName);
 
