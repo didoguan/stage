@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .layui-input-block {align-items: center; display: flex;}
+  </style>
+</head>
+<form class="layui-form">
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">供应商名称</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.supplierName}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.companyContacts}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.contactNumber}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">阿里网址</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.aliUrl}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">星级</label>
+            <div class="layui-input-block" id="startLevel"></div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">发票抬头</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.invoiceTitle}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">开户银行</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.bankName}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">银行账号</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.bankAccount}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">税号</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.taxNumber}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">详细地址</label>
+            <div class="layui-input-block">
+              <span th:text="${Supplier?.contactAddress}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script th:inline="javascript" type="text/javascript">
+    let startLevel = [[${Supplier?.startLevel}]];
+    let startStr = "";
+    if (startLevel) {
+      for (let i = 0; i < startLevel; i++) {
+        startStr += "<img src='../../images/fill_start_16.png' />";
+      }
+      for (let i = 0; i < 5 - startLevel; i++) {
+        startStr += "<img src='../../images/emp_start_16.png' />";
+      }
+    } else {
+      for (let i = 0; i < 5; i++) {
+        startStr += "<img src='../../images/emp_start_16.png' />";
+      }
+    }
+    $("#startLevel").html(startStr);
+  </script>
+</div>

@@ -8,8 +8,8 @@ layui.use(['layer', 'table', 'func'], function () {
     tableId: "orderTable",    //表格id
     condition: {
       purchaseOrderNo: "",
-      goodsName: "",
-      purchaseName: ""
+      purchaseName: "",
+      expressNo: ""
     }
   };
 
@@ -20,9 +20,9 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'purchaseOrderId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 100},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 120},
       {field: 'purchaseOrderNo', sort: false, title: '采购单号', width: 150},
-      {field: 'supplierName', sort: false, title: '供应商名称'},
+      {field: 'supplierName', sort: false, title: '供应商名称', width: 120},
       {field: 'purchaseQuantity', sort: false, title: '采购数量'},
       {field: 'arriveTotalQuantity', sort: false, title: '到货数量'},
       {field: 'totalAmount', sort: false, title: '总价'},
@@ -32,6 +32,7 @@ layui.use(['layer', 'table', 'func'], function () {
       {field: 'actualArriveDate', sort: false, title: '实际到货日期', width: 120},
       {field: 'payDate', sort: false, title: '支付日期', width: 120},
       {field: 'payAccount', sort: false, title: '支付账号', width: 165},
+      {field: 'expressNo', sort: false, title: '快递单号', width: 170},
       {field: 'orderStatus', sort: false, title: '订单状态'},
       {field: 'remark', sort: false, title: '备注', width: 200},
       {field: 'creatorName', sort: false, title: '创建人'},
@@ -47,8 +48,8 @@ layui.use(['layer', 'table', 'func'], function () {
   PurchaseOrder.search = function () {
     let queryData = {};
     queryData['purchaseOrderNo'] = $("#purchaseOrderNo").val();
-    queryData['goodsName'] = $("#goodsName").val();
     queryData['purchaserName'] = $("#purchaserName").val();
+    queryData['expressNo'] = $("#expressNo").val();
     table.reload(PurchaseOrder.tableId, {
       where: queryData, page: {curr: 1}
     });
@@ -148,7 +149,18 @@ layui.use(['layer', 'table', 'func'], function () {
       });
       layer.close(index);
     });
-  }
+  };
+
+  //查看订单
+  PurchaseOrder.onShowPage = function (data) {
+    func.open({
+      height: 760,
+      width: 800,
+      title: '查看采购单',
+      content: ctxPath + "/purchase/showPurchaseOrderPage?purchaseOrderId=" + data.purchaseOrderId,
+      tableId: PurchaseOrder.tableId
+    });
+  };
 
   // 渲染表格
   let tableResult = table.render({
@@ -189,8 +201,8 @@ layui.use(['layer', 'table', 'func'], function () {
 
     if (layEvent === 'edit') {
       PurchaseOrder.onEditPage(data);
-    } else if (layEvent === 'info') {
-
+    } else if (layEvent === 'show') {
+      PurchaseOrder.onShowPage(data);
     }
   });
 });

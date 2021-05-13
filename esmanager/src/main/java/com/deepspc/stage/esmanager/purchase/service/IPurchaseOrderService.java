@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IPurchaseOrderService extends IService<PurchaseOrder> {
 
-    Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String goodsName, String purchaserName);
+    Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String purchaserName, String expressNo);
 
     PurchaseOrder loadDetail(Long purchaseOrderId);
 

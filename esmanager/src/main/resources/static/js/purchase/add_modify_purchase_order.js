@@ -82,7 +82,9 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
    * 初始化表格的列
    */
   PurchaseOrder.initColumn = function () {
-    return [[
+    let orderStatus = $("#orderStatus").val();
+    let columns = [[
+      {type: 'checkbox'},
       {align: 'center', toolbar: '#tableBar', title: '操作', width: 80},
       {field: 'orderDetailId', hide: true, sort: false, title: '主键标识'},
       {field: 'categoryCode', hide: true, sort: false, title: '类目编码'},
@@ -110,8 +112,11 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'table', 'func'], function () {
         }},
       {field: 'locationNo', sort: false, title: '货位号', width: 100, edit: 'text'},
       {field: 'remark', sort: false, title: '备注', width: 200, edit: 'text'}
-
     ]];
+    if(orderStatus !== '01' && orderStatus) {
+      columns[0].splice(1, 1)
+    }
+    return columns;
   };
 
   //处理原有的商品明细

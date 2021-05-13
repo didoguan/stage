@@ -70,12 +70,26 @@ public class PurchaseController extends BaseController {
         return "purchase/add_modify_purchase_order";
     }
 
+    @GetMapping("/showSupplierPage")
+    public String showSupplierPage(Long supplierId, Model model) {
+        SupplierInfo supplierInfo = supplierInfoService.getById(supplierId);
+        model.addAttribute("Supplier", supplierInfo);
+        return "purchase/supplier/show_supplier";
+    }
+
+    @GetMapping("/showPurchaseOrderPage")
+    public String showPurchaseOrderPage(Long purchaseOrderId, Model model) {
+        PurchaseOrder purchaseOrder = purchaseOrderService.loadDetail(purchaseOrderId);
+        model.addAttribute("PurchaseOrder", purchaseOrder);
+        return "purchase/show_purchase_order";
+    }
+
     @RequestMapping("/loadPurchaseOrders")
     @ResponseBody
     public Object loadPurchaseOrders(@RequestParam(required = false) String purchaseOrderNo,
-                                     @RequestParam(required = false) String goodsName,
-                                     @RequestParam(required = false) String purchaseName) {
-        Page<PurchaseOrder> orders = purchaseOrderService.loadPurchaseOrders(purchaseOrderNo, goodsName, purchaseName);
+                                     @RequestParam(required = false) String purchaseName,
+                                     @RequestParam(required = false) String expressNo) {
+        Page<PurchaseOrder> orders = purchaseOrderService.loadPurchaseOrders(purchaseOrderNo, purchaseName, expressNo);
         new PurchaseOrderWrapper(orders).wrap();
         return layuiPage(orders);
     }

@@ -18,7 +18,7 @@
                 <input id="purchaseOrderNo" name="purchaseOrderNo" class="layui-input" type="text" autocomplete="off" placeholder="采购单号"/>
               </div>
               <div class="layui-inline">
-                <input id="goodsName" name="goodsName" class="layui-input" type="text" autocomplete="off" placeholder="商品名称"/>
+                <input id="expressNo" name="expressNo" class="layui-input" type="text" autocomplete="off" placeholder="快递单号"/>
               </div>
               <div class="layui-inline">
                 <input id="purchaserName" name="purchaserName" class="layui-input" type="text" autocomplete="off" placeholder="采购员"/>
@@ -45,5 +45,6 @@
     {{#if ($("#uriIsAvailable").val() === "true" || d.creatorId === $("#currentUser").val()){}}
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     {{#}}}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="show">查看</a>
   </script>
 </div>

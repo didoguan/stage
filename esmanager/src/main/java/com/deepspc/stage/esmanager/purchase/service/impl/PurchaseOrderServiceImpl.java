@@ -43,11 +43,11 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
     private CostCenterMapper costCenterMapper;
 
     @Override
-    public Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String goodsName, String purchaserName) {
+    public Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String purchaserName, String expressNo) {
         ShiroUser user = ShiroKit.getShiroUser();
         Page page = defaultPage();
         boolean checkAll = checkAllPermission(user, "/purchase/loadPurchaseOrders");
-        return this.baseMapper.loadPurchaseOrders(page, checkAll, user.getUserId(), purchaseOrderNo, goodsName, purchaserName);
+        return this.baseMapper.loadPurchaseOrders(page, checkAll, user.getUserId(), purchaseOrderNo, purchaserName, expressNo);
     }
 
     @Override

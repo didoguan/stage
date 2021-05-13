@@ -49,6 +49,8 @@ public class PurchaseOrder implements Serializable {
 
     private Date actualArriveDate;
 
+    private String expressNo;
+
     private String expressWay;
 
     private String expressComp;
@@ -281,6 +283,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getExpressNo() {
+        return expressNo;
+    }
+
+    public void setExpressNo(String expressNo) {
+        this.expressNo = expressNo;
     }
 
     public List<PurchaseOrderDetail> getDetails() {

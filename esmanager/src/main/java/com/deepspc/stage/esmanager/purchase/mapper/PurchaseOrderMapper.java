@@ -13,8 +13,8 @@ public interface PurchaseOrderMapper extends BaseMapper<PurchaseOrder> {
                                            @Param("checkAll") boolean checkAll,
                                            @Param("userId") Long userId,
                                            @Param("purchaseOrderNo") String purchaseOrderNo,
-                                           @Param("goodsName") String goodsName,
-                                           @Param("purchaserName") String purchaserName);
+                                           @Param("purchaserName") String purchaserName,
+                                           @Param("expressNo") String expressNo);
 
     PurchaseOrder loadDetail(@Param("purchaseOrderId") Long purchaseOrderId);
 

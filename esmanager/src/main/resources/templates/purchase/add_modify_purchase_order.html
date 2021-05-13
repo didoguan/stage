@@ -57,6 +57,12 @@
     </div>
   </div>
   <div class="layui-form-item">
+    <label class="layui-form-label">快递单号</label>
+    <div class="layui-input-inline">
+      <input id="expressNo" name="expressNo" th:value="${PurchaseOrder?.expressNo}" type="text" placeholder="多个单号用英文逗号隔开" class="layui-input" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
     <div class="layui-input-inline">
       <textarea name="remark" id="remark" th:text="${PurchaseOrder?.remark}" class="layui-textarea" style="width: 520px;"></textarea>
@@ -79,8 +85,6 @@
     let orderDetails = [[${PurchaseOrder?.details}]];
   </script>
   <script type="text/html" id="tableBar">
-    {{# var orderStatus = $("#orderStatus").val(); if(orderStatus === '01' || !orderStatus){}}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-    {{#}}}
   </script>
 </div>

@@ -20,10 +20,10 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'supplierId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 100},
-      {field: 'supplierName', sort: false, title: '供应商'},
-      {field: 'aliUrl', sort: false, title: '阿里网址'},
-      {field: 'companyContacts', sort: false, title: '联系人'},
+      {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 120},
+      {field: 'supplierName', sort: false, title: '供应商', minWidth: 180},
+      {field: 'aliUrl', sort: false, title: '阿里网址', minWidth: 120},
+      {field: 'companyContacts', sort: false, title: '联系人', minWidth: 100},
       {field: 'contactNumber', sort: false, title: '联系电话'},
       {field: 'blacklist', sort: false, templet: '#blacklistTpl', title: '黑名单'},
       {field: 'startLevel', sort: false, title: '星级', templet: function(d) {
@@ -41,7 +41,7 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
           }
         }
         return str;
-        }},
+        }, minWidth: 200},
       {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'}
     ]];
   };
@@ -121,6 +121,20 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     });
   };
 
+  /**
+   * 点击查看
+   * @param data
+   */
+  Supplier.onShowSupplier = function (data) {
+    func.open({
+      height: 620,
+      width: 600,
+      title: '查看供应商',
+      content: ctxPath + "/purchase/showSupplierPage?supplierId=" + data.supplierId,
+      tableId: Supplier.tableId
+    });
+  };
+
   Supplier.changeStatus = function (supplierId, checked) {
     let ajax = new $ax(ctxPath + "/purchase/changeSupplierStatus", function (data) {
 
@@ -192,6 +206,8 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
 
     if (layEvent === 'edit') {
       Supplier.onEditSupplier(data);
+    } else if (layEvent === 'show') {
+      Supplier.onShowSupplier(data);
     }
   });
 });

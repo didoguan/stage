@@ -29,9 +29,13 @@ public class GoodsData implements Serializable {
 
     private String brandCode;
 
+    private Long creatorId;
+
     private String creatorName;
 
     private String createDate;
+
+    private Long updatorId;
 
     private String updatorName;
 
@@ -141,6 +145,22 @@ public class GoodsData implements Serializable {
 
     public List<GoodsPropertyDetail> getGoodsProperties() {
         return goodsProperties;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
     }
 
     public void setGoodsProperties(List<GoodsPropertyDetail> goodsProperties) {

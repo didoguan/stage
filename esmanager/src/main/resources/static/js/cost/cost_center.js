@@ -64,10 +64,10 @@ layui.use(['form', 'table', 'layer', 'func', 'laydate'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'costCenterId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100, totalRowText: '合计'},
       {field: 'costContent', sort: false, title: '成本内容', width: 230},
       {field: 'costType', sort: false, title: '成本类型', width: 110},
-      {field: 'costAmount', sort: false, title: '发生金额', width: 110},
+      {field: 'costAmount', sort: false, title: '发生金额', width: 110, totalRow: true},
       {field: 'costDate', sort: false, title: '发生日期', width: 110},
       {field: 'pics', sort: false, title: '单据图片', templet: function (d) {
           if (d.pics && d.pics.length > 0) {
@@ -99,6 +99,7 @@ layui.use(['form', 'table', 'layer', 'func', 'laydate'], function () {
     limit: 50,
     height: "full-98",
     cellMinWidth: 100,
+    totalRow: true,
     cols: CostCenter.initColumn()
   });
 

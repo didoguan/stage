@@ -18,6 +18,7 @@
     <result column="purchase_date" property="purchaseDate" />
     <result column="expect_arrive_date" property="expectArriveDate" />
     <result column="actual_arrive_date" property="actualArriveDate" />
+    <result column="express_no" property="expressNo" />
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
     <result column="remark" property="remark" />
@@ -46,6 +47,7 @@
     <result column="purchase_date" property="purchaseDate" />
     <result column="expect_arrive_date" property="expectArriveDate" />
     <result column="actual_arrive_date" property="actualArriveDate" />
+    <result column="express_no" property="expressNo" />
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
     <result column="remark" property="remark" />
@@ -76,6 +78,7 @@
     purchase_date,
     expect_arrive_date,
     actual_arrive_date,
+    express_no,
     express_way,
     express_comp,
     remark,
@@ -103,8 +106,8 @@
     <if test="purchaseOrderNo != null and purchaseOrderNo != ''">
       AND purchase_order_no like CONCAT('%',#{purchaseOrderNo},'%')
     </if>
-    <if test="goodsName != null and goodsName != ''">
-      AND goods_name like CONCAT('%',#{goodsName},'%')
+    <if test="expressNo != null and expressNo != ''">
+      AND express_no like CONCAT('%',#{expressNo},'%')
     </if>
     <if test="purchaserName != null and purchaserName != ''">
       AND purchaser_name like CONCAT('%',#{purchaserName},'%')
