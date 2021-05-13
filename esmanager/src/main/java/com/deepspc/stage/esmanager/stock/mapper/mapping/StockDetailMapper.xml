@@ -19,6 +19,15 @@
     <result column="summary_date" property="summaryDate" />
   </resultMap>
 
+  <resultMap id="StockSummaryMap" type="com.deepspc.stage.esmanager.stock.model.StockSummary">
+    <result column="sku" property="sku" />
+    <result column="category_name" property="categoryName" />
+    <result column="goods_name" property="goodsName" />
+    <result column="goods_unit" property="goodsUnit" />
+    <result column="transit_quantity" property="transitQuantity" />
+    <result column="stock_quantity" property="stockQuantity" />
+  </resultMap>
+
   <sql id="default_stock_column">
     stock_detail_id,
     order_no,
@@ -55,38 +64,42 @@
       create_date DESC
   </select>
 
-  <select id="loadStockSummary" resultMap="BaseStockMap">
+  <select id="loadStockSummary" resultMap="StockSummaryMap">
     SELECT
-      order_no,
-      sku,
-      category_name,
-      operation_type,
-      goods_unit,
-      sum( quantity ) quantity,
-      single_price,
-    <if test="summaryType == 'Y'.toString()">
-      date_format(create_date, '%Y') summary_date
-    </if>
-    <if test="summaryType == 'M'.toString()">
-      date_format(create_date, '%Y-%m') summary_date
-    </if>
+      t1.sku,
+      t1.goods_name,
+      t1.category_name,
+      t1.goods_unit,
+      t1.transit_quantity,
+      t2.stock_quantity
     FROM
-      ec_stock_detail
+      (
+      SELECT
+        b.sku,
+        c.goods_name,
+        b.category_name,
+        b.goods_unit,
+        sum( b.detail_quantity - b.arrive_quantity ) transit_quantity
+      FROM
+        ec_purchase_order a,
+        ec_purchase_order_detail b
+        LEFT JOIN ( SELECT gs.sku, gi.goods_name FROM ec_goods_info gi, ec_goods_sku gs WHERE gi.goods_id = gs.goods_id ) c ON b.sku = c.sku
+      WHERE
+        a.purchase_order_id = b.purchase_order_id
+      GROUP BY
+        b.sku,
+        c.goods_name,
+        b.category_name,
+        b.goods_unit
+      ) t1,
+      ( SELECT sku, sum( quantity ) stock_quantity FROM ec_stock_detail GROUP BY sku ) t2
     WHERE
-      create_date &gt;= str_to_date( #{startDate}, '%Y-%m-%d %H:%i:%s' )
-      AND create_date &lt;= str_to_date( #{endDate}, '%Y-%m-%d %H:%i:%s' )
-    GROUP BY
-      order_no,
-      sku,
-      category_name,
-      operation_type,
-      goods_unit,
-      single_price,
-    <if test="summaryType == 'Y'.toString()">
-      date_format(create_date, '%Y')
+      t1.sku = t2.sku
+    <if test="sku != null and sku != ''">
+      AND t1.sku LIKE CONCAT('%',#{sku},'%')
     </if>
-    <if test="summaryType == 'M'.toString()">
-      date_format(create_date, '%Y-%m')
+    <if test="goodsName != null and goodsName != ''">
+      AND t1.goods_name LIKE CONCAT('%',#{goodsName},'%')
     </if>
   </select>
 

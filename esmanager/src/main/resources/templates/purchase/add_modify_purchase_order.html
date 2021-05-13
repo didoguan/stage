@@ -10,6 +10,7 @@
 </head>
 <form id="purchaseOrderForm" lay-filter="purchaseOrderForm" class="layui-form model-form">
   <input id="purchaseOrderId" name="purchaseOrderId" type="hidden" th:value="${PurchaseOrder?.purchaseOrderId}"/>
+  <input id="orderStatus" name="orderStatus" type="hidden" th:value="${PurchaseOrder?.orderStatus}"/>
   <div class="layui-form-item">
     <label class="layui-form-label">采购单号</label>
     <div class="layui-input-inline">
@@ -63,7 +64,7 @@
   </div>
 
   <div class="layui-form-item" style="margin: 10px 30px 0 30px;">
-    <a id="btnAdd" class="layui-btn layui-btn-normal layui-btn-xs" th:if="${PurchaseOrder?.orderStatus} == '01'">添加商品</a>
+    <a id="btnAdd" class="layui-btn layui-btn-normal layui-btn-xs" th:if="${PurchaseOrder?.orderStatus == null || PurchaseOrder?.orderStatus == '01'}">添加商品</a>
     <a id="btnPrint" class="layui-btn layui-btn-normal layui-btn-xs">打印条码</a>
     <table class="layui-table" id="detailTable" lay-filter="detailTable" style="display: none;"></table>
   </div>
@@ -78,7 +79,7 @@
     let orderDetails = [[${PurchaseOrder?.details}]];
   </script>
   <script type="text/html" id="tableBar">
-    {{#if(d.orderStatus === '01'){}}
+    {{# var orderStatus = $("#orderStatus").val(); if(orderStatus === '01' || !orderStatus){}}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
     {{#}}}
   </script>
