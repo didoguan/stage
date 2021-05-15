@@ -22,7 +22,7 @@ public class TradeAccountServiceImpl extends BaseOrmService<TradeAccountMapper, 
     public Page<TradeAccount> loadTradeAccounts(String accountType, String accountStatus, String publicPrivate) {
         Page page = defaultPage();
         ShiroUser user = ShiroKit.getShiroUser();
-        boolean checkAll = checkAllPermission(user, "/finance/loadTradeAccounts");
+        boolean checkAll = checkAllPermission(user, "/finance/tradeAccounts");
         return this.baseMapper.loadTradeAccounts(page, checkAll, user.getUserId(), accountType, accountStatus, publicPrivate);
     }
 

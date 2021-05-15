@@ -23,7 +23,7 @@ public class SupplierInfoServiceImpl extends BaseOrmService<SupplierInfoMapper, 
     public Page<SupplierInfo> loadSupplierInfo(String supplierName) {
         Page page = defaultPage();
         ShiroUser user = ShiroKit.getShiroUser();
-        boolean checkAll = checkAllPermission(user, "/purchase/loadSupplierInfo");
+        boolean checkAll = checkAllPermission(user, "/purchase/supplier");
         return this.baseMapper.loadSupplierInfo(page, checkAll, user.getUserId(), supplierName);
     }
 

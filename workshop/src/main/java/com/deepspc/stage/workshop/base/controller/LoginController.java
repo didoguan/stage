@@ -31,7 +31,6 @@ public class LoginController extends BaseController {
     @PostMapping("/checkValid")
     @ResponseBody
     public ResponseData checkValid(String account, String password) {
-        System.out.println("account:"+account+" password:"+password);
         if (StrUtil.isBlank(account) || StrUtil.isBlank(password)) {
             return new ResponseData("500", "账号和密码不能为空");
         }
@@ -40,13 +39,13 @@ public class LoginController extends BaseController {
             ShiroUser shiroUser = ShiroKit.getShiroUser();
             String userId = shiroUser.getUserId().toString();
             //判断是否已经存在该用户token在缓存中
-            String cachedToken = EhCacheUtil.get(Const.tempUserToken, userId);System.out.println("token:"+cachedToken);
+            String cachedToken = EhCacheUtil.get(Const.tempUserToken, userId);
             if (StrUtil.isNotBlank(cachedToken)) {
                 return ResponseData.success(cachedToken);
             }
             //生成token
             String token = JwtUtil.instanceToken(Const.own, userId, null, workShopProperties.getTokenLive());
-            shiroUser.setAccessToken(token);System.out.println("token:"+token);
+            shiroUser.setAccessToken(token);
             //缓存登录用户token
             EhCacheUtil.put(Const.tempUserToken, userId, token, EhCacheUtil.IDLE_SECONDS, workShopProperties.getTokenTimeout());
             return ResponseData.success(token);

@@ -11,6 +11,8 @@ layui.use(['layer', 'table', 'func'], function () {
     }
   };
 
+  let currentUser = $("#currentUser").val();
+
   /**
    * 初始化表格的列
    */
@@ -18,7 +20,7 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'goodsId', hide: true, sort: false, title: 'id'},
-      {align: 'center', toolbar: '#tableBar', title: '操作', width: 100},
+      {align: 'center', toolbar: '#tableBar', title: '操作', width: 120},
       {field: 'categoryName', sort: false, title: '类目'},
       {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
       {field: 'goodsType', sort: false, title: '类型'},
@@ -77,14 +79,20 @@ layui.use(['layer', 'table', 'func'], function () {
   Goods.onDeleteData = function () {
     let checkedData = table.checkStatus(Goods.tableId).data;
     if (checkedData.length === 0) {
-      layer.msg("请选择要删除的记录", {icon: 7});
+      layer.msg("请选择要删除的商品", {icon: 7});
       return false;
     }
     let ids = [];
     for (let i = 0; i < checkedData.length; i++){
-      ids[i] = checkedData[i].goodsId;
+      if (checkedData[i].creatorId+'' === currentUser) {
+        ids[i] = checkedData[i].goodsId;
+      }
     }
-    layer.confirm('是否删除选择的数据？',{
+    if (ids.length === 0) {
+      layer.msg("只能删除自己创建的商品！", {icon: 2});
+      return false;
+    }
+    layer.confirm('是否删除选择的商品？',{
       icon:7,title:'提示'
     },function(index){
       $.ajax({
@@ -102,6 +110,16 @@ layui.use(['layer', 'table', 'func'], function () {
         }
       });
       layer.close(index);
+    });
+  };
+
+  Goods.onShowPage = function (data) {
+    func.open({
+      height: 700,
+      width: 800,
+      title: '查看商品',
+      content: ctxPath + "/goods/showGoodsPage?goodsId=" + data.goodsId,
+      tableId: Goods.tableId
     });
   };
 
@@ -139,6 +157,8 @@ layui.use(['layer', 'table', 'func'], function () {
 
     if (layEvent === 'edit') {
       Goods.onEditPage(data);
+    } else if (layEvent === 'show') {
+      Goods.onShowPage(data);
     }
   });
 });

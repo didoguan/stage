@@ -186,4 +186,10 @@ public class PurchaseController extends BaseController {
         return ResponseData.success();
     }
 
+    @RequestMapping("/printBarcode")
+    @ResponseBody
+    public void printBarcode(@RequestBody List<String> filePath) {
+        purchaseOrderService.printBarcode(filePath);
+    }
+
 }

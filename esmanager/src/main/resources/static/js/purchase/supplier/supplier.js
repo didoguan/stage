@@ -13,6 +13,8 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     }
   };
 
+  let currentUser = $("#currentUser").val();
+
   /**
    * 初始化表格的列
    */
@@ -42,7 +44,11 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
         }
         return str;
         }, minWidth: 200},
-      {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'}
+      {field: 'supplierStatus', sort: false, templet: '#statusTpl', title: '状态'},
+      {field: 'creatorName', sort: false, title: '创建人'},
+      {field: 'createDate', sort: false, title: '创建日期', width: 120},
+      {field: 'updatorName', sort: false, title: '修改人'},
+      {field: 'updateDate', sort: false, title: '修改日期', width: 120}
     ]];
   };
 
@@ -98,7 +104,13 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
     }
     let ids = [];
     for (let i = 0; i < checkedData.length; i++){
-      ids[i] = checkedData[i].supplierId;
+      if (checkedData[i].creatorId+'' === currentUser){
+        ids[i] = checkedData[i].supplierId;
+      }
+    }
+    if (ids.length === 0) {
+      layer.msg("只能删除自己创建的供应商！", {icon: 2});
+      return false;
     }
     layer.confirm('是否删除供应商？',{
       icon:7,title:'提示'

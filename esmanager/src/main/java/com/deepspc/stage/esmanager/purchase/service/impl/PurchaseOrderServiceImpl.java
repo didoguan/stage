@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.core.utils.PrintUtil;
 import com.deepspc.stage.esmanager.cost.entity.CostCenter;
 import com.deepspc.stage.esmanager.cost.mapper.CostCenterMapper;
 import com.deepspc.stage.esmanager.purchase.entity.PurchaseOrder;
@@ -19,10 +20,14 @@ import com.deepspc.stage.esmanager.stock.mapper.StockDetailMapper;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
+import com.deepspc.stage.sys.common.SysPropertiesConfig;
+import com.deepspc.stage.sys.constant.Const;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.print.PrintException;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,6 +46,12 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
     private StockDetailMapper stockDetailMapper;
     @Resource
     private CostCenterMapper costCenterMapper;
+
+    private final SysPropertiesConfig sysPropertiesConfig;
+
+    public PurchaseOrderServiceImpl(SysPropertiesConfig sysPropertiesConfig) {
+        this.sysPropertiesConfig = sysPropertiesConfig;
+    }
 
     @Override
     public Page<PurchaseOrder> loadPurchaseOrders(String purchaseOrderNo, String purchaserName, String expressNo) {
@@ -198,6 +209,21 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
     public void deletePurchaseOrderDetail(Long orderDetailId) {
         if (null != orderDetailId) {
             this.purchaseOrderDetailMapper.deletePurchaseOrderDetail(orderDetailId);
+        }
+    }
+
+    @Override
+    public void printBarcode(List<String> filePath) {
+        if (null != filePath && !filePath.isEmpty()) {
+            try {
+                for (String path : filePath) {
+                    String file = sysPropertiesConfig.getAttachmentPath() + path.substring(Const.attachmentUri.length(), path.length());
+                    PrintUtil.printImage60(file);
+                }
+            } catch (FileNotFoundException | PrintException e) {
+                e.printStackTrace();
+                throw new StageException("打印异常");
+            }
         }
     }
 

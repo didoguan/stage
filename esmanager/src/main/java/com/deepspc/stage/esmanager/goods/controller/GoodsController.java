@@ -12,11 +12,14 @@ import com.deepspc.stage.esmanager.goods.service.IGoodsSkuService;
 import com.deepspc.stage.esmanager.goods.wrapper.GoodsInfoWrapper;
 import com.deepspc.stage.esmanager.goods.wrapper.GoodsPropertyWrapper;
 import com.deepspc.stage.sys.common.BaseController;
+import com.deepspc.stage.sys.system.entity.Dict;
+import com.deepspc.stage.sys.system.service.IDictService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,15 +33,18 @@ import java.util.Map;
 public class GoodsController extends BaseController {
 
     private final IGoodsInfoService goodsInfoService;
-
     private final IGoodsPropertyService goodsPropertyService;
-
     private final IGoodsSkuService goodsSkuService;
+    private final IDictService dictService;
 
-    public GoodsController(IGoodsInfoService goodsInfoService, IGoodsPropertyService goodsPropertyService, IGoodsSkuService goodsSkuService) {
+    public GoodsController(IGoodsInfoService goodsInfoService,
+                           IGoodsPropertyService goodsPropertyService,
+                           IGoodsSkuService goodsSkuService,
+                           IDictService dictService) {
         this.goodsInfoService = goodsInfoService;
         this.goodsPropertyService = goodsPropertyService;
         this.goodsSkuService = goodsSkuService;
+        this.dictService = dictService;
     }
 
     @GetMapping("")
@@ -74,6 +80,30 @@ public class GoodsController extends BaseController {
         }
         model.addAttribute("GoodsProperty", goodsProperty);
         return "goods/add_modify_properties";
+    }
+
+    @GetMapping("/showGoodsPage")
+    public String showGoodsPage(Long goodsId, Model model) {
+        GoodsData goodsData = goodsInfoService.getGoodsDetail(goodsId);
+        if (null != goodsData) {
+            List<String> codes = new ArrayList<>(1);
+            codes.add("goods_type");
+            Map<String, Dict> dicts = dictService.getDictAndChildren(codes);
+            if (null != dicts && !dicts.isEmpty()) {
+                Dict type = dicts.get("goods_type");
+                List<Dict> childrenList = type.getChildren();
+                if (null != childrenList && !childrenList.isEmpty()) {
+                    for (Dict dict : childrenList) {
+                        if (dict.getCode().equals(goodsData.getGoodsType())) {
+                            goodsData.setGoodsType(dict.getName());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("GoodsData", goodsData);
+        return "goods/show_goods";
     }
 
     @RequestMapping("/loadCategoryProperties")

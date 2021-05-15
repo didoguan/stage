@@ -47,7 +47,7 @@ public class CostCenterServiceImpl extends BaseOrmService<CostCenterMapper, Cost
             costEndDate = costEndDate.trim() + " 23:59:59";
         }
         ShiroUser user = ShiroKit.getShiroUser();
-        boolean checkAll = checkAllPermission(user, "/cost/loadCostCenterDatas");
+        boolean checkAll = checkAllPermission(user, "/cost/costCenter");
         return this.baseMapper.loadCostCenterDatas(page, checkAll, user.getUserId(), costType, costStartDate, costEndDate);
     }
 

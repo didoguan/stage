@@ -57,7 +57,28 @@ layui.use(['layer', 'table'], function () {
 
   //打印条码
   PurchaseOrder.printBarcode = function () {
-
+    let checkedData = table.checkStatus(PurchaseOrder.detailTableId).data;
+    if (checkedData.length === 0) {
+      layer.msg("请选择要打印的条形码", {icon: 7});
+      return false;
+    }
+    let paths = [];
+    for (let i = 0; i < checkedData.length; i++){
+      paths[i] = checkedData[i].barcodePath;
+    }
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      url: ctxPath + "/purchase/printBarcode",
+      data: JSON.stringify(paths),
+      success : function(result) {
+        layer.msg("开始打印！", {icon: 1});
+      },
+      error : function(e){
+        layer.msg("打印失败！", {icon: 2});
+      }
+    });
   };
 
   window.showOrderImg = function (obj) {

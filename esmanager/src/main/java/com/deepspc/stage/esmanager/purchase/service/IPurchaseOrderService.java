@@ -21,4 +21,6 @@ public interface IPurchaseOrderService extends IService<PurchaseOrder> {
 
     void deletePurchaseOrderDetail(Long orderDetailId);
 
+    void printBarcode(List<String> filePath);
+
 }

@@ -65,11 +65,11 @@ public class BaseOrmService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
         List<ShiroRight> rights = user.getShiroRights();
         if (null != rights && !rights.isEmpty()) {
             for (ShiroRight right : rights) {
-                //菜单
-                if ("01".equals(right.getRightType())) {
+                if ("02".equals(right.getRightType())) {
                     if (Const.adminRoleCode.equals(right.getRoleCode()) ||
                             (StrUtil.isNotBlank(right.getRightContent()) &&
-                                    right.getResourceUri().equals(uri) && right.getRightContent().trim().indexOf("checkAll") != -1)) {
+                                    StrUtil.isNotBlank(right.getRightUrl()) &&
+                                    right.getRightUrl().equals(uri) && right.getRightContent().trim().indexOf("CheckAll") != -1)) {
                         return true;
                     }
                 }

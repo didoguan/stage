@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .layui-table, .layui-table-view {margin: 0;}
+    .layui-input-block {align-items: center; display: flex;}
+  </style>
+</head>
+<form class="layui-form">
+  <input type="hidden" id="categoryCode" th:value="${GoodsData?.categoryCode}">
+  <input id="goodsId" name="goodsId" type="hidden" th:value="${GoodsData?.goodsId}"/>
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+              <span th:text="${GoodsData?.goodsName}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">商品类型</label>
+            <div class="layui-input-block">
+              <span th:text="${GoodsData?.goodsType}"></span>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">类目</label>
+            <div class="layui-input-block">
+              <span th:text="${GoodsData?.categoryName}"></span>
+            </div>
+          </div>
+        </div>
+        <th:block th:if="${GoodsData != null}">
+        <div style="margin-left: 30px;">
+          <table class="layui-table" id="skuTable" lay-filter="skuTable"></table>
+        </div>
+        </th:block>
+      </div>
+      <!-- 商品属性 -->
+      <div class="layui-card-header">属性信息</div>
+      <div class="layui-card-body">
+        <div id="propertiesBlock" class="layui-form-item layui-row"></div>
+      </div>
+    </div>
+  </div>
+  <button id="submitFile" style="display: none;"></button>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script th:inline="javascript" type="text/javascript">
+    let skuValues = [[${GoodsData?.pics}]];
+  </script>
+  <script type="text/javascript" th:src="@{/js/goods/show_goods.js}"></script>
+</div>

@@ -13,6 +13,8 @@ layui.use(['layer', 'table', 'func'], function () {
     }
   };
 
+  let currentUser = $("#currentUser").val();
+
   /**
    * 初始化表格的列
    */
@@ -96,7 +98,13 @@ layui.use(['layer', 'table', 'func'], function () {
     }
     let ids = [];
     for (let i = 0; i < checkedData.length; i++){
-      ids[i] = checkedData[i].purchaseOrderId;
+      if (checkedData[i].creatorId+'' === currentUser) {
+        ids[i] = checkedData[i].purchaseOrderId;
+      }
+    }
+    if (ids.length === 0) {
+      layer.msg("只能删除自己创建的订单！", {icon: 2});
+      return false;
     }
     layer.confirm('是否删除选择的订单？',{
       icon:7,title:'提示'

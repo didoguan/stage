@@ -57,7 +57,7 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
     public Page<GoodsInfo> loadGoods(String goodsType) {
         Page page = defaultPage();
         ShiroUser user = ShiroKit.getShiroUser();
-        boolean checkAll = checkAllPermission(user, "/goods/loadGoods");
+        boolean checkAll = checkAllPermission(user, "/goods");
         return this.baseMapper.loadGoods(page, goodsType, checkAll, user.getUserId());
     }
 
