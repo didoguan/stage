@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.print.PrintException;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -220,9 +220,9 @@ public class PurchaseOrderServiceImpl extends BaseOrmService<PurchaseOrderMapper
                     String file = sysPropertiesConfig.getAttachmentPath() + path.substring(Const.attachmentUri.length(), path.length());
                     PrintUtil.printImage60(file);
                 }
-            } catch (FileNotFoundException | PrintException e) {
+            } catch (IOException | PrintException e) {
                 e.printStackTrace();
-                throw new StageException("打印异常");
+                throw new StageException(e.getMessage());
             }
         }
     }

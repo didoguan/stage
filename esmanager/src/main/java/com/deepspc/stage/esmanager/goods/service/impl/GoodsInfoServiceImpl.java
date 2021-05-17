@@ -153,8 +153,9 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
         //生成条形码
         String barcodePathName = "/goods/barcode/" + colorId + ".png";
         String barcodeFilePath = sysPropertiesConfig.getAttachmentPath() + barcodePathName;
+        String barcodeValue = colorId.toString().substring(8);
         try {
-            BarCodeUtils.barcode39Pic(colorId + "", barcodeFilePath);
+            BarCodeUtils.barcode39Pic(barcodeValue, barcodeFilePath);
         } catch (IOException e) {
             e.printStackTrace();
             throw new StageException(CoreExceptionCode.GOODS_BARCODE_EXCEPTION.getCode(),
@@ -175,6 +176,7 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
         sku.setGoodsId(goodsId);
         sku.setColorPicId(colorId);
         sku.setBarcodePicId(barcode.getGoodsAttachmentId());
+        sku.setBarcodeValue(barcodeValue);
         goodsSkuMapper.insert(sku);
     }
 

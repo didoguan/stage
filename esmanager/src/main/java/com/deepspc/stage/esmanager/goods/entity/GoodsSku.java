@@ -29,6 +29,8 @@ public class GoodsSku implements Serializable {
 
     private Long barcodePicId;
 
+    private String barcodeValue;
+
     public GoodsSku() {
 
     }
@@ -71,5 +73,13 @@ public class GoodsSku implements Serializable {
 
     public void setBarcodePicId(Long barcodePicId) {
         this.barcodePicId = barcodePicId;
+    }
+
+    public String getBarcodeValue() {
+        return barcodeValue;
+    }
+
+    public void setBarcodeValue(String barcodeValue) {
+        this.barcodeValue = barcodeValue;
     }
 }

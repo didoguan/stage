@@ -6,13 +6,10 @@ import javax.print.*;
 import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.print.attribute.standard.OrientationRequested;
-import javax.print.attribute.standard.PrintQuality;
+import javax.print.attribute.standard.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @author gzw
@@ -28,7 +25,7 @@ public class PrintUtil {
      * @throws FileNotFoundException
      * @throws PrintException
      */
-    public static void printImage(String filePath, int width, int height) throws FileNotFoundException, PrintException {
+    public static void printImage(String filePath, int width, int height) throws IOException, PrintException {
         if (StrUtil.isBlank(filePath)) {
             return;
         }
@@ -43,30 +40,52 @@ public class PrintUtil {
         } else {
             throw new PrintException("文件格式只能是图片");
         }
+
         //获取默认的打印服务(提供服务的打印机)
-        PrintService ps = PrintServiceLookup.lookupDefaultPrintService();
-        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+        PrintService prints[] = PrintServiceLookup.lookupPrintServices(dfl, null);
+        PrintService print = null;
+        for (PrintService ps : prints) {
+            if (ps.getName().contains("DL-886A")) {
+                print = ps;
+                break;
+            }
+        }
+        if (null == print) {
+            throw new PrintException("找不到相关打印机");
+        }
+        //构建打印请求属性集
+        HashPrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
         pras.add(OrientationRequested.PORTRAIT);
-        //打印一个副本
-        pras.add(new Copies(1));
         pras.add(PrintQuality.HIGH);
+        pras.add(Chromaticity.MONOCHROME);
         DocAttributeSet das = new HashDocAttributeSet();
         //设置打印大小(毫米为单位)
         das.add(new MediaPrintableArea(0, 0, width, height, MediaPrintableArea.MM));
         fis = new FileInputStream(filePath);
         Doc doc = new SimpleDoc(fis, dfl, das);
-        DocPrintJob job = ps.createPrintJob();
+        DocPrintJob job = print.createPrintJob();
         //执行打印
         job.print(doc, pras);
+        fis.close();
     }
 
     /**
-     * 打印图片，默认打印60x60毫米
+     * 打印图片，默认打印40x40毫米
      * @param filePath 要打印的文件名称及路径
      * @throws FileNotFoundException
      * @throws PrintException
      */
-    public static void printImage60(String filePath) throws FileNotFoundException, PrintException {
-        printImage(filePath, 60, 60);
+    public static void printImage60(String filePath) throws IOException, PrintException {
+        printImage(filePath, 39, 43);
+    }
+
+    public static void main(String[] args) {
+        try {
+            printImage60("D:\\esmanager\\goods\\barcode\\1394205821937442818.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (PrintException e) {
+            e.printStackTrace();
+        }
     }
 }

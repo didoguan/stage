@@ -8,6 +8,7 @@
     <result column="sku" property="sku" />
     <result column="color_pic_id" property="colorPicId" />
     <result column="barcode_pic_id" property="barcodePicId" />
+    <result column="barcode_value" property="barcodeValue" />
   </resultMap>
 
 
