@@ -3,6 +3,7 @@ package com.deepspc.stage.sys.system.controller;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.StrUtil;
+import com.deepspc.stage.shiro.model.ShiroRight;
 import com.deepspc.stage.sys.common.BaseController;
 import com.deepspc.stage.core.common.CryptoKey;
 import com.deepspc.stage.core.common.ResponseData;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author gzw
@@ -125,8 +128,16 @@ public class LoginController extends BaseController {
     @GetMapping("/")
     public String mainPage(Model model) {
         ShiroUser shiroUser = ShiroKit.getShiroUser();
-        User user = userService.getUserForSecurity(shiroUser.getAccount());
-        model.addAttribute("User", user);
+        List<ShiroRight> rights = shiroUser.getShiroRights();
+        List<String> uri = null;
+        if (null != rights && !rights.isEmpty()) {
+            uri = new ArrayList<>();
+            for (ShiroRight right : rights) {
+                uri.add(right.getResourceUri());
+            }
+        }
+        model.addAttribute("uris", uri);
+        model.addAttribute("userName", shiroUser.getUserName());
         model.addAttribute("appName", sysPropertiesConfig.getAppName());
         model.addAttribute("menus", userService.getUserSystemMenus());
         return "index";

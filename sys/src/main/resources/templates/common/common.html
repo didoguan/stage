@@ -16,7 +16,6 @@
 
   <script th:inline="javascript" type="text/javascript">
     let ctxPath = [[${#httpServletRequest.getContextPath()}]];
-    let userId = [[${User?.userId}]];
   </script>
 </head>
 <body th:fragment="public_js(scripts)">

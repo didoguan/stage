@@ -18,6 +18,9 @@
   <!-- 加载动画，移除位置在common.js中 -->
   <div th:replace="common/loading :: loadingPage"/>
   <div th:replace="common/common :: public_js(~{::script})">
+    <script type="text/javascript" th:inline="javascript">
+      let uris = [[${uris}]];
+    </script>
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
   </div>
 </body>
