@@ -18,6 +18,8 @@ import java.io.OutputStream;
  */
 public class BarCodeUtils {
 
+    private double QUIET_ZONE = 4.0;
+
     /**
      * 生成128型条形码
      * @param msg 条码内容
@@ -56,6 +58,8 @@ public class BarCodeUtils {
             BitmapCanvasProvider canvas = new BitmapCanvasProvider(os, format, dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
             //生成条形码
             bean.generateBarcode(canvas, msg);
+            //添加额外的条形码描述
+            //canvas.deviceText("商品名称", 4.0, 4.0, 5.0 - 1, null, 4, TextAlignment.TA_CENTER);
             canvas.finish();
         } finally {
             if (null != os) {
