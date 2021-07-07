@@ -9,4 +9,6 @@ import java.util.List;
 public interface GoodsPropertyValueMapper extends BaseMapper<GoodsPropertyValue> {
 
     void insertBatch(@Param("list") List<GoodsPropertyValue> list);
+
+    void insertUpdateBatch(@Param("list") List<GoodsPropertyValue> list);
 }

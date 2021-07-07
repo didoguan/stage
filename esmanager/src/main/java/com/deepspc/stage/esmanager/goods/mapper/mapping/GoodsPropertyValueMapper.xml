@@ -24,4 +24,18 @@
       (#{property.propertyValueId}, #{property.propertyId}, #{property.propertyValueName}, #{property.categoryCode}, #{property.categoryName}, #{property.sort})
     </foreach>
   </insert>
+
+  <insert id="insertUpdateBatch">
+    INSERT INTO ec_goods_property_value(property_value_id, property_id, property_value_name, category_code, category_name, sort)
+    VALUES
+    <foreach collection="list" item="property" separator =",">
+      (#{property.propertyValueId}, #{property.propertyId}, #{property.propertyValueName}, #{property.categoryCode}, #{property.categoryName}, #{property.sort})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+      property_id = VALUES( property_id ),
+      property_value_name = VALUES( property_value_name ),
+      category_code = VALUES( category_code ),
+      category_name = VALUES( category_name ),
+      sort = VALUES( sort )
+  </insert>
 </mapper>

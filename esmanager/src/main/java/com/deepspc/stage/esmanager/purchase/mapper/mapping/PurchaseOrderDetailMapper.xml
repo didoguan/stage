@@ -11,6 +11,8 @@
     <result column="goods_unit" property="goodsUnit" />
     <result column="detail_quantity" property="detailQuantity" />
     <result column="single_price" property="singlePrice" />
+    <result column="proxy_price" property="proxyPrice" />
+    <result column="proxy_postage" property="proxyPostage" />
     <result column="arrive_quantity" property="arriveQuantity" />
     <result column="stock_entry" property="stockEntry" />
     <result column="location_no" property="locationNo" />
@@ -27,6 +29,8 @@
     goods_unit,
     detail_quantity,
     single_price,
+    proxy_price,
+    proxy_postage,
     arrive_quantity,
     stock_entry,
     location_no,
@@ -34,23 +38,25 @@
   </sql>
 
   <insert id="insertBatch">
-    INSERT INTO ec_purchase_order_detail(order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, stock_entry, location_no, remark)
+    INSERT INTO ec_purchase_order_detail(order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, proxy_price, proxy_postage, arrive_quantity, stock_entry, location_no, remark)
     VALUES
     <foreach collection="list" item="item" separator =",">
-      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.locationNo}, #{item.remark})
+      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.proxyPrice}, #{item.proxyPostage}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.locationNo}, #{item.remark})
     </foreach>
   </insert>
 
   <insert id="insertUpdateOrderDetail">
-    INSERT INTO ec_purchase_order_detail ( order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, arrive_quantity, stock_entry, location_no, remark )
+    INSERT INTO ec_purchase_order_detail ( order_detail_id, purchase_order_id, sku, category_name, category_code, goods_unit, detail_quantity, single_price, proxy_price, proxy_postage, arrive_quantity, stock_entry, location_no, remark )
     VALUES
     <foreach collection="list" index="index" item="item" separator=",">
-      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.locationNo}, #{item.remark})
+      (#{item.orderDetailId}, #{item.purchaseOrderId}, #{item.sku}, #{item.categoryName}, #{item.categoryCode}, #{item.goodsUnit}, #{item.detailQuantity}, #{item.singlePrice}, #{item.proxyPrice}, #{item.proxyPostage}, #{item.arriveQuantity}, #{item.stockEntry}, #{item.locationNo}, #{item.remark})
     </foreach>
 	ON DUPLICATE KEY UPDATE
       goods_unit = VALUES( goods_unit ),
       detail_quantity = VALUES( detail_quantity ),
       single_price = VALUES( single_price ),
+      proxy_price = VALUES( proxy_price ),
+      proxy_postage = VALUES( proxy_postage ),
       arrive_quantity = VALUES( arrive_quantity ),
       stock_entry = VALUES( stock_entry ),
       location_no = VALUES( location_no ),

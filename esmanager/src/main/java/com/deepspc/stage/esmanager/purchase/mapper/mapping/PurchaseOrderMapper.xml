@@ -13,6 +13,7 @@
     <result column="pay_account" property="payAccount" />
     <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
+    <result column="purchaser_source" property="purchaserSource" />
     <result column="purchaser_id" property="purchaserId" />
     <result column="purchaser_name" property="purchaserName" />
     <result column="purchase_date" property="purchaseDate" />
@@ -21,6 +22,7 @@
     <result column="express_no" property="expressNo" />
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
+    <result column="postage" property="postage" />
     <result column="remark" property="remark" />
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
@@ -42,6 +44,7 @@
     <result column="pay_account" property="payAccount" />
     <result column="pay_date" property="payDate" />
     <result column="order_status" property="orderStatus" />
+    <result column="purchaser_source" property="purchaserSource" />
     <result column="purchaser_id" property="purchaserId" />
     <result column="purchaser_name" property="purchaserName" />
     <result column="purchase_date" property="purchaseDate" />
@@ -50,6 +53,7 @@
     <result column="express_no" property="expressNo" />
     <result column="express_way" property="expressWay" />
     <result column="express_comp" property="expressComp" />
+    <result column="postage" property="postage" />
     <result column="remark" property="remark" />
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
@@ -73,6 +77,7 @@
     pay_account,
     pay_date,
     order_status,
+    purchaser_source,
     purchaser_id,
     purchaser_name,
     purchase_date,
@@ -81,6 +86,7 @@
     express_no,
     express_way,
     express_comp,
+    postage,
     remark,
     creator_id,
     creator_name,
@@ -134,6 +140,8 @@
         a.goods_unit,
         a.detail_quantity,
         a.single_price,
+        a.proxy_price,
+        a.proxy_postage,
         a.arrive_quantity,
         a.stock_entry,
         a.location_no,

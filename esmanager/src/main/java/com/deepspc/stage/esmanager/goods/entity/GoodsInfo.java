@@ -33,6 +33,7 @@ public class GoodsInfo implements Serializable {
     private String brandCode;
 
     @TableField(fill = FieldFill.INSERT)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long creatorId;
 
     @TableField(fill = FieldFill.INSERT)

@@ -39,6 +39,8 @@ public class PurchaseOrder implements Serializable {
 
     private String orderStatus;
 
+    private String purchaserSource;
+
     private Long purchaserId;
 
     private String purchaserName;
@@ -54,6 +56,8 @@ public class PurchaseOrder implements Serializable {
     private String expressWay;
 
     private String expressComp;
+
+    private BigDecimal postage;
 
     private String remark;
 
@@ -291,6 +295,22 @@ public class PurchaseOrder implements Serializable {
 
     public void setExpressNo(String expressNo) {
         this.expressNo = expressNo;
+    }
+
+    public BigDecimal getPostage() {
+        return postage;
+    }
+
+    public void setPostage(BigDecimal postage) {
+        this.postage = postage;
+    }
+
+    public String getPurchaserSource() {
+        return purchaserSource;
+    }
+
+    public void setPurchaserSource(String purchaserSource) {
+        this.purchaserSource = purchaserSource;
     }
 
     public List<PurchaseOrderDetail> getDetails() {

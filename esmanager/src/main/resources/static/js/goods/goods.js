@@ -20,6 +20,7 @@ layui.use(['layer', 'table', 'func'], function () {
     return [[
       {type: 'checkbox'},
       {field: 'goodsId', hide: true, sort: false, title: 'id'},
+      {field: 'creatorId', hide: true, sort: false, title: 'creatorId'},
       {align: 'center', toolbar: '#tableBar', title: '操作', width: 120},
       {field: 'categoryName', sort: false, title: '类目'},
       {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},

@@ -1,7 +1,5 @@
 package com.deepspc.stage.esmanager.goods.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.esmanager.goods.entity.GoodsProperty;
 import com.deepspc.stage.esmanager.goods.entity.GoodsPropertyValue;
@@ -47,15 +45,11 @@ public class GoodsPropertyServiceImpl extends BaseOrmService<GoodsPropertyMapper
         List<GoodsPropertyValue> values = goodsProperty.getValues();
         if (null != values && !values.isEmpty()) {
             for (GoodsPropertyValue value : values) {
-                value.setPropertyValueId(IdWorker.getId());
                 value.setPropertyId(goodsProperty.getPropertyId());
                 value.setCategoryCode(goodsProperty.getCategoryCode());
                 value.setCategoryName(goodsProperty.getCategoryName());
             }
-            QueryWrapper<GoodsPropertyValue> valueWrapper = new QueryWrapper<>();
-            valueWrapper.eq("property_id", goodsProperty.getPropertyId());
-            goodsPropertyValueMapper.delete(valueWrapper);
-            goodsPropertyValueMapper.insertBatch(values);
+            goodsPropertyValueMapper.insertUpdateBatch(values);
         }
     }
 

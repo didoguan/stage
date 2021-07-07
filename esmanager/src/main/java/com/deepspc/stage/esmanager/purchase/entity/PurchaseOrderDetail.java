@@ -52,6 +52,10 @@ public class PurchaseOrderDetail implements Serializable {
 
     private String locationNo;
 
+    private BigDecimal proxyPrice;
+
+    private BigDecimal proxyPostage;
+
     private String remark;
 
     public PurchaseOrderDetail() {
@@ -176,5 +180,21 @@ public class PurchaseOrderDetail implements Serializable {
 
     public void setLocationNo(String locationNo) {
         this.locationNo = locationNo;
+    }
+
+    public BigDecimal getProxyPrice() {
+        return proxyPrice;
+    }
+
+    public void setProxyPrice(BigDecimal proxyPrice) {
+        this.proxyPrice = proxyPrice;
+    }
+
+    public BigDecimal getProxyPostage() {
+        return proxyPostage;
+    }
+
+    public void setProxyPostage(BigDecimal proxyPostage) {
+        this.proxyPostage = proxyPostage;
     }
 }

@@ -114,8 +114,7 @@
         b.sort
     ) p
     LEFT JOIN ec_goods_property_info i ON p.propertyId = i.property_id
-    AND p.propertyValueId
-    = i.property_value_id
+    AND p.propertyValueId = i.property_value_id
     <if test="goodsId != null">
       AND i.goods_id = #{goodsId}
     </if>

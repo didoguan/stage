@@ -134,7 +134,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
             }
             str += "</div>";
             str += "</div>";
-          })
+          });
           $("#propertiesBlock").html(str);
 
           form.render();
@@ -144,7 +144,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
         console.error("初始化商品属性失败");
       }
     });
-  }
+  };
 
   //解码
   Goods.decode = function (text) {
@@ -152,7 +152,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
     rv = escape(rv);
     rv = decodeURIComponent(rv);
     return rv;
-  }
+  };
 
   //编码
   Goods.encode = function (text) {
@@ -160,7 +160,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
     rv = unescape(rv);
     rv = window.btoa(rv);
     return rv;
-  }
+  };
 
   //初始化商品类型下拉
   $.ajax({
@@ -252,12 +252,12 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
     $.each(allCheckbox, function (index, item) {
       let checkboxName = $(this).attr("name");
       let propertyLen = properties.length;
-      if (0 == propertyLen) {
+      if (0 === propertyLen) {
         properties.push({"propertyId":checkboxName, "propertyValues":[{"propertyValueId":$(this).val()}]});
       } else {
         for (let i = 0; i < propertyLen; i++) {
-          if (properties[i].propertyId = checkboxName) {
-            properties[i].propertyValues.push($(this).val());
+          if (properties[i].propertyId === checkboxName) {
+            properties[i].propertyValues.push({"propertyValueId":$(this).val()});
           } else {
             properties.push({"propertyId":checkboxName, "propertyValues":[{"propertyValueId":$(this).val()}]});
           }
@@ -266,18 +266,7 @@ layui.use(['layer', 'form', 'upload', 'admin', 'table'], function () {
     });
     $.each(allRadio, function (index, item) {
       let radioName = $(this).attr("name");
-      let propertyLen = properties.length;
-      if (0 == propertyLen) {
-        properties.push({"propertyId":radioName, "propertyValues":[{"propertyValueId":$(this).val()}]});
-      } else {
-        for (let i = 0; i < propertyLen; i++) {
-          if (properties[i].propertyId = radioName) {
-            properties[i].propertyValues.push($(this).val());
-          } else {
-            properties.push({"propertyId":radioName, "propertyValues":[{"propertyValueId":$(this).val()}]});
-          }
-        }
-      }
+      properties.push({"propertyId":radioName, "propertyValues":[{"propertyValueId":$(this).val()}]});
     });
     data.field.goodsProperties = properties;
     let categoryName = $("#categoryCode").find("option:selected").text();
