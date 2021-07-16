@@ -5,6 +5,7 @@
   <resultMap id="BaseSupplierMap" type="com.deepspc.stage.esmanager.purchase.entity.SupplierInfo">
     <id column="supplier_id" property="supplierId" />
     <result column="supplier_name" property="supplierName" />
+    <result column="supplier_code" property="supplierCode" />
     <result column="company_contacts" property="companyContacts" />
     <result column="contact_number" property="contactNumber" />
     <result column="contact_address" property="contactAddress" />
@@ -27,6 +28,7 @@
   <sql id="default_supplier_column">
     supplier_id,
     supplier_name,
+    supplier_code,
     company_contacts,
     contact_number,
     contact_address,

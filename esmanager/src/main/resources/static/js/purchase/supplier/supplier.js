@@ -24,6 +24,7 @@ layui.use(['layer', 'table', 'form', 'func', 'ax'], function () {
       {field: 'supplierId', hide: true, sort: false, title: 'id'},
       {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 120},
       {field: 'supplierName', sort: false, title: '供应商', minWidth: 180},
+      {field: 'supplierCode', sort: false, title: '供应商编码', minWidth: 100},
       {field: 'aliUrl', sort: false, title: '阿里网址', minWidth: 120},
       {field: 'companyContacts', sort: false, title: '联系人', minWidth: 100},
       {field: 'contactNumber', sort: false, title: '联系电话'},

@@ -1,7 +1,9 @@
 package com.deepspc.stage.esmanager.purchase.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.esmanager.purchase.entity.SupplierInfo;
 import com.deepspc.stage.esmanager.purchase.mapper.SupplierInfoMapper;
 import com.deepspc.stage.esmanager.purchase.service.ISupplierInfoService;
@@ -39,6 +41,21 @@ public class SupplierInfoServiceImpl extends BaseOrmService<SupplierInfoMapper, 
     public void deleteSuppliers(List<Long> ids) {
         if (null != ids && !ids.isEmpty()) {
             this.baseMapper.deleteSuppliers(ids);
+        }
+    }
+
+    @Override
+    public void saveUpdateSupplier(SupplierInfo supplierInfo) {
+        String supplierCode = supplierInfo.getSupplierCode();
+        if (StrUtil.isNotBlank(supplierCode)) {
+            QueryWrapper<SupplierInfo> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("supplier_code", supplierInfo.getSupplierCode());
+            SupplierInfo exists = this.baseMapper.selectOne(queryWrapper);
+            if (null != exists && (supplierInfo.getSupplierId() == null ||
+                                    exists.getSupplierId().longValue() != supplierInfo.getSupplierId().longValue())) {
+                throw new StageException("供应商编码已存在！");
+            }
+            this.saveOrUpdate(supplierInfo);
         }
     }
 }

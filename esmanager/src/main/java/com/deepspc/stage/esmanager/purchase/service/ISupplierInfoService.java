@@ -13,4 +13,6 @@ public interface ISupplierInfoService extends IService<SupplierInfo> {
     List<SupplierInfo> getAvailableSupplier();
 
     void deleteSuppliers(List<Long> ids);
+
+    void saveUpdateSupplier(SupplierInfo supplierInfo);
 }

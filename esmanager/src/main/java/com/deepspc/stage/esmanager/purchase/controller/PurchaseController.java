@@ -115,7 +115,7 @@ public class PurchaseController extends BaseController {
             supplierInfo.setSupplierStatus("01");
             supplierInfo.setBlacklist(StageCoreEnum.NO.getCode());
         }
-        supplierInfoService.saveOrUpdate(supplierInfo);
+        supplierInfoService.saveUpdateSupplier(supplierInfo);
         return ResponseData.success();
     }
 

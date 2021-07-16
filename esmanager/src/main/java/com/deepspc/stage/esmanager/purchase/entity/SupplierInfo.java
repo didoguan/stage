@@ -22,6 +22,8 @@ public class SupplierInfo implements Serializable {
 
     private String supplierName;
 
+    private String supplierCode;
+
     private String companyContacts;
 
     private String contactNumber;
@@ -80,6 +82,14 @@ public class SupplierInfo implements Serializable {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 
     public String getCompanyContacts() {
