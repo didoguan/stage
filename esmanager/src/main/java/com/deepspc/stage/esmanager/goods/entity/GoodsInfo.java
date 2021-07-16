@@ -22,6 +22,8 @@ public class GoodsInfo implements Serializable {
 
     private String goodsName;
 
+    private String goodsNo;
+
     private String goodsType;
 
     private String categoryName;
@@ -67,6 +69,14 @@ public class GoodsInfo implements Serializable {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
     public String getGoodsType() {

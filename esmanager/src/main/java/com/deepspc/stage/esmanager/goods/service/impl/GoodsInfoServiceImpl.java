@@ -79,6 +79,7 @@ public class GoodsInfoServiceImpl extends BaseOrmService<GoodsInfoMapper, GoodsI
         goodsInfo.setGoodsId(goodsData.getGoodsId());
         goodsInfo.setGoodsType(goodsData.getGoodsType());
         goodsInfo.setGoodsName(goodsData.getGoodsName());
+        goodsInfo.setGoodsNo(goodsData.getGoodsNo());
         goodsInfo.setCategoryName(goodsData.getCategoryName());
         goodsInfo.setCategoryCode(goodsData.getCategoryCode());
         goodsInfo.setBrandCode(goodsData.getBrandCode());

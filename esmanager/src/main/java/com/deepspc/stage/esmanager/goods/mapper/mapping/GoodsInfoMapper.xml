@@ -5,6 +5,7 @@
   <resultMap id="BaseGoodsInfoMap" type="com.deepspc.stage.esmanager.goods.entity.GoodsInfo">
     <id column="goods_id" property="goodsId" />
     <result column="goods_name" property="goodsName" />
+    <result column="goods_no" property="goodsNo" />
     <result column="goods_type" property="goodsType" />
     <result column="category_name" property="categoryName" />
     <result column="category_code" property="categoryCode" />
@@ -21,6 +22,7 @@
   <resultMap id="GoodsDataMap" type="com.deepspc.stage.esmanager.goods.model.GoodsData">
     <id column="goods_id" property="goodsId" />
     <result column="goods_name" property="goodsName" />
+    <result column="goods_no" property="goodsNo" />
     <result column="goods_type" property="goodsType" />
     <result column="category_name" property="categoryName" />
     <result column="category_code" property="categoryCode" />
@@ -39,6 +41,7 @@
   <sql id="default_goods_column">
     goods_id,
     goods_name,
+    goods_no,
     goods_type,
     category_name,
     category_code,
@@ -73,6 +76,7 @@
     SELECT
       a.goods_id "goodsId",
       a.goods_name "goodsName",
+      a.goods_no "goodsNo",
       a.category_code "categoryCode",
       a.category_name "categoryName",
       sd.name "goodsType",
@@ -121,6 +125,7 @@
     SELECT
       goods_id,
       goods_name,
+      goods_no,
       goods_type,
       category_name,
       category_code,

@@ -19,6 +19,8 @@ public class GoodsData implements Serializable {
 
     private String goodsName;
 
+    private String goodsNo;
+
     private String goodsType;
 
     private String categoryName;
@@ -61,6 +63,14 @@ public class GoodsData implements Serializable {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
     public List<GoodsSkuData> getPics() {

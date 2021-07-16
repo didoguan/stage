@@ -24,6 +24,7 @@ layui.use(['layer', 'table', 'func'], function () {
       {align: 'center', toolbar: '#tableBar', title: '操作', width: 120},
       {field: 'categoryName', sort: false, title: '类目'},
       {field: 'goodsName', sort: false, title: '商品名称', minWidth: 200},
+      {field: 'goodsNo', sort: false, title: '货号'},
       {field: 'goodsType', sort: false, title: '类型'},
       {field: 'brandName', sort: false, title: '品牌'},
       {field: 'creatorName', sort: false, title: '创建人'},
