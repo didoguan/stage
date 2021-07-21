@@ -79,6 +79,12 @@
               <input id="contactAddress" name="contactAddress" th:value="${Supplier?.contactAddress}" placeholder="请输入详细地址" type="text" class="layui-input" autocomplete="off"/>
             </div>
           </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+              <textarea name="remark" id="remark" th:text="${Supplier?.remark}" class="layui-textarea" style="width: 400px;"></textarea>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -46,6 +46,8 @@ public class SupplierInfo implements Serializable {
 
     private String taxNumber;
 
+    private String remark;
+
     @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
@@ -230,5 +232,13 @@ public class SupplierInfo implements Serializable {
 
     public void setTaxNumber(String taxNumber) {
         this.taxNumber = taxNumber;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
