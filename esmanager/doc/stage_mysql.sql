@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 18/05/2021 09:29:48
+ Date: 31/07/2021 17:26:41
 */
 
 SET NAMES utf8mb4;
@@ -39,6 +39,16 @@ CREATE TABLE `ec_cost_center`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_cost_center
+-- ----------------------------
+INSERT INTO `ec_cost_center` VALUES (1415843679940993026, NULL, '采购品革皮具样品', '08', 1480.60, '2021-07-05', '', 1412682819735134210, '关志伟', '2021-07-16 09:20:13', NULL, NULL, NULL);
+INSERT INTO `ec_cost_center` VALUES (1415844166148907010, NULL, '淘宝店铺装修', '08', 59.70, '2021-07-12', '', 1412682819735134210, '关志伟', '2021-07-16 09:22:09', NULL, NULL, NULL);
+INSERT INTO `ec_cost_center` VALUES (1415844419468091393, NULL, '摄影背景布', '08', 28.00, '2021-07-06', '', 1412682819735134210, '关志伟', '2021-07-16 09:23:09', NULL, NULL, NULL);
+INSERT INTO `ec_cost_center` VALUES (1417304198249992194, NULL, '淘宝保险保证金年缴', '11', 30.00, '2021-07-16', '淘宝店铺保险保证金费用，按年缴纳每年30。', 1412682819735134210, '关志伟', '2021-07-20 10:03:48', NULL, NULL, NULL);
+INSERT INTO `ec_cost_center` VALUES (1417395765790920706, NULL, '购买单号网代理发货权', '08', 100.00, '2021-07-20', '在单号网http://www.danhw.com/购买快递单号代理权，用于店铺发送礼品包裹刷单', 1412682819735134210, '关志伟', '2021-07-20 16:07:39', NULL, NULL, NULL);
+INSERT INTO `ec_cost_center` VALUES (1418481947710869505, NULL, '箱包样品退货邮费', '09', 60.00, '2021-07-18', '退回泽泽箱包样品邮费9.7KG', 1412682819735134210, '关志伟', '2021-07-23 16:03:45', NULL, NULL, NULL);
+
+-- ----------------------------
 -- Table structure for ec_goods_attachment
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_goods_attachment`;
@@ -61,12 +71,17 @@ CREATE TABLE `ec_goods_attachment`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_goods_attachment
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for ec_goods_info
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_goods_info`;
 CREATE TABLE `ec_goods_info`  (
   `goods_id` bigint NOT NULL,
   `goods_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `goods_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `goods_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '00-淘汰产品\r\n01-常规产品\r\n02-季节产品',
   `category_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `category_code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -80,6 +95,12 @@ CREATE TABLE `ec_goods_info`  (
   `update_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`goods_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ec_goods_info
+-- ----------------------------
+INSERT INTO `ec_goods_info` VALUES (1412701946239623170, '单肩斜跨手提真皮时尚女包2018款', NULL, '01', '箱包', '26', NULL, NULL, 1412682819735134210, '关志伟', '2021-07-07 17:16:05', 1412682819735134210, '关志伟', '2021-07-07 17:59:05');
+INSERT INTO `ec_goods_info` VALUES (1412713321808646146, '单肩贝壳斜跨牛皮女包2021款', '9812-D', '01', '箱包', '26', NULL, NULL, 1412682819735134210, '关志伟', '2021-07-07 18:01:18', 1412682819735134210, '关志伟', '2021-07-16 18:00:38');
 
 -- ----------------------------
 -- Table structure for ec_goods_property
@@ -96,6 +117,13 @@ CREATE TABLE `ec_goods_property`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_goods_property
+-- ----------------------------
+INSERT INTO `ec_goods_property` VALUES (1412669125412261889, '款式', '26', '箱包', 'Y', 1);
+INSERT INTO `ec_goods_property` VALUES (1412669444871426050, '皮质特征', '26', '箱包', 'N', 2);
+INSERT INTO `ec_goods_property` VALUES (1412669561791844354, '里料', '26', '箱包', 'N', 3);
+
+-- ----------------------------
 -- Table structure for ec_goods_property_info
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_goods_property_info`;
@@ -104,6 +132,18 @@ CREATE TABLE `ec_goods_property_info`  (
   `property_id` bigint NOT NULL,
   `property_value_id` bigint NOT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ec_goods_property_info
+-- ----------------------------
+INSERT INTO `ec_goods_property_info` VALUES (1412701946239623170, 1412669125412261889, 1412696680374837250);
+INSERT INTO `ec_goods_property_info` VALUES (1412701946239623170, 1412669125412261889, 1412696680374837252);
+INSERT INTO `ec_goods_property_info` VALUES (1412701946239623170, 1412669125412261889, 1412696680374837254);
+INSERT INTO `ec_goods_property_info` VALUES (1412701946239623170, 1412669444871426050, 1412669444938534914);
+INSERT INTO `ec_goods_property_info` VALUES (1412701946239623170, 1412669561791844354, 1412669561846370305);
+INSERT INTO `ec_goods_property_info` VALUES (1412713321808646146, 1412669125412261889, 1412696680374837250);
+INSERT INTO `ec_goods_property_info` VALUES (1412713321808646146, 1412669444871426050, 1412669444938534914);
+INSERT INTO `ec_goods_property_info` VALUES (1412713321808646146, 1412669561791844354, 1412669561846370305);
 
 -- ----------------------------
 -- Table structure for ec_goods_property_value
@@ -120,6 +160,21 @@ CREATE TABLE `ec_goods_property_value`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_goods_property_value
+-- ----------------------------
+INSERT INTO `ec_goods_property_value` VALUES (1412669444938534914, 1412669444871426050, '头层牛皮', '26', '箱包', 1);
+INSERT INTO `ec_goods_property_value` VALUES (1412669444938534915, 1412669444871426050, '二层牛皮', '26', '箱包', 2);
+INSERT INTO `ec_goods_property_value` VALUES (1412669561846370305, 1412669561791844354, '真皮', '26', '箱包', 1);
+INSERT INTO `ec_goods_property_value` VALUES (1412669561846370306, 1412669561791844354, 'PU', '26', '箱包', 2);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837250, 1412669125412261889, '单肩包', '26', '箱包', 1);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837251, 1412669125412261889, '双肩包', '26', '箱包', 2);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837252, 1412669125412261889, '斜跨包', '26', '箱包', 3);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837253, 1412669125412261889, '托特包', '26', '箱包', 4);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837254, 1412669125412261889, '小方包', '26', '箱包', 5);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837255, 1412669125412261889, '手提包', '26', '箱包', 6);
+INSERT INTO `ec_goods_property_value` VALUES (1412696680374837256, 1412669125412261889, '旅行包', '26', '箱包', 7);
+
+-- ----------------------------
 -- Table structure for ec_goods_sku
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_goods_sku`;
@@ -132,6 +187,10 @@ CREATE TABLE `ec_goods_sku`  (
   `barcode_value` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`goods_sku_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ec_goods_sku
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for ec_purchase_order
@@ -168,6 +227,13 @@ CREATE TABLE `ec_purchase_order`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_purchase_order
+-- ----------------------------
+INSERT INTO `ec_purchase_order` VALUES (1392028489994846210, 'PO20210511-0002', 1343498425531682817, '测试', 40.00, 40.00, 820.00, '5187180012404392', '2021-05-10', '04', 1387703311789842434, '李四', '2021-05-10', '2021-05-13', '2021-05-11', NULL, NULL, NULL, '补填采购', 1, '超级管理员', '2021-05-11 16:07:09', 1, '超级管理员', '2021-05-11 17:01:08', NULL);
+INSERT INTO `ec_purchase_order` VALUES (1392655634672689153, 'PO20210513-0003', 1343498425531682817, '测试', 30.00, 14.00, 645.00, '5187180012404392', '2021-05-13', '03', 1387703311789842434, '李四', '2021-05-13', '2021-05-17', NULL, 'YT5456561864784', NULL, NULL, '', 1, '超级管理员', '2021-05-13 09:39:12', 1, '超级管理员', '2021-05-13 15:17:21', NULL);
+INSERT INTO `ec_purchase_order` VALUES (1394207188169056257, 'PO20210517-0004', 1343498425531682817, '测试', 10.00, 4.00, 270.00, '6225887577442938', '2021-05-17', '03', 1387703311789842434, '李四', '2021-05-17', '2021-05-20', NULL, '', NULL, NULL, '', 1, '超级管理员', '2021-05-17 16:24:31', 1, '超级管理员', '2021-05-17 16:24:31', NULL);
+
+-- ----------------------------
 -- Table structure for ec_purchase_order_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_purchase_order_detail`;
@@ -186,6 +252,15 @@ CREATE TABLE `ec_purchase_order_detail`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`order_detail_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ec_purchase_order_detail
+-- ----------------------------
+INSERT INTO `ec_purchase_order_detail` VALUES (1392028490091315201, 1392028489994846210, '1388059006137532418', '箱包', '26', '个', 20.00, 24.00, 20.00, 'Y', '', '');
+INSERT INTO `ec_purchase_order_detail` VALUES (1392028490091315202, 1392028489994846210, '1388059006187864066', '箱包', '26', '个', 20.00, 17.00, 20.00, 'Y', '', '');
+INSERT INTO `ec_purchase_order_detail` VALUES (1392655635318611969, 1392655634672689153, '1388059006187864066', '箱包', '26', '个', 15.00, 20.00, 8.00, 'Y', '', '');
+INSERT INTO `ec_purchase_order_detail` VALUES (1392655635318611970, 1392655634672689153, '1388059209041182721', '箱包', '26', '个', 15.00, 23.00, 6.00, 'Y', '', '');
+INSERT INTO `ec_purchase_order_detail` VALUES (1394207188244553729, 1394207188169056257, '1394205821937442818', '箱包', '26', '个', 10.00, 27.00, 4.00, 'Y', '', '');
 
 -- ----------------------------
 -- Table structure for ec_stock_detail
@@ -209,12 +284,22 @@ CREATE TABLE `ec_stock_detail`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of ec_stock_detail
+-- ----------------------------
+INSERT INTO `ec_stock_detail` VALUES (1392042073990684673, 'PO20210511-0002', 1392028489994846210, '1388059006187864066', '箱包', '26', '02', '个', 20.00, 17.00, 1, '超级管理员', '2021-05-11 17:01:08');
+INSERT INTO `ec_stock_detail` VALUES (1392042073990684674, 'PO20210511-0002', 1392028489994846210, '1388059006137532418', '箱包', '26', '02', '个', 20.00, 24.00, 1, '超级管理员', '2021-05-11 17:01:08');
+INSERT INTO `ec_stock_detail` VALUES (1392655916580249602, 'PO20210513-0003', 1392655634672689153, '1388059209041182721', '箱包', '26', '02', '个', 6.00, 23.00, 1, '超级管理员', '2021-05-13 09:40:19');
+INSERT INTO `ec_stock_detail` VALUES (1392655916580249603, 'PO20210513-0003', 1392655634672689153, '1388059006187864066', '箱包', '26', '02', '个', 8.00, 20.00, 1, '超级管理员', '2021-05-13 09:40:19');
+INSERT INTO `ec_stock_detail` VALUES (1394207188458463233, 'PO20210517-0004', 1394207188169056257, '1394205821937442818', '箱包', '26', '02', '个', 4.00, 27.00, 1, '超级管理员', '2021-05-17 16:24:32');
+
+-- ----------------------------
 -- Table structure for ec_supplier_info
 -- ----------------------------
 DROP TABLE IF EXISTS `ec_supplier_info`;
 CREATE TABLE `ec_supplier_info`  (
   `supplier_id` bigint NOT NULL,
   `supplier_name` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `supplier_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `company_contacts` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `contact_number` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `contact_address` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -226,6 +311,8 @@ CREATE TABLE `ec_supplier_info`  (
   `bank_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `bank_account` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `tax_number` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `return_address` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '退货地址',
+  `remark` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `creator_id` bigint NULL DEFAULT NULL,
   `creator_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `create_date` datetime(0) NULL DEFAULT NULL,
@@ -234,6 +321,14 @@ CREATE TABLE `ec_supplier_info`  (
   `update_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`supplier_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ec_supplier_info
+-- ----------------------------
+INSERT INTO `ec_supplier_info` VALUES (1412663468126638081, '广州品革皮具有限公司', 'GZ0001', '徐海霞', '13246469683', '广州市花都区狮岭镇金狮大道金辉花园', 'https://pingepiju.1688.com', 1, 'N', '01', '', '', '', '', NULL, '商品图片资源在QQ群：290344200', 1, '超级管理员', '2021-07-07 14:43:11', 1412682819735134210, '关志伟', '2021-07-21 13:55:50');
+INSERT INTO `ec_supplier_info` VALUES (1412664488433029122, '保定白沟新城延梵箱包厂', 'BD0002', '李悦', '13472250102', '河北保定白沟新城和道国际辅料城三街172号', 'https://shop999k556q0s120.1688.com/', 1, 'N', '01', '', '', '', '', NULL, NULL, 1, '超级管理员', '2021-07-07 14:47:15', 1412682819735134210, '关志伟', '2021-07-16 09:17:01');
+INSERT INTO `ec_supplier_info` VALUES (1416961472623067137, '广州市柏淘皮具有限公司', 'GZ0002', '王海鸿', '17688456534', '广州市白云区 嘉禾街大岭南工业区A栋501', 'https://paste666.1688.com', 1, 'N', '01', '', '', '', '', NULL, '商品图片资源下载地址：https://pan.baidu.com/s/1RsZRmz3fko6bTYjF4cfRVw 提取码: hxbj', 1412682819735134210, '关志伟', '2021-07-19 11:21:56', 1412682819735134210, '关志伟', '2021-07-21 13:54:32');
+INSERT INTO `ec_supplier_info` VALUES (1418142102513885185, '深圳市韩衣舍贸易有限公司', 'GZ0003', '赖美源', '15917196637', '广州市花都区 狮领镇新民四队', 'https://shop736t6nu854622.1688.com', 1, 'N', '01', '', '', '', '', NULL, '商品图片由1274571209提供', 1412682819735134210, '关志伟', '2021-07-22 17:33:20', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ec_trade_account
@@ -281,6 +376,12 @@ CREATE TABLE `sys_attachment`  (
   `create_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`attachment_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_attachment
+-- ----------------------------
+INSERT INTO `sys_attachment` VALUES (1391958022785179650, 1391691991348994050, 'QQ截图20210412134113.png', '1391958022785179650.png', '.png', NULL, 76670, '/attachment/cost/1391958022785179650.png', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_attachment` VALUES (1391958022785179651, 1391691991348994050, '头像1.jpg', '1391958022785179651.jpg', '.jpg', NULL, 9529, '/attachment/cost/1391958022785179651.jpg', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -391,20 +492,21 @@ INSERT INTO `sys_dict` VALUES (1389772819287269381, 1389772818624569346, 'operat
 INSERT INTO `sys_dict` VALUES (1389772819287269382, 1389772818624569346, 'operation_type', '损坏', '05', NULL, 5, NULL, 1, '超级管理员', '2021-05-05 10:43:56', NULL, NULL, NULL);
 INSERT INTO `sys_dict` VALUES (1390125010346958850, 1387582814561259522, 'pay_way', '信用卡', '01', NULL, 1, NULL, 1, '超级管理员', '2021-05-06 10:03:24', 1, '超级管理员', '2021-05-06 10:03:24');
 INSERT INTO `sys_dict` VALUES (1390125010346958851, 1387582814561259522, 'pay_way', '储蓄卡', '02', NULL, 2, NULL, 1, '超级管理员', '2021-05-06 10:03:24', 1, '超级管理员', '2021-05-06 10:03:24');
-INSERT INTO `sys_dict` VALUES (1391685743266353153, 0, '0', '成本类型', 'cost_type', '成本中心的成本类型', 11, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239234, 1391685743266353153, 'cost_type', '房租', '01', NULL, 1, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239235, 1391685743266353153, 'cost_type', '水电煤费', '02', NULL, 2, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239236, 1391685743266353153, 'cost_type', '网络费', '03', NULL, 3, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239237, 1391685743266353153, 'cost_type', '人工费', '04', NULL, 4, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239238, 1391685743266353153, 'cost_type', '交通费', '05', NULL, 5, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239239, 1391685743266353153, 'cost_type', '接待费', '06', NULL, 6, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239240, 1391685743266353153, 'cost_type', '办公耗材费', '07', NULL, 7, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239241, 1391685743266353153, 'cost_type', '采购费', '08', NULL, 8, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239242, 1391685743266353153, 'cost_type', '运输费', '09', NULL, 9, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
-INSERT INTO `sys_dict` VALUES (1391685743350239243, 1391685743266353153, 'cost_type', '退回费用', '10', NULL, 10, NULL, 1, '超级管理员', '2021-05-10 17:25:12', NULL, NULL, NULL);
+INSERT INTO `sys_dict` VALUES (1391685743266353153, 0, '0', '成本类型', 'cost_type', '成本中心的成本类型', 11, NULL, 1, '超级管理员', '2021-05-10 17:25:12', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
 INSERT INTO `sys_dict` VALUES (1393401787802497025, 1339495994707476486, 'permission_type', '菜单', '01', '菜单', 1, NULL, 1, '超级管理员', '2021-05-15 11:04:09', 1, '超级管理员', '2021-05-15 11:04:09');
 INSERT INTO `sys_dict` VALUES (1393401787802497026, 1339495994707476486, 'permission_type', '数据', '02', '数据', 2, NULL, 1, '超级管理员', '2021-05-15 11:04:09', 1, '超级管理员', '2021-05-15 11:04:09');
 INSERT INTO `sys_dict` VALUES (1393401787802497027, 1339495994707476486, 'permission_type', '语句', '03', NULL, 3, NULL, 1, '超级管理员', '2021-05-15 11:04:09', 1, '超级管理员', '2021-05-15 11:04:09');
+INSERT INTO `sys_dict` VALUES (1417303911565119489, 1391685743266353153, 'cost_type', '房租', '01', NULL, 1, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119490, 1391685743266353153, 'cost_type', '水电煤费', '02', NULL, 2, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119491, 1391685743266353153, 'cost_type', '网络费', '03', NULL, 3, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119492, 1391685743266353153, 'cost_type', '人工费', '04', NULL, 4, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119493, 1391685743266353153, 'cost_type', '交通费', '05', NULL, 5, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119494, 1391685743266353153, 'cost_type', '接待费', '06', NULL, 6, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119495, 1391685743266353153, 'cost_type', '办公耗材费', '07', NULL, 7, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119496, 1391685743266353153, 'cost_type', '采购费', '08', NULL, 8, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119497, 1391685743266353153, 'cost_type', '运输费', '09', NULL, 9, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119498, 1391685743266353153, 'cost_type', '退回费用', '10', NULL, 10, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
+INSERT INTO `sys_dict` VALUES (1417303911565119499, 1391685743266353153, 'cost_type', '保险费-其他', '11', NULL, 11, NULL, 1412682819735134210, '关志伟', '2021-07-20 10:02:39', 1412682819735134210, '关志伟', '2021-07-20 10:02:39');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -677,8 +779,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, '超级管理员', 'admin', 'f85793fcbac8b481bdd8c51b23ee7e41', 'qaqyw', 'administrator', 1286216691673337856, '佛山德朗司科技有限公司', 'M', '00000000000', NULL, '00000000000', '2020-01-01', NULL, '2020-01-01', '佛山市南海区', 'married', '01', '01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (1339762528067784705, '张三', 'zhangshan', '88aa46519981adb6ca283c04a6397a77', '8o399', '00002', 1339834652186939395, '销售一部', 'F', '13800138000', '', '441132199807213352', '2020-12-18', NULL, NULL, '', 'unmarried', '01', '04', '', '', '', NULL, NULL, 1, '超级管理员', '2020-12-18 10:40:53', NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (1387703311789842434, '李四', 'lisi', '4850f4ca84db9bb0269eb225dc25ac1d', '1yive', '00003', 1387702540352479234, '采购部', 'M', '13800138000', '', '340901197511280215', '2021-04-29', NULL, NULL, '', 'unmarried', '01', '10', '', '', '', NULL, NULL, 1, '超级管理员', '2021-04-29 17:40:26', NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (1412682819735134210, '关志伟', 'gzw', '6e63c21e9cf4d1cecc260534acac07cf', 'f0qra', '00001', 1286216691673337857, '总经办', 'M', '13602291009', 'didoguan@163.com', '441203198401250916', NULL, NULL, NULL, '', 'married', '01', '01', '', '', '', NULL, NULL, 1, '超级管理员', '2021-07-07 16:00:05', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_access
@@ -695,5 +796,29 @@ CREATE TABLE `sys_user_access`  (
 -- ----------------------------
 INSERT INTO `sys_user_access` VALUES (1, 1338363692514332674);
 INSERT INTO `sys_user_access` VALUES (1387703311789842434, 1387703570939109377);
+INSERT INTO `sys_user_access` VALUES (1412682819735134210, 1338363692514332674);
+
+-- ----------------------------
+-- Table structure for ws_user
+-- ----------------------------
+DROP TABLE IF EXISTS `ws_user`;
+CREATE TABLE `ws_user`  (
+  `user_id` bigint NOT NULL,
+  `user_account` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `user_password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `dept_id` bigint NULL DEFAULT NULL,
+  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `salt` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ws_user
+-- ----------------------------
+INSERT INTO `ws_user` VALUES (1371728323106615297, 'user1', 'aba48525c14b53051e5c5c62a8a0245b', '用户1', NULL, '一科', '01', '1qtr');
+INSERT INTO `ws_user` VALUES (1371728919192739842, 'user2', '53730ec0d618c23edef4e5516b313364', '用户2', NULL, '二科', '01', 'es28');
+INSERT INTO `ws_user` VALUES (1371729136499585026, 'user3', '6f6c02795fc2ae226ee85bd9fdb799a5', '用户3', NULL, '一科', '02', '3ums');
 
 SET FOREIGN_KEY_CHECKS = 1;
