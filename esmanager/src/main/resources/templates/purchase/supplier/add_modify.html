@@ -80,6 +80,12 @@
             </div>
           </div>
           <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">退货地址</label>
+            <div class="layui-input-block">
+              <textarea name="returnAddress" id="returnAddress" th:text="${Supplier?.returnAddress}" class="layui-textarea" style="width: 400px;"></textarea>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
               <textarea name="remark" id="remark" th:text="${Supplier?.remark}" class="layui-textarea" style="width: 400px;"></textarea>

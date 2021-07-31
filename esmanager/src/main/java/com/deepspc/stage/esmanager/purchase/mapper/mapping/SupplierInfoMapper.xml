@@ -17,6 +17,7 @@
     <result column="bank_name" property="bankName" />
     <result column="bank_account" property="bankAccount" />
     <result column="tax_number" property="taxNumber" />
+    <result column="return_address" property="returnAddress" />
     <result column="remark" property="remark" />
     <result column="creator_id" property="creatorId" />
     <result column="creator_name" property="creatorName" />
@@ -41,6 +42,7 @@
     bank_name,
     bank_account,
     tax_number,
+    return_address,
     remark,
     creator_id,
     creator_name,

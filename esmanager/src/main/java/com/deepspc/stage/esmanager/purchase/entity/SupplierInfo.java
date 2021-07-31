@@ -46,9 +46,12 @@ public class SupplierInfo implements Serializable {
 
     private String taxNumber;
 
+    private String returnAddress;
+
     private String remark;
 
     @TableField(fill = FieldFill.INSERT)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long creatorId;
 
     @TableField(fill = FieldFill.INSERT)
@@ -232,6 +235,14 @@ public class SupplierInfo implements Serializable {
 
     public void setTaxNumber(String taxNumber) {
         this.taxNumber = taxNumber;
+    }
+
+    public String getReturnAddress() {
+        return returnAddress;
+    }
+
+    public void setReturnAddress(String returnAddress) {
+        this.returnAddress = returnAddress;
     }
 
     public String getRemark() {
