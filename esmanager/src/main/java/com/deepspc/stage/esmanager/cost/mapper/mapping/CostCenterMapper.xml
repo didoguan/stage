@@ -72,6 +72,7 @@
     <if test="costEndDate != null and costEndDate != ''">
       AND cost_date &lt;= str_to_date( #{costEndDate}, '%Y-%m-%d %H:%i:%s' )
     </if>
+    ORDER BY cost_date DESC
   </select>
 
   <select id="getCostCenterDetail" resultMap="CostCenterDetailMap">
