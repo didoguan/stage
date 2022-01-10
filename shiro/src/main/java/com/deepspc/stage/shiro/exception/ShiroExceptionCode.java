@@ -7,7 +7,8 @@ public enum ShiroExceptionCode {
 
 	TOKEN_IS_NULL("510", "Token为空"),
 	INVALID_OR_EXPIRED("511", "Token无效或已过期"),
-	USERNAME_PASSWORD_INVALID("512", "用户名或密码无效");
+	USERNAME_PASSWORD_INVALID("512", "用户名或密码无效"),
+	TOKEN_REFRESH("513", "需刷新Token");
 
 	private String code;
 

@@ -37,6 +37,8 @@ public class ShiroUser implements Serializable {
     private String accessToken;
 
     private List<ShiroRight> shiroRights;
+    //登录用户对象
+    private Object user;
 
     public ShiroUser() {
 
@@ -128,5 +130,13 @@ public class ShiroUser implements Serializable {
 
     public void setShiroRights(List<ShiroRight> shiroRights) {
         this.shiroRights = shiroRights;
+    }
+
+    public Object getUser() {
+        return user;
+    }
+
+    public void setUser(Object user) {
+        this.user = user;
     }
 }

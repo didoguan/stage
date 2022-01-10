@@ -6,6 +6,8 @@ import com.deepspc.stage.core.utils.StageUtil;
 import io.jsonwebtoken.*;
 
 import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class JwtUtil {
 
 	/**
-	 * 实例化token
+	 * 实例化token，将返回Base64编码的token
 	 * @param issuer 签发人
 	 * @param subject 登录用户ID
      * @param claims 非私密内容
@@ -42,32 +44,53 @@ public class JwtUtil {
             calendar.setTimeInMillis(time);
             builder.setExpiration(calendar.getTime());
         }
-		return builder.compact();
-	}
+        String token = builder.compact();
+        try {
+            return Base64.getEncoder().encodeToString(token.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * 验证token，获取内容
      * @param token token
      */
-    public static Claims verifyToken(String token) {
+    public static Claims verifyToken(String token) throws ExpiredJwtException,
+                                                UnsupportedJwtException, MalformedJwtException,
+                                                SignatureException, IllegalArgumentException {
         if (StrUtil.isBlank(token)) {
             return null;
         }
-		Claims claims = null;
         try {
-            //验证通过则返回内容
-			claims = Jwts.parser()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(StageUtil.SECRET_KEY))
-                    .parseClaimsJws(token).getBody();
-            Date expiration = claims.getExpiration();
-			boolean isExpired = expiration.before(new Date());
-			if (isExpired) {
-				return null;
-			}
-        } catch (Exception e) {
+            token = new String(Base64.getDecoder().decode(token.getBytes("utf-8")));
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return null;
         }
-        return claims;
+        //验证通过则返回内容
+        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(StageUtil.SECRET_KEY)).parseClaimsJws(token).getBody();
+    }
+
+    /**
+     * 获取token失效日期
+     * @param token 要处理的token
+     * @return Date token的失效日期
+     */
+    public static Date tokenExpired(String token) throws ExpiredJwtException,
+                                                    UnsupportedJwtException, MalformedJwtException,
+                                                    SignatureException, IllegalArgumentException {
+        if (StrUtil.isBlank(token)) {
+            return null;
+        }
+        //验证通过则返回内容
+        Claims claims = verifyToken(token);
+        if (null != claims) {
+            return claims.getExpiration();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -75,10 +98,17 @@ public class JwtUtil {
      * @param token token
      */
     public static String getUserId(String token) {
-        Claims claims = verifyToken(token);
-        if (null == claims) {
+        try {
+            Claims claims = verifyToken(token);
+            if (null != claims) {
+                return claims.getSubject();
+            } else {
+                return null;
+            }
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+                SignatureException | IllegalArgumentException e) {
+            e.printStackTrace();
             return null;
         }
-        return claims.getSubject();
     }
 }
