@@ -15,6 +15,7 @@
     <module>shiro</module>
     <module>sys</module>
     <module>workshop</module>
+    <module>isu</module>
   </modules>
 
   <properties>
@@ -34,6 +35,8 @@
     <ehcache.version>2.10.6</ehcache.version>
     <joda-time.version>2.10.6</joda-time.version>
     <barcode4j.version>2.0</barcode4j.version>
+    <httpcomponents.version>4.5.13</httpcomponents.version>
+    <fastdfs.version>1.29-SNAPSHOT</fastdfs.version>
   </properties>
 
   <dependencyManagement>
@@ -57,6 +60,12 @@
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
         <version>${mybatis.plus.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+        <version>${spring.boot.version}</version>
       </dependency>
 
       <dependency>
@@ -142,6 +151,19 @@
         <groupId>net.sf.barcode4j</groupId>
         <artifactId>barcode4j-light</artifactId>
         <version>${barcode4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpcomponents.version}</version>
+      </dependency>
+
+      <!-- fastdfs-client -->
+      <dependency>
+        <groupId>org.csource</groupId>
+        <artifactId>fastdfs-client-java</artifactId>
+        <version>${fastdfs.version}</version>
       </dependency>
 
     </dependencies>

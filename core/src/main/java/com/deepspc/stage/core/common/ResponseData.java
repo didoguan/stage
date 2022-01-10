@@ -52,6 +52,13 @@ public class ResponseData {
         return resp;
     }
 
+    public static ResponseData error(String message) {
+        ResponseData resp = new ResponseData();
+        resp.setCode("500");
+        resp.setMessage(message);
+        return resp;
+    }
+
     public String getCode() {
         return code;
     }
