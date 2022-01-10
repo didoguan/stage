@@ -1,16 +1,12 @@
 package com.deepspc.stage.shiro.common;
 
-import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.core.utils.ApplicationContextUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.shiro.conf.ShiroConfig;
-import com.deepspc.stage.shiro.exception.ShiroExceptionCode;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.shiro.properties.ShiroProperties;
-import com.deepspc.stage.shiro.service.IShiroUserService;
-import com.deepspc.stage.shiro.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
+import com.deepspc.stage.shiro.service.IJwtFilterService;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
@@ -47,38 +43,27 @@ public class CustomJwtFilter extends AccessControlFilter {
         ShiroProperties shiroProperties = shiroConfig.shiroProperties();
         String accessType = shiroProperties.getAccessType();
 
-        String accessToken = "";
-        ShiroUser shiroUser = ShiroKit.getShiroUser();
-        if (null != shiroUser) {
-            //先从缓存中查询当前用户是否存在token
-            accessToken = shiroUser.getAccessToken();
-        }
-        if (StrUtil.isBlank(accessToken)) {
-            //再从请求头中获取token
-            accessToken = request.getHeader("accessToken");
-        }
-
-		if (StrUtil.isBlank(accessToken)) {
-		    if ("integrated".equals(accessType)) {
+        //判断项目是否前后端分离
+        if ("integrated".equals(accessType)) {
+            ShiroUser shiroUser = ShiroKit.getShiroUser();
+            if (null == shiroUser) {
                 //跳转到登录
                 request.getRequestDispatcher("/login").forward(request, response);
+                return false;
             } else {
-                print(response, ShiroExceptionCode.TOKEN_IS_NULL.getCode(), ShiroExceptionCode.TOKEN_IS_NULL.getMessage());
+                return true;
             }
-            return false;
+        } else {
+            IJwtFilterService jwtFilterService = ApplicationContextUtil.getBean(IJwtFilterService.class);
+            //校验token是否有效
+            String[] exceptionCode = jwtFilterService.verifyToken(request);
+            if ("200".equals(exceptionCode[0])) {
+                return true;
+            } else {
+                print(response, exceptionCode[0], exceptionCode[1]);
+                return false;
+            }
         }
-		//校验token是否有效
-		Claims claims = JwtUtil.verifyToken(accessToken);
-		if (null == claims)  {
-            if ("integrated".equals(accessType)) {
-                //跳转到登录
-                request.getRequestDispatcher("/login").forward(request, response);
-            } else {
-                print(response, ShiroExceptionCode.INVALID_OR_EXPIRED.getCode(), ShiroExceptionCode.INVALID_OR_EXPIRED.getMessage());
-            }
-            return false;
-		}
-		return true;
 	}
 
 	private void print(HttpServletResponse response, String code, String message) throws Exception {
