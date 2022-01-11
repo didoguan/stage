@@ -32,7 +32,7 @@
   />
 
   <!-- 存放用户登录token，默认有效期30分钟 -->
-  <cache name="TempUserToken"
+  <cache name="CacheUser"
          eternal="false"
          maxElementsInMemory="2000"
          overflowToDisk="false"
