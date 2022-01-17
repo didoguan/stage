@@ -20,6 +20,12 @@ public class ShiroProperties {
     @Value("${stage.shiro.access-type}")
     public String accessType;
 
+    /**
+     * 缓存类型：ehcache|redis
+     */
+    @Value("${spring.cache.type}")
+    public String cacheType;
+
     public String getAnonRequest() {
         return anonRequest;
     }
@@ -37,5 +43,13 @@ public class ShiroProperties {
 
     public void setAccessType(String accessType) {
         this.accessType = accessType;
+    }
+
+    public String getCacheType() {
+        return cacheType;
+    }
+
+    public void setCacheType(String cacheType) {
+        this.cacheType = cacheType;
     }
 }

@@ -1,7 +1,5 @@
 package com.deepspc.stage.shiro.service;
 
-import io.jsonwebtoken.Claims;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**

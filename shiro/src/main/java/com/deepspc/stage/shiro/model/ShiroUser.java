@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author gzw
@@ -34,14 +35,23 @@ public class ShiroUser implements Serializable {
 
     private String deptName;
 
-    private String accessToken;
-
     private List<ShiroRight> shiroRights;
     //登录用户对象
     private Object user;
 
     public ShiroUser() {
 
+    }
+
+    public String toString() {
+        return "{\"userId\":"+userId+",\"userName\":\""+ Optional.ofNullable(this.userName).orElse("")
+                +"\",\"avatar\":\""+Optional.ofNullable(this.avatar).orElse("")
+                +"\",\"account\":\""+Optional.ofNullable(this.account).orElse("")
+                +"\",\"password\":\""+Optional.ofNullable(this.password).orElse("")
+                +"\",\"userCode\":\""+Optional.ofNullable(this.userCode).orElse("")
+                +"\",\"salt\":\""+Optional.ofNullable(this.salt).orElse("")
+                +"\",\"deptId\":"+this.deptId+",\"deptName\":\""+Optional.ofNullable(this.deptName).orElse("")
+                +"\",\"shiroRights\":"+Optional.ofNullable(this.shiroRights).map(Object::toString).orElse("[]")+"}";
     }
 
     public Long getUserId() {
@@ -114,14 +124,6 @@ public class ShiroUser implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
     public List<ShiroRight> getShiroRights() {

@@ -2,9 +2,13 @@ package com.deepspc.stage.shiro.common;
 
 import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.core.utils.ApplicationContextUtil;
+import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.shiro.exception.ShiroExceptionCode;
 import com.deepspc.stage.shiro.model.ShiroRight;
 import com.deepspc.stage.shiro.model.ShiroUser;
+import com.deepspc.stage.shiro.properties.ShiroProperties;
+import com.deepspc.stage.shiro.utils.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -12,7 +16,11 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -30,12 +38,16 @@ public class ShiroKit {
     }
 
     public static ShiroUser getShiroUser() {
+        ShiroUser user = null;
         boolean authenticated = isAuthenticated();
+        //先获取登录后的用户，如果不存在则从缓存中获取
         if (authenticated) {
-            return (ShiroUser) getSubject().getPrincipals().getPrimaryPrincipal();
-        } else {
-            return null;
+            user = (ShiroUser) getSubject().getPrincipals().getPrimaryPrincipal();
         }
+        if (null == user) {
+            user = getCacheUser();
+        }
+        return user;
     }
 
     /**
@@ -80,7 +92,7 @@ public class ShiroKit {
      */
     public static boolean uriIsAvailable(String uri) {
         if (StrUtil.isNotBlank(uri)) {
-            ShiroUser user = getShiroUser();
+            ShiroUser user = getCacheUser();
             if (null == user) {
                 return false;
             }
@@ -96,6 +108,38 @@ public class ShiroKit {
             }
         }
         return false;
+    }
+
+    /**
+     * 判断缓存中是否存在登录用户(用于多服务器或负载均衡)
+     * @return 登录用户
+     */
+    private static ShiroUser getCacheUser() {
+        ShiroUser user = null;
+        ShiroProperties shiroProperties = ApplicationContextUtil.getBean(ShiroProperties.class);
+        if (ShiroConst.CACHE_REDIS.equals(shiroProperties.getCacheType())) {
+            //从cookie中获取用户标识
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = requestAttributes.getRequest();
+            Cookie[] cookies = request.getCookies();
+            if (null != cookies && cookies.length > 0) {
+                String userId = null;
+                for(Cookie cookie : cookies){
+                    if(cookie.getName().equals(ShiroConst.COOKIE_USER_ID)){
+                        userId = cookie.getValue();
+                        break;
+                    }
+                }
+                if (null != userId) {
+                    RedisUtil redisUtil = ApplicationContextUtil.getBean(RedisUtil.class);
+                    Object str = redisUtil.normalGet(userId);
+                    if (null != str) {
+                        user = JsonUtil.parseSimpleObj(str.toString(), ShiroUser.class);
+                    }
+                }
+            }
+        }
+        return user;
     }
 
 }

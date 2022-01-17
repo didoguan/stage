@@ -4,9 +4,9 @@ import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.core.utils.ApplicationContextUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.shiro.conf.ShiroConfig;
-import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.shiro.properties.ShiroProperties;
 import com.deepspc.stage.shiro.service.IJwtFilterService;
+import com.deepspc.stage.shiro.service.IWebFilterService;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
@@ -45,13 +45,14 @@ public class CustomJwtFilter extends AccessControlFilter {
 
         //判断项目是否前后端分离
         if ("integrated".equals(accessType)) {
-            ShiroUser shiroUser = ShiroKit.getShiroUser();
-            if (null == shiroUser) {
-                //跳转到登录
-                request.getRequestDispatcher("/login").forward(request, response);
-                return false;
-            } else {
+            IWebFilterService webFilterService = ApplicationContextUtil.getBean(IWebFilterService.class);
+            //校验请求是否合法
+            String[] exceptionCode = webFilterService.verifyAccess(request, response);
+            if ("200".equals(exceptionCode[0])) {
                 return true;
+            } else {
+                print(response, exceptionCode[0], exceptionCode[1]);
+                return false;
             }
         } else {
             IJwtFilterService jwtFilterService = ApplicationContextUtil.getBean(IJwtFilterService.class);

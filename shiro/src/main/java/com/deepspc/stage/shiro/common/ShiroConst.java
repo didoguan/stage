@@ -11,4 +11,10 @@ public interface ShiroConst {
     //循环次数
     int HASH_ITERATIONS = 1024;
 
+    String CACHE_REDIS = "redis";
+
+    String CACHE_EHCACHE = "ehcache";
+
+    String COOKIE_USER_ID = "stage_user_id";
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * @author gzw
@@ -33,6 +34,15 @@ public class ShiroRight implements Serializable {
 
     public ShiroRight() {
 
+    }
+
+    public String toString() {
+        return "{\"roleId\":"+this.roleId+",\"roleCode\":\""+ Optional.ofNullable(this.roleCode).orElse("")
+                +"\",\"rightId\":\""+this.rightId+"\",\"rightCode\":\""+Optional.ofNullable(this.rightCode).orElse("")
+                +"\",\"rightType\":\""+Optional.ofNullable(this.rightType).orElse("")
+                +"\",\"rightContent\":\""+Optional.ofNullable(this.rightContent).orElse("")
+                +"\",\"rightUrl\":\""+Optional.ofNullable(this.rightUrl).orElse("")
+                +"\",\"resourceUri\":\""+Optional.ofNullable(this.resourceUri).orElse("")+"\"}";
     }
 
     public Long getRoleId() {
