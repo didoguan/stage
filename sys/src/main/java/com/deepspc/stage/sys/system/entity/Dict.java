@@ -36,6 +36,9 @@ public class Dict implements Serializable {
 
     private String systemCode;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long referenceId;
+
     @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
@@ -177,5 +180,13 @@ public class Dict implements Serializable {
 
     public void setChildren(List<Dict> children) {
         this.children = children;
+    }
+
+    public Long getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
     }
 }

@@ -19,10 +19,7 @@ import com.deepspc.stage.shiro.model.ShiroUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author gzw
@@ -44,8 +41,8 @@ public class UserServiceImpl extends BaseOrmService<UserMapper, User> implements
             List<ShiroRight> rights = new ArrayList<>();
             for (Map<String, Object> map : allRights) {
                 ShiroRight right = new ShiroRight();
-                right.setRoleId(Long.valueOf(map.get("roleId").toString()));
-                right.setRoleCode(map.get("roleCode")!=null?map.get("roleCode").toString():null);
+                right.setRoleId(Optional.ofNullable(map.get("roleId")).map(m->Long.valueOf(m.toString())).orElse(null));
+                right.setRoleCode(Optional.ofNullable(map.get("roleCode")).map(Object::toString).orElse(null));
                 right.setRightId(Long.valueOf(map.get("permissionId").toString()));
                 right.setRightType(map.get("permissionType").toString());
                 right.setRightContent(map.get("content")!=null?map.get("content").toString():null);

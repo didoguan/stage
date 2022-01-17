@@ -4,6 +4,10 @@ layui.use(['layer', 'form'], function () {
   let form = layui.form;
   let pubKey = $("#pub").val();
 
+  if (top.location !== location) {
+    top.location.href = location.href;
+  }
+
   form.on('submit(login-submit)', function (obj) {
     let loading = layer.load(0, {shade:false});
     let fields = obj.field;
@@ -16,7 +20,7 @@ layui.use(['layer', 'form'], function () {
       url: "/checkValid",
       data: {"r" : dataStr},
       success : function(result) {
-        if (200 == result.code) {
+        if (200 === result.code || "200" === result.code) {
           window.location.href = "/";
         } else {
           layer.msg(result.message, {icon: 1});

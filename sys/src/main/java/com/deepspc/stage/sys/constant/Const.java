@@ -4,7 +4,7 @@ public interface Const {
 
     String own = "com.deepspc";
 
-    String tempUserToken = "TempUserToken";
+    String cacheUser = "CacheUser";
 
     String clockCryptoKey = "ClockCryptoKey";
 
@@ -21,4 +21,10 @@ public interface Const {
     String defaultPassword = "111111";
 
     String adminRoleCode = "administrator";
+
+    String cacheRedis = "redis";
+
+    String cacheEhcache = "ehcache";
+
+    String cookieUserId = "stage_user_id";
 }

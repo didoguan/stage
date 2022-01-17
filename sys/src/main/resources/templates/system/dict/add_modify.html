@@ -1,8 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
   <meta charset="UTF-8">
   <title></title>
+  <style>
+    /* 防止下拉框的下拉列表被隐藏---必须设置--- */
+    .layui-table-cell {
+      overflow: visible !important;
+    }
+    /* 使得下拉框与单元格刚好合适 */
+    td .layui-form-select{
+      margin-top: -10px;
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    /* 解决select被遮挡 */
+    .layui-form-select dl {
+      z-index: 9999;
+    }
+    .layui-table-box {
+      overflow: visible
+    }
+    .layui-form-selectup dl {
+      bottom: unset;
+    }
+    .layui-table-grid-down {
+      display: none!important;
+    }
+  </style>
 </head>
 <form id="dictForm" lay-filter="dictForm" class="layui-form model-form">
   <input id="dictId" name="dictId" type="hidden" th:value="${Dict?.dictId}">
@@ -46,6 +71,11 @@
     let subItems = [[${Dict?.children}]];
   </script>
   <script type="text/javascript" th:src="@{/js/system/dict/add_modify.js}"></script>
+  <script type="text/html" id="selReference">
+    <select name="referenceDict" lay-filter="referenceFilter" data-value="{{d.referenceId}}">
+      <option value="">--请选择--</option>
+    </select>
+  </script>
   <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>

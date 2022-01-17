@@ -18,6 +18,19 @@ public interface IDictService extends IService<Dict> {
      */
     Map<String, Dict> getDictAndChildren(List<String> codes);
 
+    /**
+     * 获取级联引用的字典
+     * @param referenceId 引用字典标识
+     * @return List<Dict>
+     */
+    List<Dict> getReferenceDict(Long referenceId);
+
+    /**
+     * 获取所有字典
+     * @return List<Dict>
+     */
+    List<Dict> loadAllDict();
+
     void saveUpdateDict(Dict dict);
 
     void deleteDict(Long dictId);

@@ -27,12 +27,12 @@ public class BaseOrmService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
 
     public HttpServletRequest getRequest() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return requestAttributes == null ? null : requestAttributes.getRequest();
+        return requestAttributes.getRequest();
     }
 
     public HttpServletResponse getResponse() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        return requestAttributes == null ? null : requestAttributes.getResponse();
+        return requestAttributes.getResponse();
     }
 
     public Page defaultPage() {
@@ -61,7 +61,7 @@ public class BaseOrmService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
      * @param user 用户
      * @return true-是 false-否
      */
-    public boolean checkAllPermission(ShiroUser user, String uri) {
+    protected boolean checkAllPermission(ShiroUser user, String uri) {
         List<ShiroRight> rights = user.getShiroRights();
         if (null != rights && !rights.isEmpty()) {
             for (ShiroRight right : rights) {
@@ -69,7 +69,7 @@ public class BaseOrmService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
                     if (Const.adminRoleCode.equals(right.getRoleCode()) ||
                             (StrUtil.isNotBlank(right.getRightContent()) &&
                                     StrUtil.isNotBlank(right.getRightUrl()) &&
-                                    right.getRightUrl().equals(uri) && right.getRightContent().trim().indexOf("CheckAll") != -1)) {
+                                    right.getRightUrl().equals(uri) && right.getRightContent().trim().contains("CheckAll"))) {
                         return true;
                     }
                 }

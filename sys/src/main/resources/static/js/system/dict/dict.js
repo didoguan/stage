@@ -48,7 +48,7 @@ layui.use(['layer', 'table', 'admin'], function () {
     top.layui.admin.open({
       type: 2,
       title: '添加修改字典',
-      area: ['520px', '620px'],
+      area: ['630px', '670px'],
       content: ctxPath + '/dict/addModifyPage?dictCode=' + dictCode,
       end: function () {
         admin.getTempData('formOk') && table.reload(Dict.tableId);
@@ -87,6 +87,8 @@ layui.use(['layer', 'table', 'admin'], function () {
     elem: '#' + Dict.tableId,
     url: ctxPath + '/dict/loadDict',
     page: true,
+    limits: [50,100],
+    limit: 50,
     height: "full-98",
     cellMinWidth: 100,
     cols: Dict.initColumn()

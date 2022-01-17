@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.sys.common.BaseOrmService;
+import com.deepspc.stage.sys.common.SysPropertiesConfig;
 import com.deepspc.stage.sys.exception.SysExceptionCode;
 import com.deepspc.stage.sys.system.entity.Dict;
 import com.deepspc.stage.sys.system.mapper.DictMapper;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author gzw
@@ -68,6 +71,44 @@ public class DictServiceImpl extends BaseOrmService<DictMapper, Dict> implements
         }
 
         return codeMap;
+    }
+
+    @Override
+    public List<Dict> getReferenceDict(Long referenceId) {
+        if (null != referenceId) {
+            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+            wrapper.eq("reference_id", referenceId);
+            return this.baseMapper.selectList(wrapper);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Dict> loadAllDict() {
+        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+        List<Dict> dicts = this.baseMapper.selectList(wrapper);
+        if (null != dicts && !dicts.isEmpty()) {
+            Map<Long, List<Dict>> filte = new HashMap<>();
+            for (Dict dict : dicts) {
+                List<Dict> d = filte.get(dict.getDictId());
+                if (null == d) {
+                    d = filte.get(dict.getParentId());
+                    if (null == d) {
+                        d = new ArrayList<>();
+                        if (0 == dict.getParentId()) {
+                            dict.setChildren(d);
+                            filte.put(dict.getDictId(), d);
+                            continue;
+                        } else {
+                            filte.put(dict.getParentId(), d);
+                        }
+                    }
+                }
+                d.add(dict);
+            }
+            dicts = dicts.stream().filter(d -> d.getParentId() == 0).collect(Collectors.toList());
+        }
+        return dicts;
     }
 
     @Transactional(rollbackFor = Exception.class)

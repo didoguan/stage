@@ -63,6 +63,12 @@ public class DictController extends BaseController {
         return layuiPage(list);
     }
 
+    @RequestMapping("/loadAllDict")
+    @ResponseBody
+    public ResponseData loadAllDict() {
+        return ResponseData.success(dictService.loadAllDict());
+    }
+
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
     public ResponseData saveUpdateDict(@RequestBody Dict dict) {

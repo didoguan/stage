@@ -22,6 +22,12 @@ public class SysPropertiesConfig {
     @Value("${stage.appname}")
     public String appName;
 
+    /**
+     * 缓存类型：ehcache|redis
+     */
+    @Value("${spring.cache.type}")
+    public String cacheType;
+
     public int getTokenTimeout() {
         return tokenTimeout;
     }
@@ -51,5 +57,13 @@ public class SysPropertiesConfig {
 
     public void setAttachmentPath(String attachmentPath) {
         this.attachmentPath = attachmentPath;
+    }
+
+    public String getCacheType() {
+        return cacheType;
+    }
+
+    public void setCacheType(String cacheType) {
+        this.cacheType = cacheType;
     }
 }
