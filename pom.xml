@@ -14,8 +14,8 @@
     <module>esmanager</module>
     <module>shiro</module>
     <module>sys</module>
-    <module>workshop</module>
     <module>isu</module>
+    <module>dataplatform</module>
   </modules>
 
   <properties>
