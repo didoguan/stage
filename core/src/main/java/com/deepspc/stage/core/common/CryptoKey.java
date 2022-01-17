@@ -20,6 +20,10 @@ public class CryptoKey {
         this.privateKey = privateKey;
     }
 
+    public String toString() {
+        return "{\"privateKey\":\""+this.privateKey+"\",\"publicKey\":\""+this.publicKey+"\"}";
+    }
+
     public String getPrivateKey() {
         return privateKey;
     }
