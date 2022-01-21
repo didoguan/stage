@@ -1,0 +1,38 @@
+server:
+  tokentimeout: 1800000         #token超时时间(单位毫秒)，超过该值可通过调用刷新token获取新token(30分钟)
+  tokenlive: 432000000          #token有效期(单位毫秒)，超过该值需重新登录(5天)
+  attachment-path: D:/dataplatform/
+
+spring:
+  profiles:
+    active: @spring.active@
+  cache:
+    type: redis
+  thymeleaf:
+    cache: false
+  template:
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd
+  redis:
+    host: 139.159.191.121
+    port: 6379
+    password: dls-redis
+    timeout: 10000ms        #连接超时，单位毫秒
+netty:
+  port: 8800
+websocket:
+  port: 18092
+
+stage:
+  appname: 数据管理平台
+  shiro:
+    anon-request: /css/**,/images/**,/js/**,/plugins/**,/sys/refreshCryptoKey,/checkValid,/loadCaptcha
+    access-type: integrated
+
+mybatis-plus:
+  typeAliasesPackage: com.deepspc.stage.**.entity
+  mapper-locations: classpath*:com/deepspc/stage/**/mapping/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

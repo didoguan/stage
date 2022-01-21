@@ -27,4 +27,6 @@ public interface Const {
     String cacheEhcache = "ehcache";
 
     String cookieUserId = "stage_user_id";
+
+    String websocketDeviceSetup = "websocket_device_setup";
 }

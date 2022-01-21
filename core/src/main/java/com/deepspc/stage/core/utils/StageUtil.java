@@ -1,6 +1,7 @@
 package com.deepspc.stage.core.utils;
 
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 工具类
@@ -8,6 +9,11 @@ import java.util.Random;
  * @date 2020/11/20 13:41
  */
 public class StageUtil {
+
+    /**
+     * 线程安全集合
+     */
+    public static final ConcurrentHashMap<String, Object> CONCURRENT_HASH_MAP = new ConcurrentHashMap<>();
 
     /**
      * 密钥串

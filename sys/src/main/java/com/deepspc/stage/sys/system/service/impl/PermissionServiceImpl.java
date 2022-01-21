@@ -2,7 +2,13 @@ package com.deepspc.stage.sys.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deepspc.stage.core.utils.ApplicationContextUtil;
+import com.deepspc.stage.shiro.common.ShiroKit;
+import com.deepspc.stage.shiro.model.ShiroUser;
+import com.deepspc.stage.shiro.utils.RedisUtil;
 import com.deepspc.stage.sys.common.BaseOrmService;
+import com.deepspc.stage.sys.common.SysPropertiesConfig;
+import com.deepspc.stage.sys.constant.Const;
 import com.deepspc.stage.sys.system.entity.Permission;
 import com.deepspc.stage.sys.system.entity.PermissionResource;
 import com.deepspc.stage.sys.system.entity.UserAccess;
@@ -11,6 +17,7 @@ import com.deepspc.stage.sys.system.mapper.PermissionResourceMapper;
 import com.deepspc.stage.sys.system.mapper.UserAccessMapper;
 import com.deepspc.stage.sys.system.model.AccessAssign;
 import com.deepspc.stage.sys.system.service.IPermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +36,13 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
     private UserAccessMapper userAccessMapper;
     @Resource
     private PermissionResourceMapper permissionResourceMapper;
+
+    private final SysPropertiesConfig sysPropertiesConfig;
+
+    @Autowired
+    public PermissionServiceImpl(SysPropertiesConfig sysPropertiesConfig) {
+        this.sysPropertiesConfig = sysPropertiesConfig;
+    }
 
     @Override
     public Page<Permission> loadPermissions(String permissionName, String permissionType) {
@@ -69,6 +83,14 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
         if (!userAccesses.isEmpty()) {
             userAccessMapper.saveBatch(userAccesses);
         }
+
+        String cacheType = sysPropertiesConfig.getCacheType();
+        if (Const.cacheRedis.equals(cacheType)) {
+            RedisUtil redisUtil = ApplicationContextUtil.getBean(RedisUtil.class);
+            //清除缓存的登录用户
+            ShiroUser user = ShiroKit.getShiroUser();
+            redisUtil.remove(user.getUserId().toString());
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -94,6 +116,14 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
         if (!resources.isEmpty()) {
             permissionResourceMapper.saveBatchPermissionResource(resources);
         }
+
+        String cacheType = sysPropertiesConfig.getCacheType();
+        if (Const.cacheRedis.equals(cacheType)) {
+            RedisUtil redisUtil = ApplicationContextUtil.getBean(RedisUtil.class);
+            //清除缓存的登录用户
+            ShiroUser user = ShiroKit.getShiroUser();
+            redisUtil.remove(user.getUserId().toString());
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -106,6 +136,14 @@ public class PermissionServiceImpl extends BaseOrmService<PermissionMapper, Perm
         QueryWrapper<PermissionResource> pr = new QueryWrapper<>();
         pr.eq("permission_id", permissionId);
         permissionResourceMapper.delete(pr);
+
+        String cacheType = sysPropertiesConfig.getCacheType();
+        if (Const.cacheRedis.equals(cacheType)) {
+            RedisUtil redisUtil = ApplicationContextUtil.getBean(RedisUtil.class);
+            //清除缓存的登录用户
+            ShiroUser user = ShiroKit.getShiroUser();
+            redisUtil.remove(user.getUserId().toString());
+        }
     }
 
     @Override

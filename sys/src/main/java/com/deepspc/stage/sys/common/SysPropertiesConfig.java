@@ -28,6 +28,9 @@ public class SysPropertiesConfig {
     @Value("${spring.cache.type}")
     public String cacheType;
 
+    @Value("${websocket.port}")
+    public String websocketPort;
+
     public int getTokenTimeout() {
         return tokenTimeout;
     }
@@ -65,5 +68,13 @@ public class SysPropertiesConfig {
 
     public void setCacheType(String cacheType) {
         this.cacheType = cacheType;
+    }
+
+    public String getWebsocketPort() {
+        return websocketPort;
+    }
+
+    public void setWebsocketPort(String websocketPort) {
+        this.websocketPort = websocketPort;
     }
 }

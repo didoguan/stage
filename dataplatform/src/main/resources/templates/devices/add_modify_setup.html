@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .layui-form-item .layui-input-block {margin-right: 20px;}
+  </style>
+</head>
+<form class="layui-form model-form">
+  <input id="deviceSetupId" name="deviceSetupId" type="hidden" th:value="${DeviceSetup?.deviceSetupId}"/>
+  <div class="layui-form-item">
+    <label class="layui-form-label">设备名称<span style="color: red;">*</span></label>
+    <div class="layui-input-inline">
+      <input id="deviceName" name="deviceName" th:value="${DeviceSetup?.deviceName}" placeholder="请输入设备名称" type="text" class="layui-input" lay-verify="required" autocomplete="off"/>
+    </div>
+    <label class="layui-form-label">设备编码<span style="color: red;">*</span></label>
+    <div class="layui-input-inline">
+      <input id="deviceCode" name="deviceCode" th:value="${DeviceSetup?.deviceCode}" placeholder="请输入设备编码" type="text" class="layui-input" lay-verify="required" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">设备类型</label>
+    <div class="layui-input-inline">
+      <select name="deviceType" id="deviceType" th:value="${DeviceSetup?.deviceType}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+    <label class="layui-form-label">所属客户</label>
+    <div class="layui-input-inline">
+      <select name="customerId" id="customerId" th:value="${DeviceSetup?.customerId}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">安装设备</label>
+    <div class="layui-input-inline">
+      <select name="setupTarget" id="setupTarget" th:value="${DeviceSetup?.setupTarget}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+    <label class="layui-form-label">安装日期</label>
+    <div class="layui-input-inline">
+      <input id="setupDate" name="setupDate" th:value="${DeviceSetup?.setupDate}==null?'':${#dates.format(DeviceSetup.setupDate,'yyyy-MM-dd')}" placeholder="请选择日期" type="text" class="layui-input" readonly/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">安装人员</label>
+    <div class="layui-input-inline">
+      <select name="setupUserId" id="setupUserId" th:value="${DeviceSetup?.setupUserId}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/devices/add_modify_setup.js}"></script>
+</div>

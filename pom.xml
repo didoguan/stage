@@ -37,6 +37,7 @@
     <barcode4j.version>2.0</barcode4j.version>
     <httpcomponents.version>4.5.13</httpcomponents.version>
     <fastdfs.version>1.29-SNAPSHOT</fastdfs.version>
+    <netty-all.version>4.1.73.Final</netty-all.version>
   </properties>
 
   <dependencyManagement>
@@ -164,6 +165,12 @@
         <groupId>org.csource</groupId>
         <artifactId>fastdfs-client-java</artifactId>
         <version>${fastdfs.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>${netty-all.version}</version>
       </dependency>
 
     </dependencies>

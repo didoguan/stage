@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{::style})">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .layui-form-item .layui-input-block {margin-right: 20px;}
+  </style>
+</head>
+<form class="layui-form model-form">
+  <input id="customerId" name="customerId" type="hidden" th:value="${CustomerInfo?.customerId}"/>
+  <div class="layui-form-item">
+    <label class="layui-form-label">客户名称<span style="color: red;">*</span></label>
+    <div class="layui-input-inline">
+      <input id="customerName" name="customerName" th:value="${CustomerInfo?.customerName}" placeholder="请输入客户名称" type="text" class="layui-input" lay-verify="required" autocomplete="off"/>
+    </div>
+    <label class="layui-form-label">客户编码<span style="color: red;">*</span></label>
+    <div class="layui-input-inline">
+      <input id="customerCode" name="customerCode" th:value="${CustomerInfo?.customerCode}" placeholder="请输入客户编码" type="text" class="layui-input" lay-verify="required" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">省份</label>
+    <div class="layui-input-inline">
+      <select name="province" id="province" th:value="${CustomerInfo?.province}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+    <label class="layui-form-label">城市</label>
+    <div class="layui-input-inline">
+      <select name="city" id="city" th:value="${CustomerInfo?.city}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">行政区</label>
+    <div class="layui-input-inline">
+      <select name="district" id="district" th:value="${CustomerInfo?.district}">
+        <option value="">--请选择--</option>
+      </select>
+    </div>
+    <label class="layui-form-label">地址</label>
+    <div class="layui-input-inline">
+      <input id="address" name="address" th:value="${CustomerInfo?.address}" placeholder="请输入地址" type="text" class="layui-input" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">联系人</label>
+    <div class="layui-input-inline">
+      <input id="contacts" name="contacts" th:value="${CustomerInfo?.contacts}" placeholder="请输入联系人" type="text" class="layui-input" autocomplete="off"/>
+    </div>
+    <label class="layui-form-label">联系电话</label>
+    <div class="layui-input-inline">
+      <input id="contactNumber" name="contactNumber" th:value="${CustomerInfo?.contactNumber}" placeholder="请输入联系电话" type="text" class="layui-input" lay-verify="contactNumber" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">邮箱地址</label>
+    <div class="layui-input-block">
+      <input id="email" name="email" th:value="${CustomerInfo?.email}" placeholder="请输入邮箱地址" type="text" class="layui-input" lay-verify="email" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <textarea name="remark" id="remark" th:text="${CustomerInfo?.remark}" class="layui-textarea" style="width: 400px;"></textarea>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/customer/add_modify.js}"></script>
+</div>

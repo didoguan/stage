@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/common :: public_res(~{::title},~{},~{})">
+  <title></title>
+</head>
+<div class="layui-body-header">
+  <span class="layui-body-header-title">客户信息</span>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <div class="layui-form toolbar">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <input id="customerName" name="customerName" class="layui-input" type="text" autocomplete="off" placeholder="客户名称"/>
+              </div>
+              <div class="layui-inline">
+                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
+                <button id="btnAdd" class="layui-btn icon-btn" th:if='${ShiroKit.uriIsAvailable("/customer/addModifyCustomerPage")}'><i class="layui-icon layui-icon-add-circle"></i>添加</button>
+                <button id="btnDel" class="layui-btn icon-btn" th:if='${ShiroKit.uriIsAvailable("/customer/deleteCustomer")}'><i class="layui-icon layui-icon-delete"></i>删除</button>
+              </div>
+            </div>
+          </div>
+          <table class="layui-table" id="customerTable" lay-filter="customerTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="uriIsAvailable" th:value='${ShiroKit.uriIsAvailable("/customer/addModifyCustomerPage")}'>
+<div th:replace="common/common :: public_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/customer/customer.js}"></script>
+  <script type="text/html" id="tableBar">
+    {{#if ($("#uriIsAvailable").val() === "true"){}}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    {{#}}}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="show">查看</a>
+  </script>
+</div>
