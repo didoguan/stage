@@ -7,6 +7,7 @@ import com.deepspc.stage.dataplatform.netty.model.DeviceData;
 import com.deepspc.stage.dataplatform.netty.model.NettyRespData;
 import com.deepspc.stage.dataplatform.netty.service.INettyService;
 import com.deepspc.stage.dataplatform.websocket.WebsocketServer;
+import com.deepspc.stage.sys.constant.Const;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -67,7 +68,7 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
                 DeviceData deviceData = new DeviceData();
                 deviceData.setDeviceCode(entry.getKey());
                 deviceData.setConnected("N");
-                websocketServer.sendMessage(deviceData);
+                websocketServer.sendMessage(Const.websocketDeviceSetup, deviceData);
                 break;
             }
         }

@@ -65,11 +65,12 @@ public class WebsocketServer {
 
     /**
      * 发送实现序列化的数据
+     * @param target 要发送的客户端
      * @param data 要发送的数据
      */
-    public void sendMessage(Serializable data) throws IOException, EncodeException {
+    public void sendMessage(String target, Serializable data) throws IOException, EncodeException {
         ShiroUser user = ShiroKit.getShiroUser();
-        Session session = WebsocketServer.connected.get(user.getAccount());
+        Session session = WebsocketServer.connected.get(user.getAccount() + "_" + target);
         if (null != session) {
             session.getBasicRemote().sendObject(data);
         }
@@ -77,11 +78,12 @@ public class WebsocketServer {
 
     /**
      * 发送字符串数据
+     * @param target 要发送的客户端
      * @param msg 要发送的信息
      */
-    public void sendMessage(String msg) throws IOException {
+    public void sendMessage(String target, String msg) throws IOException {
         ShiroUser user = ShiroKit.getShiroUser();
-        Session session = WebsocketServer.connected.get(user.getAccount());
+        Session session = WebsocketServer.connected.get(user.getAccount() + "_" + target);
         if (null != session) {
             session.getBasicRemote().sendText(msg);
         }
