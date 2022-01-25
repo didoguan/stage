@@ -23,7 +23,7 @@ spring:
 netty:
   port: 8800
 websocket:
-  port: 18092
+  port: 8080
 
 stage:
   appname: 数据管理平台

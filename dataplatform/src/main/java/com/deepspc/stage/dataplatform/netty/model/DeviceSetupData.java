@@ -8,7 +8,7 @@ import java.util.Optional;
  * @author gzw
  * @date 2022/1/20 13:43
  */
-public class DeviceData implements Serializable {
+public class DeviceSetupData implements Serializable {
 
     private static final long serialVersionUID = 6042388967139482384L;
 
@@ -18,7 +18,7 @@ public class DeviceData implements Serializable {
     //连接状态： Y-连接 N-断开
     private String connected = "N";
 
-    public DeviceData() {
+    public DeviceSetupData() {
 
     }
 

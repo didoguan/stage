@@ -1,11 +1,14 @@
 package com.deepspc.stage.dataplatform.netty.service;
 
 import com.deepspc.stage.core.exception.StageException;
-import com.deepspc.stage.dataplatform.netty.model.DeviceData;
+import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 import com.deepspc.stage.dataplatform.netty.model.NettyRespData;
+import io.netty.channel.ChannelId;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * netty服务类
@@ -16,6 +19,8 @@ public interface INettyService {
 
     ChannelGroup channelGroup = new DefaultChannelGroup("channelGroups", GlobalEventExecutor.INSTANCE);
 
+    ConcurrentHashMap<String, Object> channelMap = new ConcurrentHashMap<>();
+
     /**
      * 向客户端发送数据
      * @param nettyRespData 要发送的数据
@@ -24,7 +29,7 @@ public interface INettyService {
 
     /**
      * 接收客户端数据
-     * @param deviceData 接收到的数据
+     * @param deviceSetupData 接收到的数据
      */
-    void acceptData(DeviceData deviceData) throws StageException;
+    void acceptData(DeviceSetupData deviceSetupData) throws StageException;
 }

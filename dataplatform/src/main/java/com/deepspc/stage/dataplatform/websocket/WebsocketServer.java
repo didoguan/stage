@@ -1,7 +1,5 @@
 package com.deepspc.stage.dataplatform.websocket;
 
-import com.deepspc.stage.shiro.common.ShiroKit;
-import com.deepspc.stage.shiro.model.ShiroUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022/1/21 15:08
  */
 @Slf4j
-@ServerEndpoint("/websocket/{frame}")
+@ServerEndpoint(value="/websocket/{frame}", encoders = {DeviceSetupDataEncoder.class})
 @Component
 public class WebsocketServer {
 
@@ -32,18 +30,16 @@ public class WebsocketServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "frame") String frame) {
-        ShiroUser user = ShiroKit.getShiroUser();
-        WebsocketServer.connected.put(user.getAccount() + "_" + frame, session);
-        log.info("==========建立websocket连接========="+frame);
+            WebsocketServer.connected.put(frame, session);
+            log.info("==========建立websocket连接========="+frame);
     }
 
     /**
      * 断开连接后调用
      */
     @OnClose
-    public void onClose(Session session) {
-        ShiroUser user = ShiroKit.getShiroUser();
-        WebsocketServer.connected.remove(user.getAccount());
+    public void onClose(Session session, @PathParam(value = "frame") String frame) {
+        WebsocketServer.connected.remove(frame);
         log.info("==========断开websocket连接=========");
     }
 
@@ -69,8 +65,7 @@ public class WebsocketServer {
      * @param data 要发送的数据
      */
     public void sendMessage(String target, Serializable data) throws IOException, EncodeException {
-        ShiroUser user = ShiroKit.getShiroUser();
-        Session session = WebsocketServer.connected.get(user.getAccount() + "_" + target);
+        Session session = WebsocketServer.connected.get(target);
         if (null != session) {
             session.getBasicRemote().sendObject(data);
         }
@@ -82,8 +77,7 @@ public class WebsocketServer {
      * @param msg 要发送的信息
      */
     public void sendMessage(String target, String msg) throws IOException {
-        ShiroUser user = ShiroKit.getShiroUser();
-        Session session = WebsocketServer.connected.get(user.getAccount() + "_" + target);
+        Session session = WebsocketServer.connected.get(target);
         if (null != session) {
             session.getBasicRemote().sendText(msg);
         }

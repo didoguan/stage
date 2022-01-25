@@ -18,16 +18,20 @@ public class MetaDataFillHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         ShiroUser user = ShiroKit.getShiroUser();
-        this.setFieldValByName("creatorId", user.getUserId(), metaObject);
-        this.setFieldValByName("creatorName", user.getUserName(), metaObject);
+        if (null != user) {
+            this.setFieldValByName("creatorId", user.getUserId(), metaObject);
+            this.setFieldValByName("creatorName", user.getUserName(), metaObject);
+        }
         this.setFieldValByName("createDate", new Date(), metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         ShiroUser user = ShiroKit.getShiroUser();
-        this.setFieldValByName("updatorId", user.getUserId(), metaObject);
-        this.setFieldValByName("updatorName", user.getUserName(), metaObject);
+        if (null != user) {
+            this.setFieldValByName("updatorId", user.getUserId(), metaObject);
+            this.setFieldValByName("updatorName", user.getUserName(), metaObject);
+        }
         this.setFieldValByName("updateDate", new Date(), metaObject);
     }
 }

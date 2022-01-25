@@ -16,7 +16,7 @@ public class NettyRespData implements Serializable {
 
     private String msg;
 
-    private DeviceData deviceData;
+    private DeviceSetupData deviceSetupData;
 
     public NettyRespData() {
 
@@ -25,7 +25,7 @@ public class NettyRespData implements Serializable {
     public String toString() {
         return "{\"code\":\""+ Optional.ofNullable(this.code).orElse("")
                 +"\",\"msg\":\""+Optional.ofNullable(this.msg).orElse("")
-                +"\",\"deviceData\":"+Optional.ofNullable(this.deviceData).map(Object::toString).orElse("{}")+"}";
+                +"\",\"deviceSetupData\":"+Optional.ofNullable(this.deviceSetupData).map(Object::toString).orElse("{}")+"}";
     }
 
     public String getCode() {
@@ -44,11 +44,11 @@ public class NettyRespData implements Serializable {
         this.msg = msg;
     }
 
-    public DeviceData getDeviceData() {
-        return deviceData;
+    public DeviceSetupData getDeviceSetupData() {
+        return deviceSetupData;
     }
 
-    public void setDeviceData(DeviceData deviceData) {
-        this.deviceData = deviceData;
+    public void setDeviceSetupData(DeviceSetupData deviceSetupData) {
+        this.deviceSetupData = deviceSetupData;
     }
 }

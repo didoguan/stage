@@ -1,4 +1,4 @@
-var Stage = {
+let Stage = {
   currentDate : function () {
     // 获取当前日期
     let date = new Date();
@@ -31,6 +31,17 @@ var Stage = {
       ids += "," + nodes[i].id;
     }
     return ids.substring(1);
+  },
+  getCookie : function (name) {
+    let allCookie = document.cookie;
+    let cookies = allCookie.split("; ");
+    for (let i = 0; i < cookies.length; i++) {
+      let arr = cookies[i].split("=");
+      if (arr[0] === name){
+        return arr[1];
+      }
+    }
+    return "";
   }
 };
 // 以下代码是配置layui扩展模块的目录，每个页面都需要引入

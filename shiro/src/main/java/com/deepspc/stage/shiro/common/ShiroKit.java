@@ -120,6 +120,9 @@ public class ShiroKit {
         if (ShiroConst.CACHE_REDIS.equals(shiroProperties.getCacheType())) {
             //从cookie中获取用户标识
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (null == requestAttributes) {
+                return null;
+            }
             HttpServletRequest request = requestAttributes.getRequest();
             Cookie[] cookies = request.getCookies();
             if (null != cookies && cookies.length > 0) {

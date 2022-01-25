@@ -2,14 +2,13 @@ package com.deepspc.stage.dataplatform.netty;
 
 import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
-import com.deepspc.stage.core.utils.StageUtil;
-import com.deepspc.stage.dataplatform.netty.model.DeviceData;
-import com.deepspc.stage.dataplatform.netty.model.NettyRespData;
+import com.deepspc.stage.dataplatform.devices.service.IDeviceSetupService;
+import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 import com.deepspc.stage.dataplatform.netty.service.INettyService;
+import com.deepspc.stage.dataplatform.utils.DataPlatformUtil;
 import com.deepspc.stage.dataplatform.websocket.WebsocketServer;
 import com.deepspc.stage.sys.constant.Const;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
@@ -20,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.EncodeException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -33,12 +34,12 @@ import java.util.Map;
 @ChannelHandler.Sharable
 public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
 
-    private final INettyService nettyService;
+    private final IDeviceSetupService deviceSetupService;
     private final WebsocketServer websocketServer;
 
     @Autowired
-    public NettyInboundHandler(INettyService nettyService, WebsocketServer websocketServer) {
-        this.nettyService = nettyService;
+    public NettyInboundHandler(IDeviceSetupService deviceSetupService, WebsocketServer websocketServer) {
+        this.deviceSetupService = deviceSetupService;
         this.websocketServer = websocketServer;
     }
 
@@ -49,7 +50,8 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.info("Netty建立连接，标识：{}",ctx.channel().id().asLongText());
+        String channleId = ctx.channel().id().asLongText();
+        log.info("Netty建立连接，标识：{}", channleId);
     }
 
     /**
@@ -59,16 +61,19 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        String channleId = ctx.channel().id().asLongText();
-        log.info("Netty断开连接，标识：{}", channleId);
+        String currentChannel = ctx.channel().id().asLongText();
+        log.info("Netty断开连接：标识：{}", currentChannel);
         //更新设备连接状态
-        for (Map.Entry<String, Object> entry : StageUtil.CONCURRENT_HASH_MAP.entrySet()) {
-            String id = entry.getValue().toString();
-            if (channleId.equals(id)) {
-                DeviceData deviceData = new DeviceData();
-                deviceData.setDeviceCode(entry.getKey());
-                deviceData.setConnected("N");
-                websocketServer.sendMessage(Const.websocketDeviceSetup, deviceData);
+        for (Map.Entry<String, Object> entry : INettyService.channelMap.entrySet()) {
+            ChannelId channelId = (ChannelId) entry.getValue();
+            if (channelId.asLongText().equals(currentChannel)) {
+                DeviceSetupData deviceSetupData = new DeviceSetupData();
+                deviceSetupData.setDeviceCode(entry.getKey());
+                deviceSetupData.setConnected("N");
+                //netty接收数据进行更新
+                deviceSetupService.updateByDeviceSetupData(deviceSetupData);
+                //发送到数据平台设备安装信息，更新设备连接状态为断开
+                websocketServer.sendMessage(Const.websocketDeviceSetup, deviceSetupData);
                 break;
             }
         }
@@ -124,37 +129,28 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private ByteBuf writeSockData(String code, String msg) throws UnsupportedEncodingException {
-        NettyRespData respData = new NettyRespData();
-        respData.setCode(code);
-        respData.setMsg(msg);
-        String back = respData.toString();
-        byte[] strByte = back.getBytes("UTF-8");
-        return Unpooled.wrappedBuffer(strByte);
-    }
-
     /**
      * 处理socket发送的数据(硬件)
      * @param ctx 上下文
      * @param in 数据信息
      */
-    private void socketHandler(ChannelHandlerContext ctx, ByteBuf in) throws UnsupportedEncodingException {
+    private void socketHandler(ChannelHandlerContext ctx, ByteBuf in) throws UnsupportedEncodingException, IOException, EncodeException {
         String dataStr = in.toString(CharsetUtil.UTF_8);
         log.info("Netty读取到的数据：{}", dataStr);
         if (StrUtil.isNotBlank(dataStr)) {
-            DeviceData deviceData = null;
+            DeviceSetupData deviceSetupData = null;
             try {
-                deviceData = JsonUtil.parseSimpleObj(dataStr, DeviceData.class);
+                deviceSetupData = JsonUtil.parseSimpleObj(dataStr, DeviceSetupData.class);
             } catch (Exception e) {
-                ctx.channel().writeAndFlush(writeSockData("500", "数据格式有误，请传输json格式！"));
+                ctx.channel().writeAndFlush(DataPlatformUtil.writeSockData("500", "数据格式有误，请传输json格式！"));
             }
-            if (null != deviceData) {
-                String deviceCode = deviceData.getDeviceCode();
+            if (null != deviceSetupData) {
+                String deviceCode = deviceSetupData.getDeviceCode();
                 if (StrUtil.isBlank(deviceCode)) {
-                    ctx.channel().writeAndFlush(writeSockData("501", "设备编码不能为空！"));
+                    ctx.channel().writeAndFlush(DataPlatformUtil.writeSockData("501", "设备编码不能为空！"));
                 } else {
                     //查找该设备是否已经存在连接通道，如果存在则关闭上一个打开的通道
-                    Object obj = StageUtil.CONCURRENT_HASH_MAP.get(deviceCode);
+                    Object obj = INettyService.channelMap.get(deviceCode);
                     if (null != obj) {
                         ChannelId channelId = (ChannelId) obj;
                         String id = channelId.asLongText();
@@ -168,16 +164,20 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
                             //把通道保存到通道组中
                             INettyService.channelGroup.add(ctx.channel());
                             //保存设备编码和通道标识
-                            StageUtil.CONCURRENT_HASH_MAP.put(deviceCode, ctx.channel().id());
+                            INettyService.channelMap.put(deviceCode, ctx.channel().id());
                         }
                     } else {
                         //把通道保存到通道组中
                         INettyService.channelGroup.add(ctx.channel());
                         //保存设备编码和通道标识
-                        StageUtil.CONCURRENT_HASH_MAP.put(deviceCode, ctx.channel().id());
+                        INettyService.channelMap.put(deviceCode, ctx.channel().id());
                     }
-                    log.info("通道组长度：" + INettyService.channelGroup.size() + " 集合长度："+StageUtil.CONCURRENT_HASH_MAP.size());
-                    nettyService.acceptData(deviceData);
+                    log.info("通道组长度：" + INettyService.channelGroup.size() + " 集合长度："+INettyService.channelMap.size());
+                    //发送信息到数据平台的设备安装信息界面，更新设备连接状态为连接
+                    deviceSetupData.setConnected("Y");
+                    //netty接收数据进行更新
+                    deviceSetupService.updateByDeviceSetupData(deviceSetupData);
+                    websocketServer.sendMessage(Const.websocketDeviceSetup, deviceSetupData);
                 }
             }
         }

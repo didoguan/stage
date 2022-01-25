@@ -7,6 +7,7 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
 
   let DeviceSetup = {
     tableId: "deviceSetupTable",    //表格id
+    queryData: {"deviceCode": $("#deviceCode").val()},
     websocketUrl : $("#websocketUrl").val()
   };
 
@@ -15,12 +16,25 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
     if(typeof(WebSocket) === "undefined") {
       console.error("当前浏览器不支持websocket！");
     } else {
-      wst = new WebSocket(DeviceSetup.websocketUrl+"/websocket_device_setup");
+      wst = new WebSocket(DeviceSetup.websocketUrl);
       //建立连接
       wst.onopen = function(event) {};
       //获取服务器发送的信息
-      wst.onmessage = function(msg) {
-        console.log("接收到的服务端信息："+JSON.stringify(msg));
+      wst.onmessage = function(event) {
+        let str = event.data;
+        if (str) {
+          let device = JSON.parse(str);
+          let tableDatas = table.cache[DeviceSetup.tableId];
+          //找到对应的记录，如果有更改则重载
+          $.each(tableDatas, function (i, item) {
+            if (device.deviceCode === item.deviceCode) {
+              if (device.deviceStatus !== item.deviceStatus || device.connected !== item.connected) {
+                table.reload(DeviceSetup.tableId, {where: DeviceSetup.queryData});
+              }
+              return false;
+            }
+          });
+        }
       };
       //连接关闭
       wst.onclose = function() {
@@ -71,10 +85,8 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
    * 点击查询按钮
    */
   DeviceSetup.search = function () {
-    let queryData = {};
-    queryData['deviceCode'] = $("#deviceCode").val();
     table.reload(DeviceSetup.tableId, {
-      where: queryData, page: {curr: 1}
+      where: DeviceSetup.queryData, page: {curr: 1}
     });
   };
 
@@ -152,14 +164,14 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
     });
   };
 
-  DeviceSetup.changeStatus = function (deviceSetupId, deviceCode, checked, index) {
+  DeviceSetup.changeStatus = function (deviceCode, checked, index) {
     //获取当前状态
     let statusSwitch = $("input[name='statusSwitch']");
     $.ajax({
       type: "POST",
       dataType: "json",
       url: ctxPath + "/devices/updateSetupStatus",
-      data: {"deviceSetupId":deviceSetupId, "deviceCode": deviceCode, "deviceStatus":checked},
+      data: {"deviceCode": deviceCode, "deviceStatus":checked},
       success : function(result) {
         if ("200" === result.code) {
 
@@ -172,12 +184,13 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
           }
         }
       },
-      error : function(e){
-        layer.msg("操作失败！", {icon: 2});
-        if (checked === "01") {
-          $(statusSwitch[index]).next().removeClass('layui-form-onswitch');
-        } else {
-          $(statusSwitch[index]).next().addClass('layui-form-onswitch');
+      error : function(xhr){
+        let msg = JSON.parse(xhr.responseText);
+        let errCode = msg.code;
+        layer.msg(msg.message, {icon: 2});
+        if ("500" === errCode) {
+          //重载表格
+          table.reload(DeviceSetup.tableId, {where: DeviceSetup.queryData});
         }
       }
     });
@@ -213,10 +226,9 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
   //修改状态
   form.on('switch(deviceStatus)', function (obj) {
     let index = $(obj.elem).parents('tr').data('index');
-    let deviceSetupId = obj.elem.value;
     let deviceCode = obj.elem.attributes['code'].nodeValue;
     let checked = obj.elem.checked ? '01' : '02';
-    DeviceSetup.changeStatus(deviceSetupId, deviceCode, checked, index);
+    DeviceSetup.changeStatus(deviceCode, checked, index);
   });
 
   // 工具条点击事件

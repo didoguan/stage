@@ -1,5 +1,6 @@
 package com.deepspc.stage.dataplatform.devices.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.common.ResponseData;
 import com.deepspc.stage.dataplatform.devices.entity.DeviceSetup;
@@ -7,6 +8,7 @@ import com.deepspc.stage.dataplatform.devices.service.IDeviceSetupService;
 import com.deepspc.stage.dataplatform.devices.wrapper.DeviceSetupWrapper;
 import com.deepspc.stage.sys.common.BaseController;
 import com.deepspc.stage.sys.common.SysPropertiesConfig;
+import com.deepspc.stage.sys.constant.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +36,7 @@ public class DevicesController extends BaseController {
 
     @GetMapping("/setup")
     public String deviceSetupPage(Model model) {
-        String websocketUrl = "ws://localhost:" + sysPropertiesConfig.getWebsocketPort() + "/websocket";
+        String websocketUrl = "ws://localhost:" + sysPropertiesConfig.getWebsocketPort() + "/websocket/" + Const.websocketDeviceSetup;
         model.addAttribute("websocketUrl", websocketUrl);
         return "devices/device_setup";
     }
@@ -70,9 +72,9 @@ public class DevicesController extends BaseController {
 
     @PostMapping("/updateSetupStatus")
     @ResponseBody
-    public ResponseData updateSetupStatus(Long deviceSetupId, String deviceCode, String deviceStatus) {
-        if (null != deviceSetupId) {
-            deviceSetupService.updateSetupStatus(deviceSetupId, deviceCode, deviceStatus);
+    public ResponseData updateSetupStatus(String deviceCode, String deviceStatus) {
+        if (StrUtil.isNotBlank(deviceCode)) {
+            deviceSetupService.updateSetupStatus(deviceCode, deviceStatus);
         } else {
             return ResponseData.error("行标识为空，无法更新！");
         }

@@ -40,7 +40,6 @@ public class DeviceSetup implements Serializable {
     /**
      * 连接状态
      */
-    @TableField(exist = false)
     private String connected;
 
     private Date setupDate;

@@ -13,5 +13,5 @@ public interface DeviceSetupMapper extends BaseMapper<DeviceSetup> {
 
     void deleteDeviceSetup(@Param("deviceSetupIds") List<Long> deviceSetupIds);
 
-    void updateSetupStatus(@Param("deviceSetupId") Long deviceSetupId, @Param("deviceStatus") String deviceStatus);
+    void updateSetupStatus(@Param("deviceCode") String deviceCode, @Param("deviceStatus") String deviceStatus);
 }

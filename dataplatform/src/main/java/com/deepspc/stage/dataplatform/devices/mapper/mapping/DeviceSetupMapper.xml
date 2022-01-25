@@ -11,6 +11,7 @@
     <result column="customer_id" property="customerId" />
     <result column="setup_target" property="setupTarget" />
     <result column="device_status" property="deviceStatus" />
+    <result column="connected" property="connected" />
     <result column="setup_date" property="setupDate" />
     <result column="setup_user_id" property="setupUserId" />
     <result column="setup_user_name" property="setupUserName" />
@@ -31,6 +32,7 @@
     customer_id,
     setup_target,
     device_status,
+    connected,
     setup_date,
     setup_user_id,
     setup_user_name,
@@ -72,7 +74,7 @@
     UPDATE dp_device_setup
     SET device_status = #{deviceStatus}
     WHERE
-      device_setup_id = #{deviceSetupId}
+      device_code = #{deviceCode}
   </update>
 
 </mapper>
