@@ -22,13 +22,13 @@
   <div class="layui-form-item">
     <label class="layui-form-label">省份</label>
     <div class="layui-input-inline">
-      <select name="province" id="province" th:value="${CustomerInfo?.province}">
+      <select name="province" id="province" th:value="${CustomerInfo?.province}" lay-filter="provinceFilter">
         <option value="">--请选择--</option>
       </select>
     </div>
     <label class="layui-form-label">城市</label>
     <div class="layui-input-inline">
-      <select name="city" id="city" th:value="${CustomerInfo?.city}">
+      <select name="city" id="city" th:value="${CustomerInfo?.city}" lay-filter="cityFilter">
         <option value="">--请选择--</option>
       </select>
     </div>

@@ -26,6 +26,12 @@ public class ShiroProperties {
     @Value("${spring.cache.type}")
     public String cacheType;
 
+    /**
+     * 缓存有效期
+     */
+    @Value("${server.tokentimeout}")
+    public int tokenTimeout;
+
     public String getAnonRequest() {
         return anonRequest;
     }
@@ -51,5 +57,13 @@ public class ShiroProperties {
 
     public void setCacheType(String cacheType) {
         this.cacheType = cacheType;
+    }
+
+    public int getTokenTimeout() {
+        return tokenTimeout;
+    }
+
+    public void setTokenTimeout(int tokenTimeout) {
+        this.tokenTimeout = tokenTimeout;
     }
 }

@@ -43,6 +43,16 @@ public class ShiroKit {
         //先获取登录后的用户，如果不存在则从缓存中获取
         if (authenticated) {
             user = (ShiroUser) getSubject().getPrincipals().getPrimaryPrincipal();
+            //判断缓存用户是否过期
+            ShiroProperties shiroProperties = ApplicationContextUtil.getBean(ShiroProperties.class);
+            if (ShiroConst.CACHE_REDIS.equals(shiroProperties.getCacheType())) {
+                RedisUtil redisUtil = ApplicationContextUtil.getBean(RedisUtil.class);
+                Object str = redisUtil.normalGet(user.getUserId().toString());
+                //缓存用户过期则重新设置
+                if (null == str) {
+                    redisUtil.normalSet(user.getUserId().toString(), user.toString(), shiroProperties.getTokenTimeout()/1000);
+                }
+            }
         }
         if (null == user) {
             user = getCacheUser();

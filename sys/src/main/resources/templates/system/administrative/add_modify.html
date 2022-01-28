@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="common/form :: form_res(~{::title},~{},~{})">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<form class="layui-form" id="menuForm" lay-filter="menuForm">
+  <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+      <div class="layui-card-header">基本信息</div>
+      <div class="layui-card-body">
+        <div class="layui-form-item layui-row">
+          <input name="administrativeId" id="administrativeId" type="hidden" th:value="${AdministrativeInfo?.administrativeId}"/>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">区划名称<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="administrativeName" name="administrativeName" placeholder="请输入区划名称" type="text" th:value="${AdministrativeInfo?.administrativeName}" class="layui-input" autocomplete="off" lay-verify="required"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">区划编码<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="administrativeCode" name="administrativeCode" th:value="${AdministrativeInfo?.administrativeCode}" placeholder="请输入区划编号" type="text" class="layui-input" autocomplete="off" lay-verify="required"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">父级区划<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <input id="parentId" name="parentId" type="hidden" th:value="${AdministrativeInfo?.parentId}">
+              <input id="parentName" name="parentName" th:value="${AdministrativeInfo?.parentName}" placeholder="请选择父级区划" type="text" class="layui-input" autocomplete="off" lay-verify="required"/>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">区划类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+              <select id="administrativeType" name="administrativeType" th:value="${AdministrativeInfo?.administrativeType}" lay-verify="required">
+                <option value="">--请选择--</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline layui-col-md12">
+            <label class="layui-form-label">排序号</label>
+            <div class="layui-input-block">
+              <input id="sort" name="sort" th:value="${AdministrativeInfo?.sort}" placeholder="请输入排序号" type="text" class="layui-input" autocomplete="off"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group-bottom text-center" style="z-index: 200">
+    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+  </div>
+</form>
+<div th:replace="common/form :: form_js(~{::script})">
+  <script type="text/javascript" th:src="@{/js/system/administrative/add_modify.js}"></script>
+</div>

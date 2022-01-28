@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.dataplatform.modular.devices.mapper.DeviceSetupMapper">
+
+  <resultMap id="BaseDeviceSetupMap" type="com.deepspc.stage.dataplatform.modular.devices.entity.DeviceSetup">
+    <id column="device_setup_id" property="deviceSetupId" />
+    <result column="device_id" property="deviceId" />
+    <result column="device_code" property="deviceCode" />
+    <result column="device_name" property="deviceName" />
+    <result column="device_type" property="deviceType" />
+    <result column="customer_id" property="customerId" />
+    <result column="setup_target" property="setupTarget" />
+    <result column="device_status" property="deviceStatus" />
+    <result column="connected" property="connected" />
+    <result column="setup_date" property="setupDate" />
+    <result column="setup_user_id" property="setupUserId" />
+    <result column="setup_user_name" property="setupUserName" />
+    <result column="creator_id" property="creatorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="create_date" property="createDate" />
+    <result column="updator_id" property="updatorId" />
+    <result column="updator_name" property="updatorName" />
+    <result column="update_date" property="updateDate" />
+  </resultMap>
+
+  <sql id="default_device_setup_column">
+    device_setup_id,
+    device_id,
+    device_code,
+    device_name,
+    device_type,
+    customer_id,
+    setup_target,
+    device_status,
+    connected,
+    setup_date,
+    setup_user_id,
+    setup_user_name,
+    creator_id,
+    creator_name,
+    create_date,
+    updator_id,
+    updator_name,
+    update_date
+  </sql>
+
+  <select id="loadDeviceSetup" resultMap="BaseDeviceSetupMap">
+    SELECT
+    <include refid="default_device_setup_column"/>
+    FROM
+    dp_device_setup
+    <if test="checkAll">
+      WHERE 1 = 1
+    </if>
+    <if test="!checkAll">
+      WHERE creator_id = #{userId}
+    </if>
+    <if test="deviceCode != null and deviceCode != ''">
+      AND device_code like CONCAT('%',#{deviceCode},'%')
+    </if>
+    ORDER BY create_date DESC
+  </select>
+
+  <delete id="deleteDeviceSetup">
+    DELETE FROM dp_device_setup
+    WHERE
+    device_setup_id IN
+    <foreach collection="deviceSetupIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <update id="updateSetupStatus">
+    UPDATE dp_device_setup
+    SET device_status = #{deviceStatus}
+    WHERE
+      device_code = #{deviceCode}
+  </update>
+
+</mapper>

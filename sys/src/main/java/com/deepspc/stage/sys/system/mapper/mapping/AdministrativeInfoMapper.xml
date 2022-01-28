@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.sys.system.mapper.AdministrativeInfoMapper">
+
+  <resultMap id="BaseAdministrativeInfoMap" type="com.deepspc.stage.sys.system.entity.AdministrativeInfo">
+    <id column="administrative_id" property="administrativeId"/>
+    <result column="administrative_name" property="administrativeName"/>
+    <result column="administrative_code" property="administrativeCode"/>
+    <result column="parent_id" property="parentId"/>
+    <result column="parent_code" property="parentCode"/>
+    <result column="parent_name" property="parentName"/>
+    <result column="level_path" property="levelPath"/>
+    <result column="administrative_type" property="administrativeType"/>
+    <result column="sort" property="sort"/>
+  </resultMap>
+
+  <sql id="default_administrative_info_column">
+    administrative_id,
+    administrative_name,
+    administrative_code,
+    parent_id,
+    parent_code,
+    level_path,
+    administrative_type,
+    sort
+  </sql>
+
+  <select id="selectAdministrativeTree" resultMap="BaseAdministrativeInfoMap">
+    select
+      a.administrative_id,
+      a.administrative_name,
+      a.administrative_code,
+      a.parent_id,
+      a.parent_code,
+      case when b.administrative_name is null then '顶级' else b.administrative_name end parent_name,
+      a.level_path,
+      a.administrative_type,
+      a.sort
+    from sys_administrative_info a LEFT JOIN sys_administrative_info b ON a.parent_code = b.administrative_code
+    where 1 = 1
+    <if test="administrativeName != null and administrativeName != ''">
+      and administrative_name like CONCAT('%',#{administrativeName},'%')
+    </if>
+    <if test="administrativeCode != null and administrativeCode != ''">
+      and administrative_code like CONCAT('%',#{administrativeCode},'%'))
+    </if>
+  </select>
+
+  <select id="administrativeTree" resultType="com.deepspc.stage.sys.pojo.ZTreeNode">
+    SELECT
+    m1.administrative_id "id",
+    ( CASE WHEN ( m2.administrative_id = 0 OR m2.administrative_id IS NULL ) THEN 0 ELSE m2.administrative_id END ) "pId",
+    m1.administrative_name "name",
+    ( CASE WHEN false THEN 'true' ELSE 'false' END ) "open"
+    FROM
+    sys_administrative_info m1
+    LEFT JOIN sys_administrative_info m2 ON m1.parent_code = m2.administrative_code
+    ORDER BY
+    m1.administrative_id ASC
+  </select>
+
+  <select id="getDetail" resultMap="BaseAdministrativeInfoMap">
+    SELECT
+      a.*,
+      b.administrative_name parent_name
+    FROM
+      sys_administrative_info a
+      LEFT JOIN sys_administrative_info b ON a.parent_code = b.administrative_code
+    WHERE
+      a.administrative_id = #{administrativeId}
+  </select>
+
+  <delete id="deleteAdministrativeInfo">
+    DELETE
+    FROM
+      sys_administrative_info
+    WHERE
+      administrative_code = #{administrativeCode}
+      OR level_path like CONCAT('%',#{administrativeCode},'%')
+  </delete>
+
+</mapper>

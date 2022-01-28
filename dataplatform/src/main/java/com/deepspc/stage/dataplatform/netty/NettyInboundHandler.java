@@ -2,7 +2,7 @@ package com.deepspc.stage.dataplatform.netty;
 
 import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
-import com.deepspc.stage.dataplatform.devices.service.IDeviceSetupService;
+import com.deepspc.stage.dataplatform.modular.devices.service.IDeviceSetupService;
 import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 import com.deepspc.stage.dataplatform.netty.service.INettyService;
 import com.deepspc.stage.dataplatform.utils.DataPlatformUtil;
