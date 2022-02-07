@@ -65,6 +65,7 @@ public class DevicesController extends BaseController {
         if (null == deviceSetup.getDeviceSetupId()) {
             //默认设备为关闭状态
             deviceSetup.setDeviceStatus("02");
+            deviceSetup.setConnected("N");
         }
         deviceSetupService.saveOrUpdate(deviceSetup);
         return ResponseData.success();
@@ -86,5 +87,11 @@ public class DevicesController extends BaseController {
     public ResponseData deleteDeviceSetup(@RequestBody List<Long> deviceSetupId) {
         deviceSetupService.deleteDeviceSetup(deviceSetupId);
         return ResponseData.success();
+    }
+
+    @GetMapping("/loadSelectData")
+    @ResponseBody
+    public ResponseData loadSelectData() {
+        return ResponseData.success(deviceSetupService.loadSelectData());
     }
 }

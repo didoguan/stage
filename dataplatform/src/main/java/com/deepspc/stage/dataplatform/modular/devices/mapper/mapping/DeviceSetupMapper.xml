@@ -9,6 +9,7 @@
     <result column="device_name" property="deviceName" />
     <result column="device_type" property="deviceType" />
     <result column="customer_id" property="customerId" />
+    <result column="customer_name" property="customerName" />
     <result column="setup_target" property="setupTarget" />
     <result column="device_status" property="deviceStatus" />
     <result column="connected" property="connected" />
@@ -30,6 +31,7 @@
     device_name,
     device_type,
     customer_id,
+    customer_name,
     setup_target,
     device_status,
     connected,

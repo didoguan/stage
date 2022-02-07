@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deepspc.stage.core.enums.StageCoreEnum;
 import com.deepspc.stage.core.exception.StageException;
+import com.deepspc.stage.dataplatform.modular.customer.entity.CustomerInfo;
+import com.deepspc.stage.dataplatform.modular.customer.service.ICustomerService;
 import com.deepspc.stage.dataplatform.modular.devices.entity.DeviceSetup;
 import com.deepspc.stage.dataplatform.modular.devices.mapper.DeviceSetupMapper;
 import com.deepspc.stage.dataplatform.modular.devices.service.IDeviceSetupService;
@@ -13,10 +15,15 @@ import com.deepspc.stage.dataplatform.netty.service.INettyService;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
 import com.deepspc.stage.sys.common.BaseOrmService;
+import com.deepspc.stage.sys.system.entity.User;
+import com.deepspc.stage.sys.system.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设备安装信息服务实现类
@@ -27,10 +34,14 @@ import java.util.List;
 public class DeviceSetupServiceImpl extends BaseOrmService<DeviceSetupMapper, DeviceSetup> implements IDeviceSetupService {
 
     private final INettyService nettyService;
+    private final ICustomerService customerService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public DeviceSetupServiceImpl(INettyService nettyService) {
+    public DeviceSetupServiceImpl(INettyService nettyService, ICustomerService customerService, UserServiceImpl userService) {
         this.nettyService = nettyService;
+        this.customerService = customerService;
+        this.userService = userService;
     }
 
     @Override
@@ -106,5 +117,25 @@ public class DeviceSetupServiceImpl extends BaseOrmService<DeviceSetupMapper, De
                 this.updateById(device);
             }
         }
+    }
+
+    @Override
+    public Map<String, List> loadSelectData() {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.ne("account", "admin");
+        userQueryWrapper.eq("user_status", "01");
+        Map<String, List> map = new HashMap<>();
+        map.put("users", null);
+        map.put("customers", null);
+        List<User> users = userService.list(userQueryWrapper);
+        if (null != users && !users.isEmpty()) {
+            for (User user : users) {
+                user.setSalt(null);
+                user.setPassword(null);
+            }
+            map.put("users", users);
+        }
+        map.put("customers", customerService.list());
+        return map;
     }
 }

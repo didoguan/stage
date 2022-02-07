@@ -33,6 +33,8 @@ public class DeviceSetup implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long customerId;
 
+    private String customerName;
+
     private String setupTarget;
 
     private String deviceStatus;
@@ -117,6 +119,14 @@ public class DeviceSetup implements Serializable {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getSetupTarget() {

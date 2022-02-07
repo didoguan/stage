@@ -62,8 +62,45 @@ layui.use(['layer', 'form', 'laydate', 'admin'], function () {
     }
   });
 
+  //初始化客户和安装人员下拉数据
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: ctxPath + "/devices/loadSelectData",
+    success : function(result) {
+      let users = result.data.users;
+      let customers = result.data.customers;
+      if (users && users.length > 0) {
+        let setupUserId = $("#setupUserId").attr("value");
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].userId === setupUserId) {
+            $("select[name='setupUserId']").append(new Option(users[i].userName, users[i].userId, false, true));
+          } else {
+            $("select[name='setupUserId']").append(new Option(users[i].userName, users[i].userId));
+          }
+        }
+      }
+      if (customers && customers.length > 0) {
+        let customerId = $("#customerId").attr("value");
+        for (let i = 0; i < customers.length; i++) {
+          if (customers[i].customerId === customerId) {
+            $("select[name='customerId']").append(new Option(customers[i].customerName, customers[i].customerId, false, true));
+          } else {
+            $("select[name='customerId']").append(new Option(customers[i].customerName, customers[i].customerId));
+          }
+        }
+      }
+      form.render('select');
+    },
+    error : function(e){
+      layer.msg("初始化客户和安装人员失败！", {icon: 2});
+    }
+  });
+
   // 表单提交事件
   form.on('submit(btnSubmit)', function (data) {
+    data.field.customerName = $("#customerId option:selected").text();
+    data.field.setupUserName = $("#setupUserId option:selected").text();
     $.ajax({
       type: "POST",
       dataType: "json",

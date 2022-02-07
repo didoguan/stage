@@ -28,7 +28,7 @@
     </div>
     <label class="layui-form-label">所属客户</label>
     <div class="layui-input-inline">
-      <select name="customerId" id="customerId" th:value="${DeviceSetup?.customerId}">
+      <select id="customerId" name="customerId" th:value="${DeviceSetup?.customerId}" lay-search>
         <option value="">--请选择--</option>
       </select>
     </div>
@@ -48,7 +48,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label">安装人员</label>
     <div class="layui-input-inline">
-      <select name="setupUserId" id="setupUserId" th:value="${DeviceSetup?.setupUserId}">
+      <select id="setupUserId" name="setupUserId" th:value="${DeviceSetup?.setupUserId}" lay-search>
         <option value="">--请选择--</option>
       </select>
     </div>

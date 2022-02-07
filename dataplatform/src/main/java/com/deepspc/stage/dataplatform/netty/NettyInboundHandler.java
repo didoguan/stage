@@ -88,9 +88,9 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof WebSocketFrame) {
-
+            log.info("===============websocket请求=============");
         } else if (msg instanceof FullHttpRequest) {
-
+            log.info("===============http请求=============");
         } else {
             ByteBuf in = (ByteBuf) msg;
             socketHandler(ctx, in);

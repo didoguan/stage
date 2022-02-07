@@ -6,6 +6,7 @@ import com.deepspc.stage.dataplatform.modular.devices.entity.DeviceSetup;
 import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IDeviceSetupService extends IService<DeviceSetup> {
 
@@ -16,4 +17,6 @@ public interface IDeviceSetupService extends IService<DeviceSetup> {
     void updateSetupStatus(String deviceCode, String deviceStatus);
 
     void updateByDeviceSetupData(DeviceSetupData deviceSetupData);
+
+    Map<String, List> loadSelectData();
 }
