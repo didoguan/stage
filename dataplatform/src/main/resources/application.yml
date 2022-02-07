@@ -21,9 +21,9 @@ spring:
     password: dls-redis
     timeout: 10000ms        #连接超时，单位毫秒
 netty:
-  port: 80
-websocket:
   port: 8081
+websocket:
+  port: 8080
 
 stage:
   appname: 数据管理平台
