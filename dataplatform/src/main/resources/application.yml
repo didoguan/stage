@@ -2,6 +2,7 @@ server:
   tokentimeout: 1800000         #token超时时间(单位毫秒)，超过该值可通过调用刷新token获取新token(30分钟)
   tokenlive: 432000000          #token有效期(单位毫秒)，超过该值需重新登录(5天)
   attachment-path: D:/dataplatform/
+#  attachment-path: /opt/server/dataplatform/pics/
 
 spring:
   profiles:

@@ -14,7 +14,6 @@
     <module>esmanager</module>
     <module>shiro</module>
     <module>sys</module>
-    <module>isu</module>
     <module>dataplatform</module>
   </modules>
 

@@ -36,7 +36,8 @@ public class DevicesController extends BaseController {
 
     @GetMapping("/setup")
     public String deviceSetupPage(Model model) {
-        String websocketUrl = "ws://localhost:" + sysPropertiesConfig.getWebsocketPort() + "/websocket/" + Const.websocketDeviceSetup;
+        String hostName = "ws://" + getRequest().getServerName() + ":";
+        String websocketUrl = hostName + sysPropertiesConfig.getWebsocketPort() + "/websocket/" + Const.websocketDeviceSetup;
         model.addAttribute("websocketUrl", websocketUrl);
         return "devices/device_setup";
     }
