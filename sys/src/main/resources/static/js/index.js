@@ -42,7 +42,7 @@ layui.use(['layer', 'element', 'index', 'admin'], function () {
       dataType: "json",
       url: ctxPath + "/logout",
       success : function(result) {
-        if (200 == result.code) {
+        if (200 === result.code) {
           layer.msg(result.message, {icon: 1});
           window.location.href = ctxPath + "/";
         } else {
@@ -54,4 +54,14 @@ layui.use(['layer', 'element', 'index', 'admin'], function () {
       }
     });
   });
+
+  //获取class为admin-iframe的iframe高度
+  window.getAdminFrameHeight = function () {
+    let tabContent = $(".layui-tab-content")[0];
+    let height = 0;
+    if (tabContent) {
+      height = $(tabContent).height();
+    }
+    return height;
+  };
 });

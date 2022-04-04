@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.dataplatform.mqtt.mapper.UnconfirmMsgMapper">
+
+  <resultMap id="BaseUnconfirmMsgMap" type="com.deepspc.stage.dataplatform.mqtt.entity.UnconfirmMsg">
+    <id column="unconfirm_id" property="unconfirmId" />
+    <result column="topic_id" property="topicId" />
+    <result column="client_code" property="clientCode" />
+    <result column="msg_content" property="msgContent" />
+    <result column="publish_date" property="publishDate" />
+    <result column="qos_level" property="qosLevel" />
+    <result column="retain" property="retain" />
+  </resultMap>
+
+  <sql id="default_unconfirm_msg_column">
+    unconfirm_id,
+    topic_id，
+    client_code,
+    msg_content,
+    publish_date,
+    qos_level,
+    retain
+  </sql>
+
+</mapper>

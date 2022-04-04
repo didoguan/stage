@@ -3,6 +3,8 @@ package com.deepspc.stage.dataplatform.netty;
 import cn.hutool.core.util.StrUtil;
 import com.deepspc.stage.core.utils.JsonUtil;
 import com.deepspc.stage.dataplatform.modular.devices.service.IDeviceSetupService;
+import com.deepspc.stage.dataplatform.mqtt.service.IMqttService;
+import com.deepspc.stage.dataplatform.mqtt.service.impl.MqttServiceImpl;
 import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 import com.deepspc.stage.dataplatform.netty.service.INettyService;
 import com.deepspc.stage.dataplatform.utils.DataPlatformUtil;
@@ -12,8 +14,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.mqtt.*;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.Attribute;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +40,13 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
 
     private final IDeviceSetupService deviceSetupService;
     private final WebsocketServer websocketServer;
+    private final MqttServiceImpl mqttServiceImpl;
 
     @Autowired
-    public NettyInboundHandler(IDeviceSetupService deviceSetupService, WebsocketServer websocketServer) {
+    public NettyInboundHandler(IDeviceSetupService deviceSetupService, WebsocketServer websocketServer, MqttServiceImpl mqttServiceImpl) {
         this.deviceSetupService = deviceSetupService;
         this.websocketServer = websocketServer;
+        this.mqttServiceImpl = mqttServiceImpl;
     }
 
     /**
@@ -50,8 +56,7 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        String channleId = ctx.channel().id().asLongText();
-        log.info("Netty建立连接，标识：{}", channleId);
+        log.info("Netty建立连接，标识：{}", ctx.channel().id().asLongText());
     }
 
     /**
@@ -91,6 +96,9 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
             log.info("===============websocket请求=============");
         } else if (msg instanceof FullHttpRequest) {
             log.info("===============http请求=============");
+        } else if (msg instanceof MqttMessage) {
+            log.info("===============MQTT请求=============");
+            mqttHandler(ctx, (MqttMessage)msg);
         } else {
             ByteBuf in = (ByteBuf) msg;
             socketHandler(ctx, in);
@@ -123,7 +131,23 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
-
+            if (state == IdleState.ALL_IDLE) {
+                if (IMqttService.mqttChannelGroup.size() > 0) {
+                    //发送遗嘱信息
+                    Attribute<String> deviceCode = ctx.channel().attr(IMqttService.CLIENT_ID);
+                    Object obj = IMqttService.mqttChannelMap.get(deviceCode.get());
+                    if (null != obj) {
+                        IMqttService.mqttChannelMap.remove(deviceCode.get());
+                        Channel exists = IMqttService.mqttChannelGroup.find((ChannelId) obj);
+                        exists.close();
+                        log.info("心跳检测：MQTT通道组中，原通道被关闭！通道标识为：{}", exists.id().asLongText());
+                    }
+                }
+                if (ctx.channel().isOpen()) {
+                    ctx.channel().close();
+                    log.info("心跳检测：当前通道被关闭！通道标识为：{}", ctx.channel().id().asLongText());
+                }
+            }
         } else {
             super.userEventTriggered(ctx, evt);
         }
@@ -180,6 +204,33 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
                     websocketServer.sendMessage(Const.websocketDeviceSetup, deviceSetupData);
                 }
             }
+        }
+    }
+
+    private void mqttHandler(ChannelHandlerContext ctx, MqttMessage mqttMessage) {
+        if (!mqttMessage.decoderResult().isSuccess()) {
+            log.error("MQTT请求解码失败！");
+            ctx.close();
+            return;
+        }
+        //客户端只能发送一次connect报文,必须将客户端发送的第二个connect作为违规处理并断开客户端连接。
+        //建议connect消息单独处理用来对客户端进行认证
+        switch (mqttMessage.fixedHeader().messageType()) {
+            case CONNECT: mqttServiceImpl.mqttConnect(ctx.channel(), (MqttConnectMessage) mqttMessage); break;//客户端请求连接
+            case CONNACK: log.info("收到响应连接确认"); break;//响应连接确认
+            case PUBLISH: mqttServiceImpl.mqttPublish(ctx.channel(),(MqttPublishMessage) mqttMessage); break;//发布消息
+            case PUBACK: log.info("收到对QoS1的消息发布确认"); break;//QoS 1消息发布收到确认
+            case PUBREC: log.info("收到QoS 2发布收到"); break;//QoS 2发布收到
+            case PUBREL: log.info("收到QoS 2发布释放"); break;//QoS 2发布释放
+            case PUBCOMP: log.info("收到QoS 2消息发布完成"); break;//QoS 2消息发布完成
+            case SUBSCRIBE: mqttServiceImpl.mqttSubscribe(ctx.channel(), (MqttSubscribeMessage) mqttMessage); break;//客户端订阅请求
+            case SUBACK: log.info("收到客户端响应订阅请求"); break;//客户端响应订阅请求
+            case UNSUBSCRIBE: mqttServiceImpl.mqttUnSubscribe(ctx.channel(), (MqttUnsubscribeMessage) mqttMessage); break;//客户端取消订阅请求
+            case UNSUBACK: log.info("收到客户端响应取消订阅"); break;//客户端响应取消订阅
+            case PINGREQ: mqttServiceImpl.pingReq(ctx.channel(), mqttMessage); break;//心跳请求
+            case PINGRESP: log.info("收到响应客户端心跳"); break;//响应客户端心跳
+            case DISCONNECT: mqttServiceImpl.disConnect(ctx.channel(), mqttMessage); break;//客户端发起断开连接
+            default: break;
         }
     }
 }

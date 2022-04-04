@@ -5,6 +5,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketFrameAggregator;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.codec.mqtt.MqttDecoder;
+import io.netty.handler.codec.mqtt.MqttEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
@@ -23,6 +25,11 @@ public class PipelineAdd {
         ctx.pipeline().addBefore("inboundHandler","WebSocketAggregator",new WebSocketFrameAggregator(65535));
         //用于处理websocket, /wst为访问websocket时的uri
         ctx.pipeline().addBefore("inboundHandler","ProtocolHandler", new WebSocketServerProtocolHandler("/wst"));
+    }
+
+    public void mqttAdd(ChannelHandlerContext ctx) {
+        ctx.pipeline().addBefore("inboundHandler", "decoder", new MqttDecoder());
+        ctx.pipeline().addBefore("inboundHandler", "encoder", MqttEncoder.INSTANCE);
     }
 
 }

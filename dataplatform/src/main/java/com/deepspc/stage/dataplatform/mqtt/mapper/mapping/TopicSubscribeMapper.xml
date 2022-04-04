@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.dataplatform.mqtt.mapper.TopicSubscribeMapper">
+
+  <resultMap id="BaseTopicSubscribeMap" type="com.deepspc.stage.dataplatform.mqtt.entity.TopicSubscribe">
+    <id column="subscribe_id" property="subscribeId" />
+    <result column="topic_id" property="topicId" />
+    <result column="client_code" property="clientCode" />
+    <result column="qos_level" property="qosLevel" />
+    <result column="subscribe_date" property="subscribeDate" />
+  </resultMap>
+
+  <sql id="default_topic_subscribe_column">
+    subscribe_id,
+    topic_id,
+    topic_name,
+    qos_level,
+    subscribe_date
+  </sql>
+
+</mapper>

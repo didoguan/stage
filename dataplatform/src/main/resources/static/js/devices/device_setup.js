@@ -1,14 +1,16 @@
-layui.use(['layer', 'table', 'form', 'func'], function () {
+layui.use(['layer', 'table', 'form', 'func', 'element'], function () {
   let $ = layui.$;
   let layer = layui.layer;
   let table = layui.table;
   let func = layui.func;
   let form = layui.form;
+  let element = layui.element;
 
   let DeviceSetup = {
     tableId: "deviceSetupTable",    //表格id
     queryData: {"deviceCode": $("#deviceCode").val()},
-    websocketUrl : $("#websocketUrl").val()
+    websocketUrl : $("#websocketUrl").val(),
+    tabChecked: 0 //默认第一个tab显示
   };
 
   let wst;
@@ -67,9 +69,9 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
       {field: 'deviceStatus', sort: false, templet: '#statusTpl', title: '设备状态'},
       {field: 'connected', sort: false, title: '连接状态', templet: function (d) {
           if (d.connected === 'Y') {
-              return "<div><img src='"+ctxPath+"/images/green_light.png'></div>";
+              return "<div><img src='"+ctxPath+"/images/connected.png'></div>";
           } else {
-            return "<div><img src='"+ctxPath+"/images/grey_light.png'></div>";
+            return "<div><img src='"+ctxPath+"/images/disconnected.png'></div>";
           }
         }},
       {field: 'setupDate', sort: false, title: '安装日期'},
@@ -196,17 +198,58 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
     });
   };
 
-  // 渲染表格
-  let tableResult = table.render({
-    elem: '#' + DeviceSetup.tableId,
-    url: ctxPath + '/devices/loadDeviceSetup',
-    page: true,
-    limits: [50,100],
-    limit: 50,
-    height: "full-98",
-    cellMinWidth: 100,
-    cols: DeviceSetup.initColumn()
-  });
+  //以卡片方式加载信息
+  DeviceSetup.loadCards = function (datas) {
+    if (datas && datas.length > 0) {
+      let str = "";
+      //计算行数
+      let size = datas.length;
+      let cols = 6;//默认6列
+      let rows = Math.floor(size / cols);
+      let mod = size%6;//取模
+      if (mod > 0) {
+        rows++;
+      }
+      let i = 0, j = 0;
+      for (i = 0; i < rows; i++) {
+        if (i === rows - 1 && mod > 0) {
+          cols = mod;
+        }
+        str += "<div class=\"layui-row\" style=\"margin-bottom: 10px;\">";
+        for (j = 0; j < cols; j++) {
+          str += "<div class=\"layui-col-md2\">";
+          str += "  <div style=\"width: 232px; height: 170px; background: #e4e7ed;\">";
+          str += "    <div class=\"layui-row\" style=\"line-height: 40px; border-bottom: 1px solid #000; text-align: center;\">";
+          str += "      <div class=\"layui-col-md2\"><input type=\"checkbox\" name=\"device\" value=\""+i+"_"+j+"\"></div>";
+          str += "      <div class=\"layui-col-md7\">01|设备</div>";
+          str += "      <div class=\"layui-col-md3\"><img src=\""+ctxPath+"/images/switch_off_16.png\" style=\"cursor: pointer;\">&nbsp;<img src=\""+ctxPath+"/images/information_16.png\" style=\"cursor: pointer;\"></div>";
+          str += "    </div>";
+          str += "    <div class=\"layui-row\" style=\"line-height: 36px; text-align: center;\">";
+          str += "      <div class=\"layui-col-md12\">";
+          str += "        <table style=\"width: 100%; height: 100%;\" border=\"0\"><tbody>";
+          str += "          <tr><td rowspan=\"2\" style=\"background:url(../../images/house.png) no-repeat center; width: 40%;\">9℃</td><td>21℃</td><td>手动</td></tr>";
+          str += "          <tr><td>半锁</td><td>常规</td></tr>";
+          str += "        </tbody></table>";
+          str += "      </div>";
+          str += "    </div>";
+          str += "    <div class=\"layui-row\" style=\"line-height: 30px; text-align: center;\">";
+          str += "      <div class=\"layui-col-md12\">网关：BYLXX1 <span style=\"color: red;\">下线</span></div>";
+          str += "    </div>";
+          str += "    <div class=\"layui-row\" style=\"line-height: 30px; text-align: center;\">";
+          str += "      <div class=\"layui-col-md12\">2022-2-14 15:06</div>";
+          str += "    </div>";
+          str += "  </div>";
+          str += "</div>";
+        }
+        str += "</div>";
+      }
+      $("#deviceCard").html(str);
+    }
+  };
+
+  if (DeviceSetup.tabChecked === 0) {
+    DeviceSetup.loadCards([{},{},{},{},{},{}]);
+  }
 
   // 搜索按钮点击事件
   $('#btnSearch').click(function () {
@@ -221,6 +264,28 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
   // 删除按钮点击事件
   $('#btnDel').click(function () {
     DeviceSetup.onDeleteData();
+  });
+
+  //tab事件监听
+  element.on('tab(showSwitch)', function(data){
+    let index = data.index;
+    DeviceSetup.tabChecked = index;
+    if (index === 0) {
+      //加载卡片
+      DeviceSetup.loadCards([{},{},{},{},{},{}]);
+    } else if (index === 1) {
+      //加载表格
+      table.render({
+        elem: '#' + DeviceSetup.tableId,
+        url: ctxPath + '/devices/loadDeviceSetup',
+        page: true,
+        limits: [50,100],
+        limit: 50,
+        height: "full-146",
+        cellMinWidth: 100,
+        cols: DeviceSetup.initColumn()
+      });
+    }
   });
 
   //修改状态
@@ -241,5 +306,11 @@ layui.use(['layer', 'table', 'form', 'func'], function () {
     } else if (layEvent === 'show') {
       DeviceSetup.onShowPage(data);
     }
+  });
+
+  //加载完成后
+  layer.ready(function () {
+    let height = window.top.getAdminFrameHeight() - 136;
+    console.info("clientHeight:"+height);
   });
 });

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * 判断请求所使用的协议(socket/websocket)
+ * 解码
+ * 在服务端收到数据的时候，将字节流转换为实体对象Message
  * @author gzw
  * @date 2022/1/19 10:28
  */
@@ -28,6 +30,9 @@ public class SwitchProtocolHandle extends ByteToMessageDecoder {
         if (protocol.startsWith(WEBSOCKET_PREFIX)) {
             PipelineAdd pipelineAdd = new PipelineAdd();
             pipelineAdd.websocketAdd(ctx);
+        } else if (protocol.contains("MQTT")) {
+            PipelineAdd pipelineAdd = new PipelineAdd();
+            pipelineAdd.mqttAdd(ctx);
         }
         byteBuf.resetReaderIndex();
         ctx.pipeline().remove(this.getClass());

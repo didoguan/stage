@@ -4,6 +4,8 @@
   <title></title>
   <style>
     .layui-table-cell {height: auto!important; white-space: normal;}
+    .layui-card-body {padding: 10px 15px 1px 15px;}
+    .layui-tab-content {padding: 0;}
   </style>
 </head>
 <div class="layui-body-header">
@@ -28,7 +30,25 @@
               </div>
             </div>
           </div>
-          <table class="layui-table" id="deviceSetupTable" lay-filter="deviceSetupTable"></table>
+          <!--<table class="layui-table" id="deviceSetupTable" lay-filter="deviceSetupTable"></table>-->
+          <!-- tab分别以卡片和列表方式显示-->
+          <div class="layui-tab layui-tab-brief" lay-filter="showSwitch">
+            <ul class="layui-tab-title">
+              <li class="layui-this">卡片显示</li>
+              <li>列表显示</li>
+            </ul>
+            <div class="layui-tab-content">
+              <div class="layui-tab-item layui-show" style="margin-top: 10px;">
+                <div class="layui-row">
+                  <div id="deviceCard" class="layui-col-md8"></div>
+                  <div id="deviceSet" class="layui-col-md4"></div>
+                </div>
+              </div>
+              <div class="layui-tab-item">
+                <table class="layui-table" id="deviceSetupTable" lay-filter="deviceSetupTable"></table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

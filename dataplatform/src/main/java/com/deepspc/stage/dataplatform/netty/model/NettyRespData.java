@@ -22,6 +22,23 @@ public class NettyRespData implements Serializable {
 
     }
 
+    public NettyRespData(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public NettyRespData(RespCode respCode) {
+        this(respCode.getCode(), respCode.getMessage());
+    }
+
+    public static NettyRespData SUCCESS() {
+        return new NettyRespData("200", "");
+    }
+
+    public static NettyRespData FAILED() {
+        return new NettyRespData("500", "");
+    }
+
     public String toString() {
         return "{\"code\":\""+ Optional.ofNullable(this.code).orElse("")
                 +"\",\"msg\":\""+Optional.ofNullable(this.msg).orElse("")

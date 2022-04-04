@@ -3,7 +3,6 @@ package com.deepspc.stage.dataplatform.netty.service;
 import com.deepspc.stage.core.exception.StageException;
 import com.deepspc.stage.dataplatform.netty.model.DeviceSetupData;
 import com.deepspc.stage.dataplatform.netty.model.NettyRespData;
-import io.netty.channel.ChannelId;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -32,4 +31,5 @@ public interface INettyService {
      * @param deviceSetupData 接收到的数据
      */
     void acceptData(DeviceSetupData deviceSetupData) throws StageException;
+
 }

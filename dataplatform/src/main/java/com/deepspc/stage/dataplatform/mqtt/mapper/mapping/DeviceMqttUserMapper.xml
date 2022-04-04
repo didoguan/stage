@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deepspc.stage.dataplatform.mqtt.mapper.DeviceMqttUserMapper">
+
+  <resultMap id="BaseDeviceUserMap" type="com.deepspc.stage.dataplatform.mqtt.entity.DeviceMqttUser">
+    <id column="mqtt_user_id" property="mqttUserId" />
+    <result column="user_name" property="userName" />
+    <result column="password" property="password" />
+    <result column="device_code" property="deviceCode" />
+    <result column="customer_id" property="customerId" />
+  </resultMap>
+
+  <sql id="default_device_user_column">
+    mqtt_user_id,
+    user_name,
+    password,
+    device_code,
+    customer_id
+  </sql>
+
+</mapper>
