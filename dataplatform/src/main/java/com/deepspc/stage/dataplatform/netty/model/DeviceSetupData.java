@@ -17,6 +17,8 @@ public class DeviceSetupData implements Serializable {
     private Integer onOff;
     //连接状态： Y-连接 N-断开
     private String connected = "N";
+    //是否心跳数据 Y-是 N-否(硬件启动心跳时该字段用以识别是否心跳数据)
+    private String heartBeat;
 
     public DeviceSetupData() {
 
@@ -25,7 +27,8 @@ public class DeviceSetupData implements Serializable {
     public String toString() {
         return "{\"deviceCode\":\""+Optional.ofNullable(this.deviceCode).orElse("")
                 +"\",\"onOff\":"+this.onOff
-                +",\"connected\":\""+this.connected+"\"}";
+                +",\"heartBeat\":\""+this.heartBeat
+                +"\",\"connected\":\""+this.connected+"\"}";
     }
 
     public String getDeviceCode() {
@@ -50,5 +53,13 @@ public class DeviceSetupData implements Serializable {
 
     public void setConnected(String connected) {
         this.connected = connected;
+    }
+
+    public String getHeartBeat() {
+        return heartBeat;
+    }
+
+    public void setHeartBeat(String heartBeat) {
+        this.heartBeat = heartBeat;
     }
 }
