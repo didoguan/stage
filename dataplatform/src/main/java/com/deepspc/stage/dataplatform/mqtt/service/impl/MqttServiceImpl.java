@@ -88,6 +88,7 @@ public class MqttServiceImpl implements IMqttService {
         String userName = msg.payload().userName();
         String password = msg.payload().passwordInBytes() == null ? null
                 : new String(msg.payload().passwordInBytes(), CharsetUtil.UTF_8);
+        log.info("客户端连接MQTT的用户名：【{}】,密码：【{}】", userName, password);
         boolean valid = checkDeviceUserValid(userName, password, deviceCode);
         if (!valid) {
             connAckMessage(channel, MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD, false, true);
