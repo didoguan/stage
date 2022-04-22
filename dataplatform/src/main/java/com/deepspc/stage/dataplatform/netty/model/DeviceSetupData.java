@@ -1,5 +1,7 @@
 package com.deepspc.stage.dataplatform.netty.model;
 
+import cn.hutool.core.util.StrUtil;
+
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -56,6 +58,9 @@ public class DeviceSetupData implements Serializable {
     }
 
     public String getHeartBeat() {
+        if (StrUtil.isBlank(this.heartBeat)) {
+            this.heartBeat = "N";
+        }
         return heartBeat;
     }
 
