@@ -59,7 +59,7 @@ public class DeviceSetupData implements Serializable {
 
     public String getHeartBeat() {
         if (StrUtil.isBlank(this.heartBeat)) {
-            this.heartBeat = "N";
+            return "N";
         }
         return heartBeat;
     }

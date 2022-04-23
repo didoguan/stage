@@ -7,6 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.mqtt.MqttDecoder;
 import io.netty.handler.codec.mqtt.MqttEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,8 +49,8 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel sc) throws Exception {
-                        //心跳检测，每分钟检测一次是否有中断连接
-                        //sc.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 0, 0));
+                        //心跳检测
+                        sc.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 20));
                         sc.pipeline().addLast("switchProtocolHandle", new SwitchProtocolHandle());
                         sc.pipeline().addLast("inboundHandler", nettyInboundHandler);
                     }
