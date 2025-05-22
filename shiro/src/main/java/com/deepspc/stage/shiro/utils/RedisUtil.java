@@ -2,6 +2,7 @@ package com.deepspc.stage.shiro.utils;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/11/25 10:34
  */
 @Component
+@ConditionalOnProperty(value = "spring.cache.type", havingValue = "redis")
 public final class RedisUtil {
 
     /**

@@ -3,12 +3,12 @@ spring:
     druid:
       primary:
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://139.159.191.121:3306/ec_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-        username: deepspc
-        password: deepspc
+        url: jdbc:mysql://121.37.214.142:3306/oa_temp?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        username: dlsoa_temp
+        password: dlsoa_temp
       second:
-        enabled: true
+        enabled: false
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://139.159.191.121:3306/oa_test?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-        username: dlsoa_test
-        password: dlsOaTest2020
+        url: jdbc:mysql://121.37.214.142:3306/oa_temp?characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+        username: dlsoa_temp
+        password: dlsoa_temp

@@ -20,6 +20,7 @@ import com.deepspc.stage.sys.system.service.impl.UserServiceImpl;
 import com.deepspc.stage.sys.utils.EhCacheUtil;
 import com.deepspc.stage.shiro.common.ShiroKit;
 import com.deepspc.stage.shiro.model.ShiroUser;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,16 +44,15 @@ public class LoginController extends BaseController {
     private final ISystemService systemService;
     private final SysPropertiesConfig sysPropertiesConfig;
     private final UserServiceImpl userService;
-
     private final RedisUtil redisUtil;
 
     @Autowired
     public LoginController(ISystemService systemService, SysPropertiesConfig sysPropertiesConfig,
-                           UserServiceImpl userService, RedisUtil redisUtil) {
+                           UserServiceImpl userService,ObjectProvider<RedisUtil> redisUtil) {
         this.systemService = systemService;
         this.sysPropertiesConfig = sysPropertiesConfig;
         this.userService = userService;
-        this.redisUtil = redisUtil;
+        this.redisUtil = redisUtil.getIfAvailable();
     }
 
     @GetMapping("/login")

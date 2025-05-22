@@ -17,6 +17,8 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd
+websocket:
+  port: 8080
 
 stage:
   appname: 电商后台管理系统
